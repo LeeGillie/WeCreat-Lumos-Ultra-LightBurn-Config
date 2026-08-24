@@ -6,7 +6,9 @@
 # Capture: ... -File .\tools\probe-workstation.ps1 > .\captures\workstation-<yourname>.txt
 
 Write-Output ('WeCreat Lumos Ultra / LightBurn workstation probe  -  ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))
-Write-Output ('Host: ' + $env:COMPUTERNAME + '   OS: ' + (Get-CimInstance Win32_OperatingSystem).Caption)
+$hostName = $env:COMPUTERNAME
+if (-not $hostName) { try { $hostName = (Get-CimInstance Win32_ComputerSystem).Name } catch { $hostName = 'unknown' } }
+Write-Output ('Host: ' + $hostName + '   User: ' + $env:USERNAME + '   OS: ' + (Get-CimInstance Win32_OperatingSystem).Caption)
 Write-Output ''
 
 Write-Output '=== 1. Install locations ==='
