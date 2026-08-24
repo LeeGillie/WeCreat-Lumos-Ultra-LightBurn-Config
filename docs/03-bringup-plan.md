@@ -166,6 +166,32 @@ though not on the Ultra.
 This is how the Ultra's M-code table gets written, and it needs no risky experimentation at all —
 you simply watch what MakeIt already does.
 
+### Capture without firing anything
+
+The controller stores framing G-code separately, under `/mnt/SDCARD/framing/`. **Framing uses the
+red pointer, not the working beam.** So a framing capture is completely beam-free and needs no
+goggles decision and no lens swap — and it still carries the start/end block and the coordinate
+range, which is where the field size and any `M16`/`M17` will show up.
+
+**You do not need to change lenses to start.** Use whichever lens is fitted, select the source
+that matches it, and frame. Never select a source that does not match the installed lens and then
+let it fire — the optics are wavelength-specific and the coating is damaged by the wrong
+wavelength, quite apart from the focus being wrong.
+
+A sensible order:
+
+| Capture | Beam? | What it answers |
+|---|---|---|
+| Frame, source matching the fitted lens | **No** | Start/end block, coordinate range → **field size**, whether MakeIt emits `M16`/`M17` |
+| A real low-power job on scrap, same lens | Yes | How power, speed, frequency and **MOPA pulse width** are expressed — or whether they are expressed at all |
+| Frame again with the *other* source selected, if MakeIt permits it | **No** | The **source-select code** — tests `M104X1` / `M104X2` |
+
+The third row is the one that usually seems to need a lens swap and often does not: switching
+source in MakeIt and only *framing* never puts a working beam through the wrong optic. If MakeIt
+refuses to select a source whose lens is not fitted, then and only then is a swap required.
+
+### The differential method
+
 Method: run **the same tiny job twice**, changing **exactly one variable**, and diff the G-code.
 Capture either with Wireshark on the RNDIS interface (grab the body of `POST /process/upload`)
 or through MakeIt's hidden console.
