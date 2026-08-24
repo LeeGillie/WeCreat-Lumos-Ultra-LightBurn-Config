@@ -15,10 +15,20 @@ Vision, Vision Pro, Vista and Lumos — but not the Ultra — while simultaneous
 "Lightburn" as supported software on the Ultra product page. This repository exists to close
 that gap in the open, with contributions from anyone who owns the machine.
 
-> **Status: Stage 0 complete.** The architecture is now **confirmed against a physical Lumos
-> Ultra** — see below. The device profiles in `profiles/draft/` remain untested. Every claim in
-> this repository carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
-> anything.
+> **Status: Stages 0 and 1 complete on hardware.** Architecture, USB identity, baud rate and
+> firmware behaviour are **confirmed against a physical Lumos Ultra**. The device profiles in
+> `profiles/draft/` remain untested. Every claim carries an evidence grade. Read
+> [SAFETY.md](SAFETY.md) before you connect anything.
+
+> ### ⚠️ If you own a Lumos Ultra, do not just import WeCreat's Lumos profile
+>
+> The Ultra identifies itself over USB as **`[WeCreat Lumos :ver 000240]`** — it does **not** say
+> "Ultra". Nothing in the handshake distinguishes the two machines, so WeCreat's official
+> `WeCreat-Lumos-v1.5.lbdev` **will connect to an Ultra without complaint**.
+>
+> That profile declares a **116 × 116 mm** workspace. The Ultra's field is **210 × 210 mm**.
+> Jobs would be silently mis-scaled and mis-placed, with no error and no warning.
+> ([evidence](captures/stage1-serial-benchy.md))
 
 ---
 

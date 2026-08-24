@@ -119,14 +119,24 @@ apply to the Ultra.
    A physical Ultra enumerates as a CH340 serial bridge (`VID_1A86&PID_7523`, COM7) plus a Linux
    RNDIS gadget (`VID_0525&PID_A4A2`), with no galvo controller present. The RNDIS link comes up
    on `192.168.42.0/24`. See [01-architecture.md §4](01-architecture.md#4-confirmed-on-a-physical-lumos-ultra--2026-08-24).
-2. **What is the Ultra's serial banner and baud rate?** *Test: Stage 1.*
+2. ~~**What is the Ultra's serial banner and baud rate?**~~ — **ANSWERED 2026-08-24.**
+   `$I` returns **`[WeCreat Lumos :ver 000240]`** — note it does **not** say "Ultra" — at
+   **1,000,000 baud**. No unsolicited banner on port open; it is emitted on power-up only.
+   See [capture](../captures/stage1-serial-benchy.md).
 3. **What M-code selects UV vs MOPA on the Ultra?** *Test: Stage 5, differential MakeIt capture.*
 4. **Is there any G-code for MOPA pulse width / frequency?** *Test: Stage 5.*
 5. **What is "U mode"?** *Test: firmware strings, or differential capture.*
 6. **Is the REST API on :8080 unchanged on the Ultra?** *Test: Stage 2.*
 7. **How are the slide and conveyor motors addressed — A axis, U axis, or remapped Y?**
    *Test: Stage 7/8 differential capture.*
-8. **Does `$$` work?** No WeCreat `$$` dump has ever been published, for any model.
+8. ~~**Does `$$` work?**~~ — **ANSWERED 2026-08-24: no.** The controller acknowledges `$$` with a
+   bare `ok` and returns nothing. `$#` and `$G` are likewise stubs; `?` and `$I` are fully
+   implemented. **Field size and scaling therefore cannot be read from the machine and must be
+   measured** (Stage 4). See [capture](../captures/stage1-serial-benchy.md).
+9. **Does the Ultra's field really measure 210 × 210 mm?** Now the highest-value unknown, since
+   the controller will not tell us. *Test: Stage 4 framing with calipers.*
+10. **Is `Pn:Z` (Z limit asserted at rest) normal, or a stuck input?** Matters before enabling Z
+    or homing.
 
 Each carries a matching issue label. If you can answer one, you have moved this project further
 than any amount of documentation work.

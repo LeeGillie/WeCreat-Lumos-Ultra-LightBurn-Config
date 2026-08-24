@@ -40,7 +40,40 @@ know of, assembled from WeCreat's own shipped `.lbdev` profiles, their support a
 | `~` | — | Cycle start / resume | CONFIRMED-community | All |
 | `0x18` | — | Soft reset (Ctrl-X) | CONFIRMED-community | All |
 
-### Corrections to claims circulating elsewhere
+### GRBL `$` command support — measured on a Lumos Ultra, 2026-08-24
+
+**CONFIRMED-hardware** ([capture](../captures/stage1-serial-benchy.md)). The controller
+implements enough GRBL to stream jobs and report status, and **not** the settings subsystem.
+
+| Command | Result | Implemented? |
+|---|---|---|
+| `?` | `<Idle\|MPos:0.000,0.000,0.000\|FS:0,0\|Pn:Z\|WCO:0.000,0.000,0.000>` | **Yes** — full GRBL 1.1 status report, three axes |
+| `$I` | `[WeCreat Lumos :ver 000240]` | **Yes** |
+| `$$` | bare `ok`, nothing else | **No** |
+| `$#` | bare `ok` | **No** |
+| `$G` | bare `ok` | **No** |
+
+**The practical consequence: you cannot read the field size out of the machine.** `$130`/`$131`
+(max travel), `$110`/`$111` (max rates) and `$30` (spindle/S max) do not exist here. Field size
+and scaling must be established by measurement — see [03-bringup-plan.md](03-bringup-plan.md)
+Stage 4.
+
+### The identity string does not name the model
+
+`$I` returns **`[WeCreat Lumos :ver 000240]`** on a **Lumos Ultra**. It does not say "Ultra".
+A Lumos (non-Ultra) reported `[WeCreat Lumos :ver 000207]` in a public forum capture — same
+product string, same format, older build. Firmware appears to be shared across the family.
+
+> ⚠️ **Trap.** WeCreat's official `WeCreat-Lumos-v1.5.lbdev` will connect to an Ultra without
+> complaint, because nothing in the handshake distinguishes them. That profile declares a
+> **116 × 116 mm** workspace; the Ultra's field is **210 × 210 mm**. Jobs would be silently
+> mis-scaled and mis-placed, with no error.
+
+### Baud rate
+
+**1,000,000 baud confirmed working** on the Ultra, matching the vendor Lumos profile.
+
+## Corrections to claims circulating elsewhere
 
 - **`M14` is not a "passthrough/bulk mode" switch.** `M14S0`/`M14S1` are laser-module fan off/on.
   The passthrough↔bulk switch lives entirely inside the `weburn` bridge program, which watches

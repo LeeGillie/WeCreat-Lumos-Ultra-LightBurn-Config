@@ -1,0 +1,31 @@
+﻿
+  Stage 1 - serial identity probe (READ-ONLY, no beam, no motion)
+  host: BENCHY    2026-08-24 09:22:31
+
+  found: USB-SERIAL CH340 (COM7)
+         USB\VID_1A86&PID_7523\A&336F6178&0&2
+  using: COM7
+
+===================== COM7 @ 1000000 baud =====================
+
+  --- unsolicited output on open (banner window, 3s) ---
+    (silence - the banner is usually only emitted on power-up/reset)
+
+  --- ?    (GRBL realtime status query) ---
+    <Idle|MPos:0.000,0.000,0.000|FS:0,0|Pn:Z|WCO:0.000,0.000,0.000>
+    ok
+
+  --- $$    (settings dump - NEVER PUBLISHED for any WeCreat machine) ---
+    ok
+
+  --- $I    (build info) ---
+    [WeCreat Lumos :ver 000240]
+    ok
+
+  --- $#    (work coordinate offsets) ---
+    ok
+
+  --- $G    (parser state) ---
+    ok
+
+
