@@ -1,0 +1,40 @@
+﻿
+  Stage 5 - fetch the job G-code off the controller (READ-ONLY)
+  host: BENCHY   label: 'mopa-square'   2026-08-24 09:40:46
+
+  controller: http://192.168.42.1:8082
+
+  --- listing /mnt/SDCARD/
+        #
+        #
+        #
+        configs/
+        framing/
+        printing/
+        tmp/
+        data/
+        config/
+
+  --- listing /mnt/SDCARD/curve/
+        FAILED: The remote server returned an error: (404) Not Found.
+
+  --- listing /mnt/SDCARD/framing/
+        #
+        #
+        #
+
+  --- listing /mnt/UDISK/
+        #
+        #
+        #
+
+  =================== /mnt/SDCARD/curve/print_data.gcode ===================
+  FAILED: The remote server returned an error: (404) Not Found.
+  (If this is 404, MakeIt may not have sent a job yet, or the paths differ on
+   your firmware. Check the listings above for the real filenames.)
+
+  =================== /mnt/SDCARD/framing/framing_data.gcode ===================
+  FAILED: The remote server returned an error: (404) Not Found.
+  (If this is 404, MakeIt may not have sent a job yet, or the paths differ on
+   your firmware. Check the listings above for the real filenames.)
+

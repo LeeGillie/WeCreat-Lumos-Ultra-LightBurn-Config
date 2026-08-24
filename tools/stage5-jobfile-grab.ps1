@@ -13,6 +13,11 @@
 # select, pulse width, focus, rotary, everything MakeIt can express - without
 # Wireshark and without sending a single unknown command to the machine.
 #
+# BEFORE YOU START - THE CONTROL-MODE LATCH
+# If anything has opened the machine's COM port since it was last powered on (Stage 1, a
+# terminal, or LightBurn), MakeIt no longer has control and will say so. POWER-CYCLE THE
+# MACHINE before step 1 below, or MakeIt will not be able to run the job.
+#
 # HOW TO USE IT
 #   1. In MakeIt, set up a small job and run it (or frame it, for framing_data).
 #   2. Run this. It grabs whatever is currently on the device.

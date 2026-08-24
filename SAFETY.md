@@ -28,6 +28,29 @@ wavelength you cannot see coming.
 
 ---
 
+## The control-mode latch — you will hit this
+
+**Opening the machine's USB serial port takes control away from MakeIt, and you get it back only
+by power-cycling the machine.** Closing the software is not enough.
+
+The controller cannot tell one serial client from another. LightBurn, PuTTY, or a read-only probe
+script all trigger it identically — MakeIt then shows:
+
+> *"Machine is now connected to LightBurn. To restore Make It control… close the LightBurn
+> software… after restarting the device, reconnect Make It."*
+
+Nothing is damaged and it is fully reversible, but plan around it:
+
+```
+Working in MakeIt     ->  power-cycle first if anything has touched the COM port
+Working in LightBurn  ->  close MakeIt first, it holds the port
+Switching back        ->  close the client, POWER-CYCLE, reconnect MakeIt
+```
+
+This is also the mechanism behind the community's perennial "Port failed to open — already in
+use?" and "laser busy" reports. See
+[the capture](captures/control-mode-latch-benchy.md).
+
 ## Wavelength-specific hazards
 
 | Source | Wavelength | Notes |

@@ -137,16 +137,26 @@ Lumos Ultra                 UNKNOWN — this is what the project exists to deter
 `M16` / `M17` appear in the start block of **every** WeCreat profile, so they are fundamental —
 and nobody knows what they do. Hypotheses, with the evidence for and against:
 
+> **2026-08-24 — new evidence, strongly favouring "USB mode".** Opening the Ultra's serial port
+> and sending only read-only GRBL queries caused MakeIt to display: *"Machine is now connected to
+> LightBurn… close the LightBurn software… after restarting the device, reconnect Make It."*
+> LightBurn was never involved — the controller treats any serial client identically, and
+> **latches control away from MakeIt until the machine is power-cycled.** That observed behaviour
+> is exactly a U/USB-mode handover. See
+> [the control-mode latch capture](../captures/control-mode-latch-benchy.md).
+
 | Hypothesis | Verdict | Reasoning |
 |---|---|---|
 | A 4th / rotary "U axis" | **Near-refuted** | WeCreat's own rotary guide tells LightBurn users to "Set Axis to **A**". A rotary enable in the unconditional start block of every machine would also be wrong |
-| **"USB mode"** — hand MCU control from the SBC front-end to the USB serial stream | **Best fit, unproven** | Explains why it is in every start block, why an inverse exists, and why the architecture needs it (the SBC normally owns the MCU via `/test/cmd/mcu`) |
+| **"USB mode"** — hand MCU control from the SBC front-end to the USB serial stream | **INFERRED (strong)** — upgraded from "best fit, unproven" | Explains why it is in every start block, why an inverse exists, and why the architecture needs it (the SBC normally owns the MCU via `/test/cmd/mcu`). **Now matched by observed behaviour**: a serial client takes control and MakeIt loses it until power-cycle. Not yet `CONFIRMED` — we have not seen `M17` restore control, and the latch fired on port open without `M16` being sent, so the firmware may assert it implicitly |
 | "User mode" / unlocked mode | Plausible, unproven | "DisEnable" reads like a literal translation; 用户模式 is a natural candidate |
 | Units mode | **Unlikely** | Units are `G20`/`G21`, and LightBurn has its own modal fields |
 | Air assist | **Unlikely** | That's AlgoLaser. WeCreat labels it "Umode" and has separate fan codes |
 
-**Decisive tests:** a firmware string dump, or an owner sending `M17` alone and reporting what
-stops working. Do the firmware one first — it is free and cannot damage anything.
+**Decisive test, and it sends nothing:** power-cycle, connect MakeIt, run a job, then read the
+job G-code off the controller (`tools/stage5-jobfile-grab.ps1`) and look for `M16`/`M17` in
+MakeIt's own output. If the vendor's software emits them around its jobs, the meaning is settled
+from WeCreat's own G-code rather than by experiment.
 
 ---
 

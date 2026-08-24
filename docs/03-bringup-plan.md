@@ -34,6 +34,14 @@ On Linux: `lsusb`, `lsusb -v -d <vid:pid>`, `dmesg | tail -60`, `ls -l /dev/seri
 
 → File as issue type **Feature status report**, question #1.
 
+> ## ⚠️ Before Stage 1: the control-mode latch
+>
+> **Opening the serial port takes control away from MakeIt until the machine is power-cycled.**
+> The controller treats any serial client as "LightBurn" — including a read-only probe script.
+> Nothing is damaged, and it is fully reversible, but you cannot freely alternate between the two
+> programs. If you need MakeIt afterwards (Stage 5 does), power-cycle the machine first.
+> [Details and evidence](../captures/control-mode-latch-benchy.md).
+
 ## Stage 1 — Serial identity *(no beam)*
 
 Talk to the port directly, *before* involving LightBurn, so you see the raw truth.

@@ -19,6 +19,13 @@
 #   .\tools\stage1-serial-probe.ps1 -AllBauds             # try each known baud in turn
 #
 # IMPORTANT: close WeCreat MakeIt completely first - it holds the port.
+#
+# HEADS UP - THE CONTROL-MODE LATCH:
+# Merely opening this port takes control away from MakeIt. The controller cannot tell one
+# serial client from another, so it treats this script exactly like LightBurn and latches.
+# MakeIt will then say "Machine is now connected to LightBurn" and will not drive the machine
+# again until you POWER-CYCLE it. Nothing is damaged; it is fully reversible. But if you need
+# MakeIt next (e.g. for the Stage 5 job capture), power-cycle the machine first.
 
 param(
   [string]   $Port,
