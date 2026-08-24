@@ -163,6 +163,7 @@ while ($true) {
   Write-Host '     1   Stage 1  serial identity + $$     no beam, no motion'
   Write-Host '     2   Stage 2  controller HTTP API      no beam, no motion'
   Write-Host '     2a  Stage 2  + autofocus probe        MOVES THE HEAD' -ForegroundColor DarkYellow
+  Write-Host '     3   Stage 2b controller file listing  no beam, no motion' -ForegroundColor Cyan
   Write-Host ''
   Write-Host '     s   sync local copy from the share'
   Write-Host '     e   open the local repo in Explorer'
@@ -175,6 +176,7 @@ while ($true) {
     '1'  { Run-Stage 'stage1-serial-probe.ps1' $null;               Trace 'stage 1 returned' }
     '2'  { Run-Stage 'stage2-rest-probe.ps1' $null;                 Trace 'stage 2 returned' }
     '2a' { Run-Stage 'stage2-rest-probe.ps1' @('-AllowAutofocus');  Trace 'stage 2a returned' }
+    '3'  { Run-Stage 'stage2b-fileserver-probe.ps1' $null;          Trace 'stage 2b returned' }
     's'  { Banner; Sync-Local; Read-Host '  Enter' }
     'e'  { Start-Process explorer.exe $script:local }
     'q'  { Trace 'quit'; return }

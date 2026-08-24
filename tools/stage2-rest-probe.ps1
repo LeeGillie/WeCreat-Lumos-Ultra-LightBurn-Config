@@ -87,10 +87,26 @@ function Hit($method, $path, $desc) {
     $r = Invoke-WebRequest -Uri $url -Method $method -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
     Say ('      HTTP ' + $r.StatusCode + '   ' + $r.Headers['Content-Type'] + '   ' + $r.RawContentLength + ' bytes') 'Green'
     $ct = [string]$r.Headers['Content-Type']
-    if ($ct -match 'image') {
+    # The controller does not always send a Content-Type, so sniff the JPEG magic
+    # bytes too - otherwise an 800 KB photo gets dumped into the log as mojibake.
+    $looksJpeg = $false
+    try {
+      $b = $r.Content
+      if ($b -is [byte[]] -and $b.Length -gt 3 -and $b[0] -eq 0xFF -and $b[1] -eq 0xD8 -and $b[2] -eq 0xFF) { $looksJpeg = $true }
+    } catch {}
+    if ($ct -match 'image' -or $looksJpeg) {
       $out = Join-Path $repo ('captures\camera-' + $stamp + '.jpg')
-      [System.IO.File]::WriteAllBytes($out, $r.Content)
-      Say ('      image saved to ' + $out) 'Green'
+      try {
+        [System.IO.File]::WriteAllBytes($out, $r.Content)
+        Say ('      image saved to ' + $out) 'Green'
+      } catch { Say ('      could not save image: ' + $_.Exception.Message) 'Red' }
+      if ($SharePath) {
+        try {
+          $so = Join-Path $SharePath ('captures\camera-' + $stamp + '.jpg')
+          [System.IO.File]::WriteAllBytes($so, $r.Content)
+          Say ('      image saved to ' + $so) 'Green'
+        } catch {}
+      }
       Say '      >> open it: how many cameras? one frame or a composite? orientation?' 'Cyan'
     } else {
       $body = $r.Content

@@ -126,7 +126,11 @@ apply to the Ultra.
 3. **What M-code selects UV vs MOPA on the Ultra?** *Test: Stage 5, differential MakeIt capture.*
 4. **Is there any G-code for MOPA pulse width / frequency?** *Test: Stage 5.*
 5. **What is "U mode"?** *Test: firmware strings, or differential capture.*
-6. **Is the REST API on :8080 unchanged on the Ultra?** *Test: Stage 2.*
+6. ~~**Is the REST API on :8080 unchanged on the Ultra?**~~ — **ANSWERED 2026-08-24: present.**
+   Ports 22, 8080 and 8082 are all open on `192.168.42.1`. `/camera/take_photo` returns an
+   826 KB JPEG, `/device/camera/download` returns calibration JSON, `/process/status` answers —
+   though its response shape has changed from the Vision generation. **A `weburn`-style bridge
+   is viable on this machine.** See [capture](../captures/stage2-rest-benchy.md).
 7. **How are the slide and conveyor motors addressed — A axis, U axis, or remapped Y?**
    *Test: Stage 7/8 differential capture.*
 8. ~~**Does `$$` work?**~~ — **ANSWERED 2026-08-24: no.** The controller acknowledges `$$` with a
