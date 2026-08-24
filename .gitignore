@@ -20,10 +20,15 @@ markcfg*
 BslCAD.cfg
 LmcPar.cfg
 
-# LightBurn user files that are not ours to publish
+# LightBurn user files that are not ours to publish.
+# prefs.ini and User Bundles carry the contributor's whole LightBurn configuration -
+# every device, path and preference. We extract key names from them; we never publish them.
 prefs.ini
+*prefs*.ini
 *.lbprefs
 *.lbset
+*.lbzip
+captures/lightburn-prefs-*
 
 # Contributor captures land in captures/ and ARE tracked, but not raw dumps
 #

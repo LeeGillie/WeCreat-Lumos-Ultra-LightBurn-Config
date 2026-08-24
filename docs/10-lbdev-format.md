@@ -105,9 +105,19 @@ clean, because a profile is a public artifact:
 | `.lbprefs` | Exported application preferences |
 | `prefs.ini` | LightBurn's live preferences. Despite the extension **it is JSON**, and its `DeviceList` array has exactly the same shape as a `.lbdev` |
 
-That last point is useful: **a `.lbdev` is effectively the `DeviceList` slice of `prefs.ini`
-written to its own file.** If you want to see the real key names your LightBurn produces for any
-device, read your own `prefs.ini`.
+That last point is genuinely useful, and it is the practical way to learn what LightBurn actually
+writes: **a `.lbdev` is effectively the `DeviceList` slice of `prefs.ini` written to its own
+file.** So to discover the real key names for any device configuration — including ones the
+documentation does not describe — build the device in LightBurn's wizard and then read your own
+`prefs.ini`, rather than trying to export it.
+
+> **You cannot export a `.lbdev` from LightBurn 2.x.** The Devices window's Export button
+> produces a `.lbzip` User Bundle. `.lbdev` is import-only. If you are trying to capture a device
+> configuration, either export the `.lbzip` (it is a zip — the device JSON is inside) or just copy
+> `prefs.ini`. `tools/test-machine.ps1` menu option `p` does the latter automatically.
+>
+> **`prefs.ini` is your entire LightBurn configuration** — every device, path and preference. This
+> repository gitignores it and publishes only extracted key names.
 
 On Windows, LightBurn's preferences folder for recent builds is
 `%LOCALAPPDATA%\LightBurn\` (containing `prefs.ini`, `backup/`, `themes/`). Use

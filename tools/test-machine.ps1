@@ -116,6 +116,59 @@ function Run-Stage($scriptName, $extraArgs) {
   & powershell @a
 }
 
+function Grab-LightBurnConfig {
+  # LightBurn's live prefs.ini contains the DeviceList in exactly the same JSON shape as a
+  # .lbdev - so copying it is a complete, reliable substitute for wrestling with the export
+  # dialog. Also picks up any .lbzip User Bundle the operator exported.
+  Write-Host ''
+  Write-Host '  Collecting LightBurn configuration...' -ForegroundColor Yellow
+  $dest = Join-Path $source 'captures'
+  if (-not (Test-Path $dest)) { New-Item -ItemType Directory -Force -Path $dest | Out-Null }
+  $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+  $found = 0
+
+  foreach ($p in @(
+    (Join-Path $env:APPDATA      'LightBurn\prefs.ini'),
+    (Join-Path $env:LOCALAPPDATA 'LightBurn\prefs.ini'),
+    (Join-Path $env:USERPROFILE  '.LightBurn\prefs.ini')
+  )) {
+    if (Test-Path $p) {
+      $out = Join-Path $dest ("lightburn-prefs-$who-$stamp.ini")
+      try {
+        Copy-Item $p $out -Force -ErrorAction Stop
+        Write-Host ('    copied  ' + $p) -ForegroundColor Green
+        Write-Host ('        ->  ' + $out) -ForegroundColor Green
+        $found++
+      } catch { Write-Host ('    FAILED  ' + $p + ' : ' + $_.Exception.Message) -ForegroundColor Red }
+    }
+  }
+
+  # any User Bundles exported in the last day, from the usual places
+  foreach ($d in @($env:USERPROFILE, (Join-Path $env:USERPROFILE 'Documents'), (Join-Path $env:USERPROFILE 'Desktop'), $dest)) {
+    if (-not (Test-Path $d)) { continue }
+    Get-ChildItem $d -Filter *.lbzip -File -ErrorAction SilentlyContinue |
+      Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-1) } |
+      ForEach-Object {
+        try {
+          Copy-Item $_.FullName (Join-Path $dest $_.Name) -Force -ErrorAction Stop
+          Write-Host ('    copied bundle  ' + $_.FullName) -ForegroundColor Green
+          $found++
+        } catch {}
+      }
+  }
+
+  Write-Host ''
+  if ($found -eq 0) {
+    Write-Host '  Nothing found. Is LightBurn installed and has it been run at least once?' -ForegroundColor Red
+  } else {
+    Write-Host ("  $found file(s) copied to the share.") -ForegroundColor Green
+    Write-Host '  Note: prefs.ini is your LightBurn configuration. It stays local -' -ForegroundColor DarkGray
+    Write-Host '  the repository gitignores it and only the extracted key names are published.' -ForegroundColor DarkGray
+  }
+  Write-Host ''
+  Read-Host '  Press Enter for the menu'
+}
+
 function Stage0 {
   $probe = Join-Path $source 'tools\probe-workstation.ps1'
   if (-not (Test-Path $probe)) { $probe = Join-Path $script:local 'tools\probe-workstation.ps1' }
@@ -167,6 +220,8 @@ while ($true) {
   Write-Host '     5   Stage 5  grab the job G-code      no beam, no motion' -ForegroundColor Cyan
   Write-Host '             (run a job in MakeIt first, then use this)' -ForegroundColor DarkGray
   Write-Host ''
+  Write-Host '     p   copy LightBurn config to the share   no beam, no motion' -ForegroundColor Cyan
+  Write-Host ''
   Write-Host '     s   sync local copy from the share'
   Write-Host '     e   open the local repo in Explorer'
   Write-Host '     q   quit'
@@ -188,6 +243,7 @@ while ($true) {
             Run-Stage 'stage5-jobfile-grab.ps1' @('-Label', $lbl)
             Trace ("stage 5 returned (label: " + $lbl + ")")
           }
+    'p'  { Banner; Grab-LightBurnConfig; Trace 'lightburn config copied' }
     's'  { Banner; Sync-Local; Read-Host '  Enter' }
     'e'  { Start-Process explorer.exe $script:local }
     'q'  { Trace 'quit'; return }
