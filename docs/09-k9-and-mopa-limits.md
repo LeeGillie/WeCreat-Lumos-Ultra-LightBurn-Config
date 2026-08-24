@@ -28,20 +28,49 @@ is no frequency field and no pulse-width field, because GRBL has no concept of t
 So the limitation is structural: it is not that WeCreat forgot to ship a profile, it is that the
 device class LightBurn talks to this machine with does not carry these parameters.
 
-### What might still be possible
+### ✅ RESOLVED 2026-08-24 — this wall is DOWN
 
-1. **A WeCreat M-code for pulse width.** If MakeIt can set it, the controller accepts it somehow.
-   A Stage 5 differential capture — same job, two pulse widths, diff the G-code — will reveal
-   whether such a code exists. **This is the single highest-value experiment in the project for
-   MOPA owners.**
-2. **If it exists**, it can be delivered as per-layer custom G-code or as macros. Every discrete
-   pulse-width/frequency combination becomes a named macro. Clumsy, but workable — and it would
-   let you build a real material library.
-3. **If it doesn't exist**, MOPA parameter work stays in MakeIt, and LightBurn is useful for the
-   Ultra as a layout/vector/fill tool at fixed source settings.
+**MOPA pulse width and frequency ARE controllable from LightBurn**, via per-layer custom G-code.
 
-**Current status: no such M-code has ever surfaced publicly, for any WeCreat machine.** Unknown,
-not impossible.
+Two real MOPA jobs, identical except for the pulse-width setting in MakeIt, produced captures
+differing by **exactly one line**:
+
+```diff
+- M39P200
++ M39P500
+```
+
+```gcode
+M38F<kHz>     ; MOPA frequency        CONFIRMED-vendor
+M39P<ns>      ; MOPA pulse width      CONFIRMED-vendor
+M18S0         ; MOPA source select    CONFIRMED-vendor
+```
+
+LightBurn's GRBL device class supports **per-layer custom G-code** — exactly the granularity a
+MOPA material library needs. Each layer can carry its own `M38`/`M39` pair.
+
+So the limitation is narrower than it appeared: **LightBurn's galvo-class *UI fields* remain
+unavailable, but the underlying capability is not.** You lose the convenient spin-boxes; you keep
+the control.
+
+Caveat before building on this: the mapping between MakeIt's UI units and the G-code value has
+not been verified, and the accepted ranges are unknown. See
+[the capture](../captures/stage5-mopa-pulsewidth-CONFIRMED.md).
+
+The rest of this section documents *why* the native fields are unavailable, which is still
+accurate and still worth understanding.
+
+### What remains to establish
+
+1. **Unit mapping.** `P200`/`P500` and `F48`/`F75` are MakeIt's own numbers. Nanoseconds and
+   kilohertz are the natural reading and fit typical JPT MOPA ranges, but the relationship between
+   MakeIt's UI field and the emitted value is unverified.
+2. **Accepted ranges**, so a profile does not offer values the firmware rejects.
+3. **Emitting them from LightBurn**, which is untested. The codes are confirmed as *WeCreat's
+   output*; sending them *to* the machine ourselves is a separate step.
+
+Until those three are settled the profiles ship without them — this project's rule is that a
+profile contains nothing that has not been demonstrated end to end.
 
 ---
 

@@ -127,10 +127,11 @@ apply to the Ultra.
    MakeIt emits `M18S0Q0` with the MOPA source selected — and `M18S0` is exactly what WeCreat's
    own Lumos profile labels "1064red". The Lumos code carries over to the Ultra.
    `CONFIRMED-vendor` — see [capture](../captures/stage5-framing-mopa-benchy.md).
-4. **Is there any G-code for MOPA pulse width / frequency?** — **STRONG LEAD.** `M18` on the Ultra
-   carries a **new `Q` parameter** absent from the Lumos (`M18S0Q0`). In fiber-laser usage `Q`
-   denotes the Q-switch/pulse width. *Test: capture two framing jobs at different pulse widths and
-   diff the `Q` value.* **This is the highest-value remaining experiment in the project.**
+4. ~~**Is there any G-code for MOPA pulse width / frequency?**~~ — **ANSWERED 2026-08-24: YES.**
+   Two real MOPA jobs differing only in pulse width produced G-code differing by exactly one
+   line: `M39P200` → `M39P500`. **`M39P<n>` is the pulse width; `M38F<n>` is the frequency.**
+   Deliverable from LightBurn as per-layer custom G-code. `CONFIRMED-vendor` —
+   see [capture](../captures/stage5-mopa-pulsewidth-CONFIRMED.md).
 5. **What is "U mode"?** *Test: firmware strings, or differential capture.*
 6. ~~**Is the REST API on :8080 unchanged on the Ultra?**~~ — **ANSWERED 2026-08-24: present.**
    Ports 22, 8080 and 8082 are all open on `192.168.42.1`. `/camera/take_photo` returns an

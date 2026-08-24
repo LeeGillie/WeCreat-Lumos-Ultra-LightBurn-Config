@@ -44,11 +44,26 @@ that gap in the open, with contributions from anyone who owns the machine.
 | The controller sits on a private USB network at `192.168.42.0/24` | **CONFIRMED-hardware** — the RNDIS adapter comes up at `192.168.42.100`, putting the controller at (almost certainly) `192.168.42.1` |
 | LightBurn's galvo features (Q-Pulse Width, lens bulge/skew correction, galvo rotary, Split Marking, 3D depth-map) are **unavailable** on a GRBL-typed device | **CONFIRMED for the Lumos**, and now that the Ultra is confirmed GRBL, it inherits the same limits |
 
-The consequence, and it is the important one: **LightBurn cannot drive the Ultra's MOPA pulse
-width, cannot do 16-bit depth-map relief, and cannot do K9 internal 3D engraving** — not because
-of a missing config file, but because those features live in LightBurn's galvo device class, and
-this machine is not a galvo device to LightBurn. Anything recovered there has to come through
-custom G-code, not through LightBurn's UI. See
+LightBurn's galvo-class **UI fields** are therefore unavailable. But the underlying capability
+turned out not to be:
+
+> ### ✅ MOPA pulse width and frequency ARE controllable
+>
+> Two real MOPA jobs differing only in pulse width produced G-code differing by **exactly one
+> line** — `M39P200` → `M39P500`.
+>
+> ```gcode
+> M38F<kHz>    ; MOPA frequency        CONFIRMED-vendor
+> M39P<ns>     ; MOPA pulse width      CONFIRMED-vendor
+> M18S0        ; MOPA source select    CONFIRMED-vendor
+> ```
+>
+> LightBurn's GRBL class supports **per-layer custom G-code** — the exact granularity a MOPA
+> material library needs. You lose the convenient spin-boxes; you keep the control.
+> ([evidence](captures/stage5-mopa-pulsewidth-CONFIRMED.md))
+
+Still genuinely out of reach through LightBurn: 16-bit depth-map relief and K9 internal 3D
+engraving, which need the galvo device class itself. See
 [docs/09-k9-and-mopa-limits.md](docs/09-k9-and-mopa-limits.md).
 
 ## What this repository contains

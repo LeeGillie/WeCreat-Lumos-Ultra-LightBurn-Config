@@ -67,17 +67,24 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 
 | Code | Observed | Meaning | Grade |
 |---|---|---|---|
-| `M18` | `M18S0Q0` | **Source select.** `S0` = 1064 nm fiber — matches WeCreat's own Lumos macro label "1064red", captured here with MOPA selected. **`Q` is new on the Ultra** and, by fiber convention, plausibly the **Q-switch pulse width** | `S`: **CONFIRMED-vendor** · `Q`: **INFERRED** |
+| `M18` | `M18S0` MOPA · `M18S1` UV | **SOURCE SELECT — confirmed by differential.** Two framing jobs differing only in source produced `S0` vs `S1`, matching WeCreat's own Lumos labels ("1064red" / "455Blue"). On the Ultra, `S1` is the 355 nm UV source | **CONFIRMED-vendor** |
+| `M39` | `M39P200` → `M39P500` | **MOPA PULSE WIDTH.** Two real jobs differing only in MakeIt's pulse-width setting produced G-code differing by exactly this one line. MOPA-only; bare `M39P` in framing jobs | **CONFIRMED-vendor** |
+| `M38` | `M38F48`, `M38F75` | **MOPA frequency.** Varies between jobs, never with pulse width. Bare `M38F` in framing jobs | **CONFIRMED-vendor** |
+| `M5` / `M6` / `M9` | `M5`, `M6`, `M9` | Laser off / job end / coolant off. `M6` matches the Vision family's `EndGCode`. Standard GRBL | CONFIRMED |
+| `G0 Z` | `G0Z47.8` | **Absolute Z focus move.** Stored default in `/mnt/SDCARD/config/heightZ.txt` = 43.35 | **CONFIRMED-vendor** |
+| `M1` | `M1S0` | Content mode — matches the Lumos label "BMP" (raster). `M1S1` = "svg" (vector) | **CONFIRMED-vendor** |
+| `M15` | `M15S0`, `M15S1`, `M15S70` | **Exhaust fan — takes a RANGE, not just on/off.** Earlier evidence had it binary; that was wrong | **CONFIRMED-vendor** |
+| `M42` | `M42S0`, MOPA only | Absent from UV jobs | UNKNOWN |
+| `M41` | `S0` MOPA / `S1` UV | Switches with source — lens or beam path? | UNKNOWN |
+| `M19` | `S1` MOPA / `S0` UV | Also switches with source | UNKNOWN |
+| `M57` | `A450B30` (Ultra) · `A130B120` (Lumos) | Two samples, still unknown | UNKNOWN |
+| `M46` | `A0.9764B20` | `A` near 1.0 reads like a scale factor | UNKNOWN |
+| `M59` | `A-1000B50` | | UNKNOWN |
+| `M24` / `M25` / `M26` | `S15`, `S1`, `S1` | | UNKNOWN |
+| `M11` | `S0.2` framing / `S0.08` print | Fractional — a physical quantity | UNKNOWN |
 | `M107` | `M107X-105Y-105` | **Field origin offset**, half the field. Lumos: `X-60Y-60` on a 116 mm field. Pattern confirmed across two models — upgraded from INFERRED | **CONFIRMED-vendor** |
-| `M15` | `M15S0` | Exhaust fan off — correct for a beam-free framing job | **CONFIRMED-vendor** |
-| `M3` / `M4` | `M3S100`, `M4S1000` | **Standard GRBL** laser modes (constant / dynamic power). `M4S1000` confirms `S_Scale: 1000` | CONFIRMED |
-| `G90` | `G90` | Standard absolute positioning | CONFIRMED |
-| `M19` | `M19S1` | In the Lumos start block as `M19S0`; here `S1`. Parameterised, meaning unknown | UNKNOWN |
-| `M41` | `M41S0` | Unknown | UNKNOWN |
-| `M42` | `M42S0` | Unknown | UNKNOWN |
-| `M11` | `M11S0.2` | Unknown. Fractional argument suggests a physical quantity | UNKNOWN |
-| `M38` | `M38F` | Unknown. **Bare letter parameter, no value** | UNKNOWN |
-| `M39` | `M39P` | Unknown. **Bare letter parameter, no value** | UNKNOWN |
+| `M3` / `M4` | `M3S100`, `M4S1000` | **Standard GRBL** laser modes (constant / dynamic power). `M4S1000` confirms `S_Scale: 1000`; per-segment `S` runs 0–900 in a real job | CONFIRMED |
+| `G90` / `G4` | `G90`, `G4P1` | Standard absolute positioning, standard dwell | CONFIRMED |
 
 **`M16`/`M17` are absent** from MakeIt's framing job — so whatever U-mode is, MakeIt does not need
 it to frame.
