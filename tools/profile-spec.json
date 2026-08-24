@@ -3,34 +3,27 @@
     "Source of truth for the generated LightBurn device profiles.",
     "Edit THIS file, then run tools/build-profiles.ps1. Do not hand-edit profiles/draft/*.lbdev.",
     "",
-    "SAFETY: startGCode / endGCode / macros are deliberately EMPTY. WeCreat renumbers M-codes",
-    "between machine models, and no Lumos Ultra M-code has been verified by anyone. Candidate",
-    "values live in docs/04-mcode-dictionary.md and stay there until hardware confirms them."
+    "DEVICE CLASS: Custom GCode with GCodeFlavor 'wecreat'. LightBurn 2.1.04 detects WeCreat",
+    "machines from their banner and warns if you use anything else. WeCreat's own",
+    "WeCreat-Lumos-v1.5.lbdev says 'GRBL' - it predates the flavor and now triggers that warning.",
+    "",
+    "SAFETY: no start/end G-code and no macros. The M-code dictionary is now well populated and",
+    "several codes are CONFIRMED-vendor, but emitting them FROM LightBurn is still untested.",
+    "See docs/04-mcode-dictionary.md and docs/14-mopa-parameters-in-lightburn.md.",
+    "",
+    "UNVERIFIED: mirrorX/mirrorY. LightBurn's own wizard defaults both to false for a Custom",
+    "GCode device; the older GRBL-class vendor profile used mirrorY true. Determine by framing",
+    "(bring-up Stage 4) before running a job."
   ],
 
   "shared": {
-    "driver": "GRBL",
+    "driver": "Custom GCode",
+    "gcodeFlavor": "wecreat",
     "connection": "Serial",
     "baudRate": 1000000,
-    "commPort": "(Choose)",
     "sScale": 1000,
-    "cutOrigin": 2,
     "mirrorX": false,
-    "mirrorY": true,
-    "enableZ": false,
-    "relativeZOnly": false,
-    "homeOnStartup": false,
-    "startGCode": "",
-    "endGCode": "",
-    "rotaryAxis": 3,
-    "rotarySteps": 360,
-    "rotaryDiameter": 50,
-    "rotaryIsChuck": true,
-    "rotaryMode": false,
-    "simMaxSpeedX": 500,
-    "simMaxSpeedY": 400,
-    "simMaxAccelX": 3000,
-    "simMaxAccelY": 3000
+    "mirrorY": false
   },
 
   "profiles": [

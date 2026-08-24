@@ -1,6 +1,7 @@
 # summarize-lbdev.ps1
 # Prints the interesting fields of any LightBurn .lbdev file(s) in human-readable form.
-# Works on vendor profiles, this project's drafts, or anything you exported yourself.
+# Handles both device classes - "Custom GCode" (what this project ships) and "GRBL" (what
+# WeCreat's own older profiles use) - since their Settings key sets are quite different.
 #
 # Usage:
 #   .\tools\summarize-lbdev.ps1                          # summarizes profiles\draft
@@ -23,14 +24,26 @@ foreach ($file in $targets) {
   $j = Get-Content $file.FullName -Raw | ConvertFrom-Json
   foreach ($d in $j.DeviceList) {
     $s = $d.Settings
+    $isCustom = ($d.Name -eq 'Custom GCode')
+
     Write-Output ('=== {0}' -f $file.Name)
     Write-Output ('    DisplayName : {0}' -f $d.DisplayName)
-    Write-Output ('    Driver/Conn : Name={0}  Type={1}  GUID={2}' -f $d.Name, $d.Type, $d.GUID)
-    Write-Output ('    Workspace   : {0} x {1} mm   MirrorX={2} MirrorY={3}  CutOrigin={4}' -f $d.Width, $d.Height, $d.MirrorX, $d.MirrorY, $s.CutOrigin)
-    Write-Output ('    Offsets     : ({0},{1})  enabled={2}' -f $d.ProcessOffsetX, $d.ProcessOffsetY, $d.EnableProcessOffset)
-    Write-Output ('    Serial      : port={0}  baud={1}  S_Scale={2}' -f $s.CommPort, $s.BaudRate, $s.S_Scale)
-    Write-Output ('    Z / homing  : EnableZ={0}  RelativeZOnly={1}  HomeOnStartup={2}' -f $s.EnableZ, $s.RelativeZOnly, $d.HomeOnStartup)
-    Write-Output ('    Rotary      : axis={0} steps={1} dia={2} chuck={3} enabled={4}' -f $s.rotaryAxis, $s.rotarySteps, $s.rotaryDiameter, $s.rotaryIsChuck, $s.rotaryMode)
+    Write-Output ('    Device      : Name={0}  Type={1}  GUID={2}' -f $d.Name, $d.Type, $d.GUID)
+    if ($isCustom) {
+      Write-Output ('    Flavor      : {0}' -f $(if ($s.GCodeFlavor) { $s.GCodeFlavor } else { '(none - LightBurn will warn on a WeCreat machine)' }))
+    }
+    Write-Output ('    Workspace   : {0} x {1} mm   MirrorX={2} MirrorY={3}' -f $d.Width, $d.Height, $d.MirrorX, $d.MirrorY)
+    Write-Output ('    Serial      : baud={0}  S_Scale={1}' -f $s.BaudRate, $s.S_Scale)
+    Write-Output ('    Homing      : HomeOnStartup={0}' -f $d.HomeOnStartup)
+
+    if ($isCustom) {
+      Write-Output ('    Comms       : AllowComms={0}  TargetBufferSize={1}  VariableLaserPower={2}' -f $s.AllowComms, $s.TargetBufferSize, $s.VariableLaserPower)
+      Write-Output ('    Units       : Units={0}  ControlUnits={1}  DwellIsMilliseconds={2}' -f $s.Units, $s.ControlUnits, $s.DwellIsMilliseconds)
+    } else {
+      Write-Output ('    GRBL only   : CutOrigin={0}  EnableZ={1}  rotaryAxis={2} steps={3} dia={4}' -f $s.CutOrigin, $s.EnableZ, $s.rotaryAxis, $s.rotarySteps, $s.rotaryDiameter)
+      Write-Output ('    Port        : {0}' -f $s.CommPort)
+    }
+
     Write-Output ('    Camera      : {0}' -f $(if ($d.LastCamera) { $d.LastCamera } else { '(none)' }))
 
     $sg = if ($s.StartGCode) { ($s.StartGCode -replace "`r?`n", ' | ') } else { '(empty)' }
@@ -38,16 +51,22 @@ foreach ($file in $targets) {
     Write-Output ('    StartGCode  : {0}' -f $sg)
     Write-Output ('    EndGCode    : {0}' -f $eg)
 
-    $anyMacro = $false
-    0..5 | ForEach-Object {
-      $lbl = $s."Macro${_}_Label"; $con = $s."Macro${_}_Content"
-      if ($lbl -and $lbl.Trim()) {
-        if (-not $anyMacro) { Write-Output '    Macros      :'; $script:anyMacro = $true }
-        Write-Output ('       [{0}] {1,-18} = {2}' -f $_, $lbl, ($con -replace "`r?`n", ' | '))
-        $anyMacro = $true
+    # LightBurn 2.x stores macros as an array of {Label, Content}; older files used Macro0_*
+    $macroLines = @()
+    if ($d.Macros -and @($d.Macros).Count -gt 0) {
+      $i = 0
+      foreach ($m in $d.Macros) {
+        if ($m.Label -and $m.Label.Trim()) { $macroLines += ('       [{0}] {1,-18} = {2}' -f $i, $m.Label, ($m.Content -replace "`r?`n", ' | ')) }
+        $i++
+      }
+    } else {
+      0..5 | ForEach-Object {
+        $lbl = $s."Macro${_}_Label"; $con = $s."Macro${_}_Content"
+        if ($lbl -and $lbl.Trim()) { $macroLines += ('       [{0}] {1,-18} = {2}' -f $_, $lbl, ($con -replace "`r?`n", ' | ')) }
       }
     }
-    if (-not $anyMacro) { Write-Output '    Macros      : (none)' }
+    if ($macroLines.Count -gt 0) { Write-Output '    Macros      :'; $macroLines | ForEach-Object { Write-Output $_ } }
+    else { Write-Output '    Macros      : (none)' }
 
     if ($d.Checklist) {
       Write-Output '    Checklist   :'

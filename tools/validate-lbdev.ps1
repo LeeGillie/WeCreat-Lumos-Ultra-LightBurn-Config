@@ -32,27 +32,32 @@ foreach ($f in $files) {
     elseif ($guids.ContainsKey($d.GUID))           { $issues += ('GUID collides with ' + $guids[$d.GUID]) }
     else                                           { $guids[$d.GUID] = $f.Name }
 
+    # --- device class: Custom GCode with the WeCreat flavor ---
+    if ($d.Name -ne 'Custom GCode') {
+      $issues += ('driver Name is "' + $d.Name + '" - expected "Custom GCode". LightBurn 2.1+ warns on anything else for a WeCreat machine')
+    }
+    if ($d.ProfilePath -ne 'Custom GCode')         { $issues += ('ProfilePath is "' + $d.ProfilePath + '" - expected "Custom GCode"') }
+    if ($s.GCodeFlavor -ne 'wecreat')              { $issues += ('GCodeFlavor is "' + $s.GCodeFlavor + '" - expected "wecreat"') }
+    if ($d.Type -ne 'Serial')                      { $issues += ('connection Type is "' + $d.Type + '" - expected "Serial"') }
+    if ($s.BaudRate -ne 1000000)                   { $issues += ('BaudRate is ' + $s.BaudRate + ' - confirmed working value is 1000000') }
+    if ($s.S_Scale -ne 1000)                       { $issues += ('S_Scale is ' + $s.S_Scale + ' - confirmed value is 1000 (M4S1000 in vendor G-code)') }
+
     # --- no local leftovers ---
-    if ($s.CommPort -and $s.CommPort -match '^COM\d+$') { $issues += ('CommPort is hard-coded to ' + $s.CommPort + ' - use "(Choose)"') }
+    if ($s.CommPort -and $s.CommPort -match '^COM\d+$') { $issues += ('CommPort is hard-coded to ' + $s.CommPort) }
     if ($s.LastMachineFilePath)                    { $issues += ('LastMachineFilePath leaks a local path: ' + $s.LastMachineFilePath) }
-    if ($s.LastDevLibraryPath)                     { $issues += ('LastDevLibraryPath leaks a local path: ' + $s.LastDevLibraryPath) }
+    if ($s.LastDevLibraryPath -or $d.LastDevLibraryPath) { $issues += 'LastDevLibraryPath leaks a local path' }
     if ($d.Info)                                   { $issues += 'Info should be empty' }
 
     # --- safety ---
-    if ($s.StartGCode)                             { $issues += 'StartGCode is NOT empty - unverified M-codes must not ship (see SAFETY.md)' }
-    if ($s.EndGCode)                               { $issues += 'EndGCode is NOT empty - unverified M-codes must not ship (see SAFETY.md)' }
-    0..5 | ForEach-Object {
-      if ($s."Macro${_}_Content" -and $s."Macro${_}_Content".Trim()) { $issues += ("Macro$_ has content - unverified M-codes must not ship") }
-    }
-    if ($s.EnableZ -eq $true)                      { $issues += 'EnableZ is true - Z behaviour is unverified on the Ultra' }
+    if ($s.StartGCode)                             { $issues += 'StartGCode is NOT empty - emitting M-codes from LightBurn is still untested (see SAFETY.md)' }
+    if ($s.EndGCode)                               { $issues += 'EndGCode is NOT empty - emitting M-codes from LightBurn is still untested' }
+    if ($d.Macros -and @($d.Macros).Count -gt 0)   { $issues += 'Macros are populated - emitting M-codes from LightBurn is still untested' }
+    if ($d.HomeOnStartup -eq $true)                { $issues += 'HomeOnStartup is true - homing is unverified, and Pn:Z reads asserted at rest' }
     if (-not $d.Checklist)                         { $issues += 'no start-of-job Checklist (required by this project)' }
-    if ($s.Checklist -ne $true)                    { $issues += 'Settings.Checklist is not true - the checklist would not be shown' }
 
     # --- plausibility ---
     if ($d.Width -le 0 -or $d.Height -le 0)        { $issues += 'Width/Height must be positive' }
     if ($d.Width -gt 1000 -or $d.Height -gt 1000)  { $issues += ('implausible workspace: ' + $d.Width + ' x ' + $d.Height) }
-    if ($d.Name -ne 'GRBL')                        { $issues += ('driver Name is "' + $d.Name + '" - expected "GRBL" (see docs/01-architecture.md)') }
-    if ($d.Type -ne 'Serial')                      { $issues += ('connection Type is "' + $d.Type + '" - expected "Serial"') }
   }
 
   if ($issues.Count -eq 0) {

@@ -1,19 +1,22 @@
 # profiles/
 
-> ## ⚠️ These profiles are the wrong device class — regeneration pending
+> ## Device class: **Custom GCode**, flavor **`wecreat`**
 >
-> On first connection (2026-08-24) LightBurn 2.1.04 said:
+> On first connection LightBurn 2.1.04 warned that a WeCreat machine had been detected but the
+> device was not "a custom gcode device with the WeCreat device flavor". These profiles have been
+> **regenerated accordingly**, using the exact key set LightBurn's own wizard writes:
 >
-> > *"Your laser has been detected as a WeCreat device but you are not using a custom gcode
-> > device with the WeCreat device flavor. The device may not work correctly as a result."*
+> ```json
+> "Name": "Custom GCode",
+> "Settings": { "GCodeFlavor": "wecreat", "BaudRate": 1000000, "S_Scale": 1000, ... }
+> ```
 >
-> **LightBurn has a native WeCreat device flavor.** These profiles declare `"Name": "GRBL"`,
-> modelled on WeCreat's own `WeCreat-Lumos-v1.5.lbdev` — which dates from August 2025 and
-> predates that flavor. The vendor's profile is outdated too, and produces the same warning.
+> Note that WeCreat's own `WeCreat-Lumos-v1.5.lbdev` declares `"Name": "GRBL"` — it dates from
+> August 2025, predates the flavor, and now produces that same warning. **The vendor's published
+> profile is outdated.** See [the capture](../captures/stage3-lightburn-connect-benchy.md).
 >
-> They **do connect** and the handshake works. But the correct configuration is a **Custom GCode**
-> device with flavor **WeCreat**, plus *Supports G53 Command* and *Fetch configuration on connect*
-> both disabled. See [the capture](../captures/stage3-lightburn-connect-benchy.md).
+> The Custom GCode class has a much smaller settings block than GRBL: no `CutOrigin`, no `rotary*`
+> keys, no `Sim_*`. Anything from a GRBL profile that is not in the list above is simply not read.
 
 ## `draft/` — generated, unverified
 

@@ -1,8 +1,16 @@
 # build-profiles.ps1
 # Generates the draft LightBurn device profiles from tools/profile-spec.json.
 #
-# Every value written here is authored by this project. The vendor's own .lbdev files were used
-# as a structural reference for which keys LightBurn expects; none of their content is copied.
+# DEVICE CLASS: "Custom GCode" with GCodeFlavor "wecreat".
+#
+# LightBurn 2.1.04 detects WeCreat machines from their serial banner and warns if you are not
+# using a Custom GCode device with the WeCreat flavor. WeCreat's own WeCreat-Lumos-v1.5.lbdev
+# declares "Name":"GRBL" - it dates from August 2025 and predates the flavor, so the vendor's
+# published profile now triggers the same warning.
+#
+# The key names and the exact Settings key set below were read from a Custom GCode / WeCreat
+# device built in LightBurn 2.1.04's own wizard, not guessed from documentation.
+# See captures/stage3-lightburn-connect-benchy.md.
 #
 # Usage: powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\build-profiles.ps1
 
@@ -13,94 +21,28 @@ New-Item -ItemType Directory -Force -Path $out | Out-Null
 
 $sh = $spec.shared
 
-function New-Settings($p) {
+function New-Settings {
+  # Exactly the keys LightBurn 2.1.04 writes for a Custom GCode device - no more, no less.
+  # Adding GRBL-only keys here (CutOrigin, rotary*, StartGCode, Sim_*) does nothing: the
+  # Custom GCode driver does not read them.
   [ordered]@{
-    AirAssistM7               = $false
-    AlignH                    = 0
-    AlignV                    = 0
-    BaudRate                  = $sh.baudRate
-    Checklist                 = $true          # show the start-of-job checklist
-    ClickSelTolerance         = 3
-    CommPort                  = $sh.commPort
-    ContinuousFrame           = $false
-    CutOrigin                 = $sh.cutOrigin
-    DockState_ArtBrowser      = $false
-    DockState_Camera          = $false
-    DockState_Console         = $true
-    DockState_CutLibrary      = $true
-    DockState_LaserFiles      = $false
-    DockState_Move            = $true
-    DockState_ShapeProperties = $false
-    DockState_VariableText    = $false
-    EnableBoundsCheck         = $false
-    EnableDTR                 = $false
-    EnableGrblJCommand        = $false
-    EnableU                   = $false
-    EnableUserFinish          = $false
-    EnableZ                   = $sh.enableZ
-    EndGCode                  = $sh.endGCode
-    ForceSValueOutput         = $false
-    GCodeClustering           = $false
-    GridShade                 = 224
-    GridSnap                  = 1
-    GridSnapEnabled           = $true
-    GridSpacing               = 10
-    LaserFire_Enable          = $false
-    LaserFire_Power           = 0
-    LaserFrame_Enable         = $false
-    LastExportExt             = 'gc'
-    LastMachineFileExtension  = ''
-    LastMachineFilePath       = ''
-    Macro0_Content            = ''
-    Macro0_Label              = ''
-    Macro1_Content            = ''
-    Macro1_Label              = ''
-    Macro2_Content            = ''
-    Macro2_Label              = ''
-    Macro3_Content            = ''
-    Macro3_Label              = ''
-    Macro4_Content            = ''
-    Macro4_Label              = ''
-    Macro5_Content            = ''
-    Macro5_Label              = ''
-    NegativeWorkspace         = $false
-    NegativeZ                 = $false
-    OMTechPolar               = $false
-    ObjSnap                   = 10
-    ObjSnapEnabled            = $true
-    OptimizeZ                 = $false
-    RelativeZOnly             = $sh.relativeZOnly
-    S_Scale                   = $sh.sScale
-    Sim_CornerTolerance       = 0.01
-    Sim_FastWhiteScan         = $false
-    Sim_FastWhiteScanSpeed    = 999
-    Sim_GlobalFactor          = 1
-    Sim_MaxAccelX             = $sh.simMaxAccelX
-    Sim_MaxAccelY             = $sh.simMaxAccelY
-    Sim_MaxSpeedX             = $sh.simMaxSpeedX
-    Sim_MaxSpeedY             = $sh.simMaxSpeedY
-    Sim_MinCornerSpeed        = 1
-    Sim_RapidSpeed            = 400
-    Sim_ScanAccelX            = $sh.simMaxAccelX
-    Sim_ScanAccelY            = $sh.simMaxAccelY
-    Sim_SpeedFactor           = 1
-    SkipWhiteFlag             = $false
-    SkipWhiteSpeed            = 999
-    StartGCode                = $sh.startGCode
-    SwapXYOutput              = $false
-    TabPulseWidth             = 0.1
-    TransferMode              = 0
-    Units                     = 0
-    UseG0ForOverscan          = $false
-    UserFinishX               = 0
-    UserFinishY               = 0
-    mirrorRotaryOutput        = $false
-    overwriteFileByDefault    = $false
-    rotaryAxis                = $sh.rotaryAxis
-    rotaryDiameter            = $sh.rotaryDiameter
-    rotaryIsChuck             = $sh.rotaryIsChuck
-    rotaryMode                = $sh.rotaryMode
-    rotarySteps               = $sh.rotarySteps
+    AllowComms           = $true
+    BaudRate             = $sh.baudRate
+    ControlUnits         = 1
+    DwellIsMilliseconds  = $false
+    EnableDTR            = $false
+    GCodeFlavor          = $sh.gcodeFlavor      # "wecreat"
+    IsTextBased          = $true
+    NetworkPort          = 23
+    S_Scale              = $sh.sScale
+    TargetBufferSize     = 127
+    ToolStateIsAutomatic = $true
+    TransferMode         = 0
+    Units                = 1
+    UseHardwareFlow      = $false
+    UserFinishX          = 0
+    UserFinishY          = 0
+    VariableLaserPower   = $true
   }
 }
 
@@ -111,36 +53,50 @@ foreach ($p in $spec.profiles) {
     ('=== ' + $p.displayName + ' ==='),
     ('Source: ' + $p.source + '    Lens: ' + $p.lens),
     '',
-    'DRAFT - NOT VERIFIED ON HARDWARE.',
-    'Start/end G-code and macros are intentionally empty; see docs/04-mcode-dictionary.md.',
+    'DRAFT - NOT FULLY VERIFIED ON HARDWARE.',
+    'Confirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.',
+    'Unverified: origin corner and mirroring - check by framing before running a job.',
     ''
   )
   $checklist = (($header + $p.checklist) -join "`n")
 
   $device = [ordered]@{
-    Checklist                  = $checklist
-    DefaultCutList             = @()
-    DefaultToolCutList         = @()
-    DisplayName                = $p.displayName
-    EnableLaser2Offset         = $false
-    EnableProcessOffset        = $false
-    GUID                       = $p.guid
-    Height                     = $p.height
-    HomeOnStartup              = $sh.homeOnStartup
-    Info                       = ''
-    Laser2OffsetX              = 0
-    Laser2OffsetY              = 0
-    LastCamera                 = ''
-    LastDevLibraryPath         = ''
-    MirrorX                    = $sh.mirrorX
-    MirrorY                    = $sh.mirrorY
-    Name                       = $sh.driver
-    ProcessOffsetX             = 0
-    ProcessOffsetY             = 0
+    Checklist                   = $checklist
+    CustomAlarmCodes            = @{}
+    CustomErrorCodes            = @{}
+    DefaultCutList              = @()
+    DefaultToolCutList          = @()
+    DisplayName                 = $p.displayName
+    EnableLaser2Offset          = $false
+    EnableProcessOffset         = $false
+    GUID                        = $p.guid
+    Height                      = $p.height
+    HomeOnStartup               = $false      # homing behaviour unverified; Pn:Z reads asserted at rest
+    Info                        = ''
+    JogContinuous               = $false
+    Laser2OffsetX               = 0
+    Laser2OffsetY               = 0
+    LastCamera                  = ''
+    LastCameraName              = ''
+    LastDevLibraryPath          = ''
+    Macros                      = @()         # 2.x format: array of {Label, Content}, not Macro0_*
+    MirrorX                     = $sh.mirrorX
+    MirrorY                     = $sh.mirrorY
+    MoveJogDistance             = 10
+    MoveJogFromOrigin           = $true
+    MoveJogSpeed                = 13.333333015441895
+    MoveJogZDistance            = 10
+    MoveJogZSpeed               = 4.166600227355957
+    Name                        = $sh.driver          # "Custom GCode"
+    PositionTimerEnable         = $true
+    ProcessOffsetX              = 0
+    ProcessOffsetY              = 0
+    ProfilePath                 = $sh.driver
     ReverseIntervalCompensation = $false
-    Settings                   = (New-Settings $p)
-    Type                       = $sh.connection
-    Width                      = $p.width
+    Settings                    = (New-Settings)
+    ToolPower                   = 0
+    Type                        = $sh.connection
+    Width                       = $p.width
   }
 
   $doc  = [ordered]@{ DeviceList = @($device) }
@@ -159,5 +115,6 @@ foreach ($p in $spec.profiles) {
 
 Write-Output ''
 Write-Output ("Generated $made draft profile(s) in profiles\draft")
-Write-Output 'Review with:  .\tools\summarize-lbdev.ps1'
+Write-Output ('Device class: ' + $sh.driver + '   flavor: ' + $sh.gcodeFlavor + '   baud: ' + $sh.baudRate)
+Write-Output 'Review with:   .\tools\summarize-lbdev.ps1'
 Write-Output 'Validate with: .\tools\validate-lbdev.ps1'
