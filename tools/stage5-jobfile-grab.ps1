@@ -5,34 +5,39 @@
 # commands, writes nothing to the machine. Nothing fires. Nothing moves.
 #
 # WHY THIS IS THE IMPORTANT ONE
-# /etc/mbtc/print.json on the controller names the files it executes:
-#     framing_file : /mnt/SDCARD/framing/framing_data.gcode
-#     print_file   : /mnt/SDCARD/curve/print_data.gcode
-# So after MakeIt sends a job, the real, complete G-code for that job is sitting on
-# the device and can simply be read. That is the whole M-code dictionary - source
-# select, pulse width, focus, rotary, everything MakeIt can express - without
-# Wireshark and without sending a single unknown command to the machine.
+# After MakeIt sends a job, the complete G-code for that job is stored on the device and
+# can simply be read. That is the whole M-code dictionary - source select, pulse width,
+# focus, rotary - without Wireshark, without a bridge, and without sending a single
+# unknown command to the machine.
+#
+# NOTE: /etc/mbtc/print.json names /mnt/SDCARD/curve/print_data.gcode, but on the shipping
+# Ultra firmware that path 404s and the real directory is /mnt/SDCARD/printing/. The config
+# is stale, so this script DISCOVERS the files rather than trusting it.
 #
 # BEFORE YOU START - THE CONTROL-MODE LATCH
 # If anything has opened the machine's COM port since it was last powered on (Stage 1, a
-# terminal, or LightBurn), MakeIt no longer has control and will say so. POWER-CYCLE THE
-# MACHINE before step 1 below, or MakeIt will not be able to run the job.
+# terminal, or LightBurn), MakeIt no longer has control and cannot run a job. POWER-CYCLE
+# THE MACHINE first, then reconnect MakeIt.
 #
 # HOW TO USE IT
-#   1. In MakeIt, set up a small job and run it (or frame it, for framing_data).
-#   2. Run this. It grabs whatever is currently on the device.
-#   3. Change EXACTLY ONE setting in MakeIt, run again, grab again, and diff.
-#      Use -Label to keep the two apart, e.g. -Label uv  then  -Label mopa
+#   1. Power-cycle the machine if anything has touched the COM port.
+#   2. In MakeIt, set up a SMALL job (a 10 mm square is plenty) and run it.
+#   3. Run this with a label describing the job.
+#   4. Change EXACTLY ONE setting, run the job again, grab again with a different label,
+#      and diff the two.  e.g.  -Label uv-square   then   -Label mopa-square
 #
 # Usage:
-#   .\tools\stage5-jobfile-grab.ps1 -Label "uv-10mm-square"
-#   .\tools\stage5-jobfile-grab.ps1 -Target 192.168.42.1 -Label mopa-pw200
+#   .\tools\stage5-jobfile-grab.ps1 -Label "uv-square"
+#   .\tools\stage5-jobfile-grab.ps1 -Target 192.168.42.1 -Label mopa-pw200 -MaxDepth 4
 
 param(
   [string] $Target,
   [int]    $Port = 8082,
   [string] $Label = '',
-  [int]    $TimeoutSec = 20,
+  [int]    $MaxDepth = 4,
+  [int]    $MaxDirs = 80,
+  [int]    $MaxFileBytes = 6000000,
+  [int]    $TimeoutSec = 30,
   [string] $SharePath
 )
 
@@ -66,46 +71,97 @@ Say ("  controller: $base") 'Yellow'
 $outDir = Join-Path $repo ('captures\jobgcode-' + $slug + '-' + $stamp)
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 
-# ------------------------------------------------------------------ list a few dirs
-foreach ($d in @('/mnt/SDCARD/', '/mnt/SDCARD/curve/', '/mnt/SDCARD/framing/', '/mnt/UDISK/')) {
-  Say ''
-  Say ('  --- listing ' + $d) 'Yellow'
+# ------------------------------------------------------------------ discover
+function Get-Links($path) {
   try {
-    $r = Invoke-WebRequest -Uri ($base + $d) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
+    $r = Invoke-WebRequest -Uri ($base + $path) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
     $html = [string]$r.Content
     if ($r.Content -is [byte[]]) { $html = [System.Text.Encoding]::UTF8.GetString($r.Content) }
-    $n = 0
+    $out = @()
     foreach ($m in [regex]::Matches($html, 'href\s*=\s*"([^"]+)"')) {
       $h = $m.Groups[1].Value
-      if ($h -eq '../' -or $h -eq '..' -or $h -eq '/') { continue }
-      Say ('        ' + $h); $n++
+      # skip the listing UI's own anchors and parent links
+      if ($h -eq '#' -or $h -eq '../' -or $h -eq '..' -or $h -eq '/' -or $h.StartsWith('?')) { continue }
+      $out += $h
     }
-    if ($n -eq 0) { Say '        (empty)' 'DarkGray' }
-  } catch { Say ('        FAILED: ' + $_.Exception.Message) 'DarkYellow' }
+    return ,$out
+  } catch {
+    Say ('    ' + $path + '   FAILED: ' + $_.Exception.Message) 'DarkYellow'
+    return ,@()
+  }
 }
 
-# ------------------------------------------------------------------ grab the job files
-$targets = @(
-  @{ path = '/mnt/SDCARD/curve/print_data.gcode';     name = 'print_data.gcode' },
-  @{ path = '/mnt/SDCARD/framing/framing_data.gcode'; name = 'framing_data.gcode' }
-)
+Say ''
+Say '  === Discovering files under the job storage ===' 'Cyan'
 
-foreach ($t in $targets) {
+$roots = @('/mnt/SDCARD/', '/mnt/UDISK/', '/mnt/exUDISK/')
+$queue = New-Object System.Collections.Queue
+foreach ($r in $roots) { $queue.Enqueue(@{ path = $r; depth = 0 }) }
+$seen = @{}
+$files = @()
+$dirs = 0
+
+while ($queue.Count -gt 0 -and $dirs -lt $MaxDirs) {
+  $it = $queue.Dequeue()
+  if ($seen.ContainsKey($it.path)) { continue }
+  $seen[$it.path] = $true
+  $dirs++
+
+  $links = Get-Links $it.path
+  if ($links.Count -eq 0) { Say ('  [dir] ' + $it.path + '   (empty)') 'DarkGray'; continue }
+  Say ('  [dir] ' + $it.path + '   (' + $links.Count + ')') 'White'
+
+  foreach ($h in $links) {
+    $child = if ($h.StartsWith('/')) { $h } else { ($it.path.TrimEnd('/') + '/' + $h) }
+    if ($h.EndsWith('/')) {
+      Say ('          <dir>  ' + $h)
+      if ($it.depth -lt $MaxDepth) { $queue.Enqueue(@{ path = $child; depth = $it.depth + 1 }) }
+    } else {
+      $files += $child
+      $isJob = $h -match '(?i)\.(gcode|nc|gc|json|txt|cfg|ini)$'
+      Say (('          ' + $(if ($isJob) { 'FILE*  ' } else { 'file   ' }) + $h)) $(if ($isJob) { 'Cyan' } else { 'DarkGray' })
+    }
+  }
+}
+
+$jobFiles = @($files | Where-Object { $_ -match '(?i)\.(gcode|nc|gc)$' })
+$cfgFiles = @($files | Where-Object { $_ -match '(?i)\.(json|txt|cfg|ini)$' })
+
+Say ''
+Say ('  Found ' + $jobFiles.Count + ' G-code file(s) and ' + $cfgFiles.Count + ' config file(s)') 'Cyan'
+if ($jobFiles.Count -eq 0) {
   Say ''
-  Say ('  =================== ' + $t.path + ' ===================') 'White'
+  Say '  NO G-CODE FOUND. Most likely one of:' 'Red'
+  Say '    - MakeIt has not run a job since the machine was last powered on' 'Red'
+  Say '    - the machine is latched into LightBurn control, so MakeIt could not send one' 'Red'
+  Say '      (power-cycle the machine, reconnect MakeIt, run a job, then re-run this)' 'Red'
+}
+
+# ------------------------------------------------------------------ fetch and analyse
+function Grab($path, $analyse) {
+  Say ''
+  Say ('  =================== ' + $path + ' ===================') 'White'
   try {
-    $r = Invoke-WebRequest -Uri ($base + $t.path) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
+    $r = Invoke-WebRequest -Uri ($base + $path) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
     $bytes = $r.Content
     if ($bytes -isnot [byte[]]) { $bytes = [System.Text.Encoding]::UTF8.GetBytes([string]$bytes) }
+    if ($bytes.Length -gt $MaxFileBytes) { Say ('  ' + $bytes.Length + ' bytes - over the size cap, skipped') 'DarkYellow'; return }
+
+    $safe = ($path.TrimStart('/') -replace '[\\/:*?"<>|]', '_')
+    [System.IO.File]::WriteAllBytes((Join-Path $outDir $safe), $bytes)
+
     $text = [System.Text.Encoding]::UTF8.GetString($bytes)
     $lines = $text -split "`r?`n"
-    Say ('  ' + $bytes.Length + ' bytes, ' + $lines.Count + ' lines') 'Green'
+    Say ('  ' + $bytes.Length + ' bytes, ' + $lines.Count + ' lines   -> ' + $safe) 'Green'
 
-    [System.IO.File]::WriteAllBytes((Join-Path $outDir $t.name), $bytes)
+    if (-not $analyse) {
+      $show = if ($text.Length -gt 1200) { $text.Substring(0, 1200) + ' ...[truncated]' } else { $text }
+      foreach ($l in ($show -split "`r?`n")) { Say ('      ' + $l) 'Green' }
+      return
+    }
 
-    # ---- the analysis that matters: which codes appear, and how often
     Say ''
-    Say '  --- distinct G/M codes used ---' 'Cyan'
+    Say '  --- every distinct G/M code, with a real example line ---' 'Cyan'
     $codes = @{}
     foreach ($l in $lines) {
       foreach ($m in [regex]::Matches($l, '(?i)\b([GM]\d{1,3})\b')) {
@@ -113,10 +169,9 @@ foreach ($t in $targets) {
         if ($codes.ContainsKey($k)) { $codes[$k]++ } else { $codes[$k] = 1 }
       }
     }
-    foreach ($k in ($codes.Keys | Sort-Object { [int]($_ -replace '[GM]','') } | Sort-Object { $_.Substring(0,1) })) {
-      # show one real example line for each code
+    foreach ($k in ($codes.Keys | Sort-Object)) {
       $ex = ($lines | Where-Object { $_ -match ('(?i)\b' + [regex]::Escape($k) + '\b') } | Select-Object -First 1)
-      Say ('    {0,-6} x{1,-7} e.g.  {2}' -f $k, $codes[$k], $ex.Trim()) 'Green'
+      Say ('    {0,-6} x{1,-8} e.g.  {2}' -f $k, $codes[$k], $ex.Trim()) 'Green'
     }
 
     Say ''
@@ -127,10 +182,11 @@ foreach ($t in $targets) {
     foreach ($l in ($lines | Select-Object -Last 15)) { Say ('    ' + $l) }
   } catch {
     Say ('  FAILED: ' + $_.Exception.Message) 'DarkYellow'
-    Say '  (If this is 404, MakeIt may not have sent a job yet, or the paths differ on' 'DarkGray'
-    Say '   your firmware. Check the listings above for the real filenames.)' 'DarkGray'
   }
 }
+
+foreach ($f in ($jobFiles | Select-Object -First 6)) { Grab $f $true }
+foreach ($f in ($cfgFiles | Select-Object -First 15)) { Grab $f $false }
 
 # ------------------------------------------------------------------ save
 $fileName = "stage5-jobgcode-$slug-$($hostName.ToLower())-$stamp.txt"
@@ -148,7 +204,7 @@ if ($SharePath -and (Test-Path $outDir)) {
     $sd = Join-Path $SharePath ('captures\jobgcode-' + $slug + '-' + $stamp)
     New-Item -ItemType Directory -Force -Path $sd -ErrorAction Stop | Out-Null
     Copy-Item (Join-Path $outDir '*') $sd -Force -ErrorAction SilentlyContinue
-    Write-Host ('  Mirrored G-code to ' + $sd) -ForegroundColor Green
+    Write-Host ('  Mirrored files to ' + $sd) -ForegroundColor Green
   } catch {}
 }
 
@@ -157,11 +213,6 @@ Write-Host ''
 Write-Host '  ------------------------------------------------------------------'
 if ($written.Count -eq 0) { Write-Host '  NOTHING SAVED' -ForegroundColor Red }
 foreach ($w in $written) { Write-Host ('  Saved : ' + $w) -ForegroundColor Green }
-Write-Host ('  G-code: ' + $outDir) -ForegroundColor Green
 Write-Host '  ------------------------------------------------------------------'
-Write-Host ''
-Write-Host '  To build the M-code table: change ONE thing in MakeIt (UV vs MOPA, two'
-Write-Host '  pulse widths, two focus heights, rotary on/off), re-run the job, grab'
-Write-Host '  again with a different -Label, and diff the two files.'
 Write-Host ''
 Read-Host '  Press Enter to close'
