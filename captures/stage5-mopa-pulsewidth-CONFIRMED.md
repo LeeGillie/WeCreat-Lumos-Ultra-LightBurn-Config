@@ -32,7 +32,7 @@ G0F15000  G1F12000
 | Finding | Grade |
 |---|---|
 | **`M39P<n>` sets the MOPA pulse width.** The value tracks MakeIt's pulse-width setting exactly, 1:1 | **CONFIRMED-vendor** |
-| **`M38F<n>` sets the MOPA frequency.** `F48` here; `F75` in a different job with different settings. Varies per job, never with pulse width | **CONFIRMED-vendor** (by elimination + variation) |
+| **`M38F<n>` sets the MOPA frequency.** Confirmed by its own differential — see below | **CONFIRMED-vendor** |
 | `M46` | `A1B0` here vs `A0.9764B20` in the earlier job — job-dependent, still UNKNOWN |
 | Also newly seen | `M5` (laser off), `M6` (job end — matches the Vision `EndGCode`), `M9` (coolant off). All standard GRBL |
 
@@ -58,6 +58,26 @@ It is not as elegant as native fields, but it is real, per-layer parameter contr
 different pulse widths for colour marking on stainless, controlled heat input on brass, clean
 deep relief — each as a layer preset carrying its own `M39P` value.
 
+## Second differential — frequency, same method
+
+Two more real MOPA jobs, identical except for the **frequency** setting:
+
+```diff
+- M38F30
++ M38F151
+```
+
+Again the **only** differing line across the entire capture. `M39P` did not move.
+
+**Both MOPA parameters are now confirmed independently, each by its own controlled diff:**
+
+```gcode
+M38F<n>      ; MOPA frequency      CONFIRMED-vendor
+M39P<n>      ; MOPA pulse width    CONFIRMED-vendor
+```
+
+Observed values so far: `F30`, `F48`, `F75`, `F151` · `P200`, `P500`.
+
 ## Units — not yet established
 
 `P200` / `P500` and `F48` / `F75` are MakeIt's own numbers. Whether `P` is nanoseconds and `F` is
@@ -68,9 +88,10 @@ identical or scaled.
 
 ## What to do next
 
-1. **Confirm `M38F` the same way** — one job, frequency changed, everything else fixed.
-2. **Establish the ranges** MakeIt will accept for each, so a profile does not offer values the
-   firmware rejects.
-3. **Then, and only then, add them to the profiles** as per-layer custom G-code. They are now
-   `CONFIRMED-vendor` codes rather than guesses — but this project's rule is that a profile ships
-   nothing that has not been demonstrated, and *emitting* them from LightBurn is still untested.
+1. ~~Confirm `M38F` the same way~~ — **done, see above.**
+2. **Establish the accepted ranges** for each, so a profile does not offer values the firmware
+   rejects. Observed so far: F 30–151, P 200–500.
+3. **Then add them to the profiles** as per-layer custom G-code. They are now `CONFIRMED-vendor`
+   codes rather than guesses — but this project's rule is that a profile ships nothing that has
+   not been demonstrated end to end, and *emitting* them from LightBurn is still untested.
+   That is Stage 3.
