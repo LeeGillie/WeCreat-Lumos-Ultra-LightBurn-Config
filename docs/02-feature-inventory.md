@@ -97,8 +97,8 @@ apply to the Ultra.
 | # | Feature | Status | Notes |
 |---|---|---|---|
 | F1 | Camera positioning in LightBurn | 🟦 `NEEDS-HW` | LightBurn 2.1 ships a **WeCreat camera preset**; camera arrives over RNDIS as an `LBHTTP:` device. Lens calibration must be set to "(None – precalibrated camera)" |
-| F2 | Number of cameras | ❓ | WeCreat's published material says "HD Camera", singular, and attaches "50MP" to Smart Fill. We could not confirm a two-camera system from any vendor source. The "16K" figure is an **engraving resolution** claim, not a camera spec |
-| F3 | Dual-camera / wall view (LightBurn 2.1) | ⬜ `NOT-STARTED` | Only relevant if F2 resolves to ≥2 accessible streams |
+| F2 | Number of cameras | 🟩 **ANSWERED** | **One accessible camera.** `/camera/take_photo` returns a single wide-angle JPEG, not a composite; the controller config names one device, `/dev/video0`; no second endpoint exists. Image arrives **rotated ~90° and lens-uncorrected**. The "16K" figure is an **engraving resolution** claim, not a camera spec |
+| F3 | Dual-camera / wall view (LightBurn 2.1) | 🟥 `BLOCKED-FW` | F2 resolved to one accessible stream — there is no second feed to attach |
 | F4 | Smart Fill / batch layout | 🟥 `BLOCKED-FW` | On-machine feature, no third-party path |
 | F5 | Material recognition | 🟥 `BLOCKED-FW` | |
 

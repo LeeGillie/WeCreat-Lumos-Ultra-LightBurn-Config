@@ -35,10 +35,37 @@ and produces nonsense. The controller's calibration data is retrievable at
 
 Frame rate is low — the `weburn` author measured roughly 3–4 fps polling stills.
 
-## How many cameras does the Ultra have?
+## How many cameras does the Ultra have? — ANSWERED
 
-**We could not confirm a two-camera system from any WeCreat source.** Every published reference
-is singular: "HD Camera" in the spec table, "Built-in 50 MP Camera" in listings.
+**One accessible camera. CONFIRMED-hardware, 2026-08-24.**
+
+Three independent observations on a physical Ultra
+([capture](../captures/stage2-rest-benchy.md)):
+
+1. `GET http://192.168.42.1:8080/camera/take_photo` returns **a single 826 KB JPEG** — one
+   wide-angle frame of the bed, **not** a composite or a stereo pair.
+2. The controller's own `/etc/mbtc/cfgs.json` names exactly one capture device:
+   `"videoid":"/dev/video0"`.
+3. No second camera endpoint was found on the API.
+
+If the Ultra contains more than one physical sensor, **only one is exposed**, and only one is
+therefore usable from LightBurn or from a bridge. LightBurn 2.1's dual-camera "wall view" has
+nothing to attach a second feed to.
+
+Two further observations from the captured frame, both matching known Lumos behaviour:
+
+- **The image is rotated roughly 90°** relative to the bed. Lumos owners report the same, and fix
+  it with LightBurn's Camera Alignment rather than by rotating the source.
+- **The frame is raw wide-angle and visibly barrel-distorted** — the enclosure walls curve. So
+  this endpoint serves an *uncorrected* image, even though LightBurn's WeCreat workflow expects a
+  precalibrated feed and tells you to set lens calibration to "(None – precalibrated camera)".
+  Whether LightBurn's `LBHTTP:` path requests a different, corrected stream is **UNKNOWN** and
+  worth establishing before trusting camera alignment.
+
+### What WeCreat publishes, for contrast
+
+Every published reference is singular: "HD Camera" in the spec table, "Built-in 50 MP Camera" in
+listings.
 
 Two figures get conflated in coverage of this machine, and it is worth separating them:
 
