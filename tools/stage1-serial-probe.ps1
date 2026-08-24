@@ -5,6 +5,11 @@
 # READ-ONLY. Sends ONLY GRBL query commands ($$ $I $# $G and the realtime '?').
 # It sends NO M-codes and NO motion commands. Nothing fires. Nothing moves.
 #
+# NOTE ON "SERIAL": the Ultra connects with ONE USB CABLE. There is no serial cable and no
+# RS-232 port. Inside the machine is a CH340 USB-to-serial bridge chip, which Windows exposes
+# as a VIRTUAL COM PORT (COM7 on our test machine). That virtual port is what this script opens.
+# Nothing extra needs to be plugged in.
+#
 # Requires nothing but Windows PowerShell - no Python, no PuTTY.
 #
 # Usage:

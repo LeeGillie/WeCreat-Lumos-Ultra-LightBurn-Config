@@ -9,16 +9,49 @@
 | Ethernet | ❌ not documented for the Ultra | — |
 | Bluetooth | ❌ not documented as a machine transport | Used by mobile MakeIt for provisioning onto Wi-Fi, not as a control link |
 
-**Working assumption: LightBurn ↔ Ultra is USB.** Unverified for this model — [open question 1](02-feature-inventory.md#open-questions).
+**LightBurn ↔ Ultra is USB** — and the port is now confirmed present on a physical Ultra
+(see below). Whether LightBurn successfully *talks* over it is Stage 3.
+
+## "Serial" here means a COM port over USB — there is no serial cable
+
+Worth stating plainly, because the terminology trips people up:
+
+**The Lumos Ultra connects with one USB cable. It has no RS-232 port, and you do not need a
+serial cable or a USB-to-serial adapter.**
+
+When this repository says the machine is a *"serial"* device — and when the `.lbdev` profiles say
+`"Type": "Serial"` — that describes the **software interface**, not the cable. Inside the machine
+is a **CH340 USB-to-serial bridge chip**. Windows enumerates it over USB and creates a *virtual*
+COM port for it. On the test machine we used, that was `COM7`:
+
+```
+USB-SERIAL CH340 (COM7)
+    HWID: USB\VID_1A86&PID_7523\...
+         ^^^ a USB hardware ID, for a device whose name is "USB-SERIAL"
+```
+
+This is how nearly every hobby laser, 3D printer and GRBL CNC works, which is why LightBurn's
+connection dropdown offers **"Serial/USB"** as a single combined option. WeCreat's own
+troubleshooting article tells users to look for `USB-Serial CH 340 (COMx)` under **Ports** in
+Device Manager — same thing.
+
+So: one cable, and the COM port it produces is what LightBurn streams G-code over.
 
 ## What the USB cable actually carries
 
-One cable, a composite Linux USB gadget, at least two interfaces:
+One cable into the machine, an **internal USB hub**, and **two independent USB devices** behind
+it — confirmed on hardware, on ports 2 and 3 of the same hub instance:
 
-1. **RNDIS network interface** — a virtual Ethernet link to the controller's Linux SBC. This is
-   how LightBurn's WeCreat camera works (LightBurn 1.7.00: *"Initial WeCreat Vision camera
-   support over RNDIS"*).
-2. **A serial interface** — what LightBurn streams G-code over.
+1. **A CH340 USB-to-serial bridge** — the virtual COM port LightBurn streams G-code over. It
+   wires to the **motion MCU**.
+2. **An RNDIS network gadget** — a virtual Ethernet link to the controller's **Linux SBC**. This
+   is how LightBurn's WeCreat camera works (LightBurn 1.7.00: *"Initial WeCreat Vision camera
+   support over RNDIS"*), and it is where the HTTP API lives.
+
+Note these are two *separate devices with different vendor IDs*, not two interfaces of one
+composite gadget — WeCreat's driver INF describes a composite gadget, but the shipping Ultra
+uses a discrete CH340 alongside it. The practical upshot is useful: **the G-code path and the
+SBC path are independent and can be used simultaneously.**
 
 Hardware IDs bound by WeCreat's own bundled driver
 (`MakeIt!/resource/driver/win/rndis/rndis11.inf`) — **CONFIRMED-vendor**:
