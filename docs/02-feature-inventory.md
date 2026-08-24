@@ -80,7 +80,7 @@ apply to the Ultra.
 
 | # | Function | Status | Notes |
 |---|---|---|---|
-| E1 | USB connection | 🟦 `NEEDS-HW` | **Port confirmed on hardware** — CH340 bridge at COM7 (`VID_1A86&PID_7523`), plus an RNDIS gadget on the same internal hub. Still needs LightBurn actually talking over it (Stage 3) |
+| E1 | USB connection | 🟩 `WORKING` | **LightBurn connects and the machine identifies itself.** CH340 at COM7, 1,000,000 baud, `Custom GCode` device with `GCodeFlavor: wecreat` → console reports **"Found WeCreat Device"**. Job streaming still returns `err:20` on two unsupported commands — see [capture](../captures/stage3-lightburn-err20-benchy.md) |
 | E2 | Wi-Fi connection | 🟥 `BLOCKED-FW` | Ultra spec says USB/Wi-Fi, but Wi-Fi is a MakeIt path. No evidence LightBurn can use it |
 | E3 | Ethernet | — | Not documented on the Ultra at all |
 | E4 | Autofocus | 🟦 `NEEDS-HW` | Vision family: `M130X<mm>Y<mm>` as a macro or as LightBurn's Focus Z command. Ultra code unverified |
@@ -96,7 +96,7 @@ apply to the Ultra.
 
 | # | Feature | Status | Notes |
 |---|---|---|---|
-| F1 | Camera positioning in LightBurn | 🟦 `NEEDS-HW` | LightBurn 2.1 ships a **WeCreat camera preset**; camera arrives over RNDIS as an `LBHTTP:` device. Lens calibration must be set to "(None – precalibrated camera)" |
+| F1 | Camera positioning in LightBurn | 🟩 `WORKING` | **Confirmed on hardware 2026-08-24** — the Ultra's camera works in LightBurn 2.1.04. Arrives over RNDIS as an `LBHTTP:` device; one stream, rotated ~90°, lens-uncorrected (see F2) |
 | F2 | Number of cameras | 🟩 **ANSWERED** | **One accessible camera.** `/camera/take_photo` returns a single wide-angle JPEG, not a composite; the controller config names one device, `/dev/video0`; no second endpoint exists. Image arrives **rotated ~90° and lens-uncorrected**. The "16K" figure is an **engraving resolution** claim, not a camera spec |
 | F3 | Dual-camera / wall view (LightBurn 2.1) | 🟥 `BLOCKED-FW` | F2 resolved to one accessible stream — there is no second feed to attach |
 | F4 | Smart Fill / batch layout | 🟥 `BLOCKED-FW` | On-machine feature, no third-party path |
