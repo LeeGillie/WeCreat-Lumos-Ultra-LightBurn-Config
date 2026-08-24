@@ -1,0 +1,12 @@
+;wecreat 3.0.6
+;canvas border: 0 0 210 210
+M15S0
+M107X-105Y-105
+M41S0
+M19S1
+M42S0
+M18S0Q0
+M11S0.2
+G90
+M3S100
+#headed

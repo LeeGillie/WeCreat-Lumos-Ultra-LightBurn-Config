@@ -40,7 +40,49 @@ know of, assembled from WeCreat's own shipped `.lbdev` profiles, their support a
 | `~` | — | Cycle start / resume | CONFIRMED-community | All |
 | `0x18` | — | Soft reset (Ctrl-X) | CONFIRMED-community | All |
 
-### Codes found in Lumos Ultra firmware configuration, 2026-08-24
+### Confirmed from MakeIt's own Lumos Ultra G-code, 2026-08-24
+
+Read off the controller after MakeIt generated a framing job — **the vendor's own output**, so
+these are `CONFIRMED-vendor` rather than inferred.
+([capture](../captures/stage5-framing-mopa-benchy.md))
+
+```gcode
+;wecreat 3.0.6
+;canvas border: 0 0 210 210      <- the working area, written into every job
+M15S0                            <- exhaust fan off
+M107X-105Y-105                   <- field origin offset = half of 210
+M41S0
+M19S1
+M42S0
+M18S0Q0                          <- SOURCE SELECT (S) + new Q parameter
+M11S0.2
+G90
+M3S100
+#headed
+M4S1000
+M38F
+M39P
+G0F480000                        <- 480000 mm/min = 8000 mm/s
+```
+
+| Code | Observed | Meaning | Grade |
+|---|---|---|---|
+| `M18` | `M18S0Q0` | **Source select.** `S0` = 1064 nm fiber — matches WeCreat's own Lumos macro label "1064red", captured here with MOPA selected. **`Q` is new on the Ultra** and, by fiber convention, plausibly the **Q-switch pulse width** | `S`: **CONFIRMED-vendor** · `Q`: **INFERRED** |
+| `M107` | `M107X-105Y-105` | **Field origin offset**, half the field. Lumos: `X-60Y-60` on a 116 mm field. Pattern confirmed across two models — upgraded from INFERRED | **CONFIRMED-vendor** |
+| `M15` | `M15S0` | Exhaust fan off — correct for a beam-free framing job | **CONFIRMED-vendor** |
+| `M3` / `M4` | `M3S100`, `M4S1000` | **Standard GRBL** laser modes (constant / dynamic power). `M4S1000` confirms `S_Scale: 1000` | CONFIRMED |
+| `G90` | `G90` | Standard absolute positioning | CONFIRMED |
+| `M19` | `M19S1` | In the Lumos start block as `M19S0`; here `S1`. Parameterised, meaning unknown | UNKNOWN |
+| `M41` | `M41S0` | Unknown | UNKNOWN |
+| `M42` | `M42S0` | Unknown | UNKNOWN |
+| `M11` | `M11S0.2` | Unknown. Fractional argument suggests a physical quantity | UNKNOWN |
+| `M38` | `M38F` | Unknown. **Bare letter parameter, no value** | UNKNOWN |
+| `M39` | `M39P` | Unknown. **Bare letter parameter, no value** | UNKNOWN |
+
+**`M16`/`M17` are absent** from MakeIt's framing job — so whatever U-mode is, MakeIt does not need
+it to frame.
+
+## Codes found in Lumos Ultra firmware configuration, 2026-08-24
 
 Recovered from `/etc/mbtc/inverse_distance.json` on the controller's filesystem
 ([capture](../captures/stage2b-fileserver-benchy.md)). **These appear in no WeCreat `.lbdev` and

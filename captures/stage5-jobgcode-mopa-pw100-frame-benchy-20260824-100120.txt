@@ -1,0 +1,188 @@
+﻿
+  Stage 5 - fetch the job G-code off the controller (READ-ONLY)
+  host: BENCHY   label: 'mopa-pw100-frame'   2026-08-24 10:01:20
+
+  controller: http://192.168.42.1:8082
+
+  === Discovering files under the job storage ===
+  [dir] /mnt/SDCARD/   (6)
+          <dir>  configs/
+          <dir>  framing/
+          <dir>  printing/
+          <dir>  tmp/
+          <dir>  data/
+          <dir>  config/
+  [dir] /mnt/UDISK/   (empty)
+  [dir] /mnt/exUDISK/   (empty)
+  [dir] /mnt/SDCARD/configs/   (empty)
+  [dir] /mnt/SDCARD/framing/   (empty)
+  [dir] /mnt/SDCARD/printing/   (empty)
+  [dir] /mnt/SDCARD/tmp/   (empty)
+  [dir] /mnt/SDCARD/data/   (3)
+          <dir>  tmp/
+          <dir>  framing/
+          <dir>  printing/
+  [dir] /mnt/SDCARD/config/   (3)
+          FILE*  heightZ.txt
+          FILE*  lumosProMopaCalibration.txt
+          FILE*  greenZ.txt
+  [dir] /mnt/SDCARD/data/tmp/   (empty)
+  [dir] /mnt/SDCARD/data/framing/   (3)
+          FILE*  framing_data.gcode
+          FILE*  framing_mode.gcode
+          FILE*  gcode.gc
+  [dir] /mnt/SDCARD/data/printing/   (1)
+          FILE*  gcode.gc
+
+  Found 4 G-code file(s) and 3 config file(s)
+
+  =================== /mnt/SDCARD/data/framing/framing_data.gcode ===================
+  147 bytes, 19 lines   -> mnt_SDCARD_data_framing_framing_data.gcode
+
+  --- every distinct G/M code, with a real example line ---
+
+  --- first 40 lines ---
+    
+    M4S1000
+    M38F
+    M39P
+    G0F480000
+    G1F480000
+    G0X71.5Y96.21F480000
+    G1X90.1Y96.21S0F480000
+    G1X90.1Y108.71
+    G1X71.5Y108.71
+    G1X71.5Y96.21
+    G0X71.6Y96.31
+    
+    
+    
+    
+    
+    
+    
+
+  --- last 15 lines ---
+    G0F480000
+    G1F480000
+    G0X71.5Y96.21F480000
+    G1X90.1Y96.21S0F480000
+    G1X90.1Y108.71
+    G1X71.5Y108.71
+    G1X71.5Y96.21
+    G0X71.6Y96.31
+    
+    
+    
+    
+    
+    
+    
+
+  =================== /mnt/SDCARD/data/framing/framing_mode.gcode ===================
+  117 bytes, 13 lines   -> mnt_SDCARD_data_framing_framing_mode.gcode
+
+  --- every distinct G/M code, with a real example line ---
+    G90    x1        e.g.  G90
+
+  --- first 40 lines ---
+    ;wecreat 3.0.6
+    ;canvas border: 0 0 210 210
+    M15S0
+    M107X-105Y-105
+    M41S0
+    M19S1
+    M42S0
+    M18S0Q0
+    M11S0.2
+    G90
+    M3S100
+    #headed
+    
+
+  --- last 15 lines ---
+    ;wecreat 3.0.6
+    ;canvas border: 0 0 210 210
+    M15S0
+    M107X-105Y-105
+    M41S0
+    M19S1
+    M42S0
+    M18S0Q0
+    M11S0.2
+    G90
+    M3S100
+    #headed
+    
+
+  =================== /mnt/SDCARD/data/framing/gcode.gc ===================
+  264 bytes, 31 lines   -> mnt_SDCARD_data_framing_gcode.gc
+
+  --- every distinct G/M code, with a real example line ---
+    G90    x1        e.g.  G90
+
+  --- first 40 lines ---
+    ;wecreat 3.0.6
+    ;canvas border: 0 0 210 210
+    M15S0
+    M107X-105Y-105
+    M41S0
+    M19S1
+    M42S0
+    M18S0Q0
+    M11S0.2
+    G90
+    M3S100
+    #headed
+    
+    M4S1000
+    M38F
+    M39P
+    G0F480000
+    G1F480000
+    G0X71.5Y96.21F480000
+    G1X90.1Y96.21S0F480000
+    G1X90.1Y108.71
+    G1X71.5Y108.71
+    G1X71.5Y96.21
+    G0X71.6Y96.31
+    
+    
+    
+    
+    
+    
+    
+
+  --- last 15 lines ---
+    G0F480000
+    G1F480000
+    G0X71.5Y96.21F480000
+    G1X90.1Y96.21S0F480000
+    G1X90.1Y108.71
+    G1X71.5Y108.71
+    G1X71.5Y96.21
+    G0X71.6Y96.31
+    
+    
+    
+    
+    
+    
+    
+
+  =================== /mnt/SDCARD/data/printing/gcode.gc ===================
+  302962036 bytes - over the size cap, skipped
+
+  =================== /mnt/SDCARD/config/heightZ.txt ===================
+  5 bytes, 1 lines   -> mnt_SDCARD_config_heightZ.txt
+      43.35
+
+  =================== /mnt/SDCARD/config/lumosProMopaCalibration.txt ===================
+  303 bytes, 1 lines   -> mnt_SDCARD_config_lumosProMopaCalibration.txt
+      {"bottomData":{"points":[{"x":866,"y":1894},{"x":100,"y":100},{"x":2265,"y":1900},{"x":100,"y":100},{"x":100,"y":100},{"x":100,"y":100},{"x":863,"y":3286},{"x":100,"y":100},{"x":2256,"y":3297}]},"customThickness":0,"basicData":{"x":20,"y":20,"width":170,"height":170,"type":"5W","id":"lumosUltra-mopa"}}
+
+  =================== /mnt/SDCARD/config/greenZ.txt ===================
+  4 bytes, 1 lines   -> mnt_SDCARD_config_greenZ.txt
+      8.03
+

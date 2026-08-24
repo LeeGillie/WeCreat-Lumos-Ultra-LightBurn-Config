@@ -36,7 +36,8 @@ param(
   [string] $Label = '',
   [int]    $MaxDepth = 4,
   [int]    $MaxDirs = 80,
-  [int]    $MaxFileBytes = 6000000,
+  [int]    $MaxFileBytes = 4000000,
+  [int]    $HeadBytes = 131072,     # for an oversized file, take this much of the head
   [int]    $TimeoutSec = 30,
   [string] $SharePath
 )
@@ -138,14 +139,56 @@ if ($jobFiles.Count -eq 0) {
 }
 
 # ------------------------------------------------------------------ fetch and analyse
+# Download with a HARD byte cap, enforced WHILE reading rather than after.
+# Invoke-WebRequest buffers the entire response in memory before you can inspect it,
+# so a runaway or endless file will consume RAM until it is killed. This streams and
+# aborts the moment the cap is exceeded.
+function Get-Capped($url, $cap) {
+  $req = [System.Net.HttpWebRequest]::Create($url)
+  $req.Timeout = $TimeoutSec * 1000
+  $req.ReadWriteTimeout = $TimeoutSec * 1000
+  $resp = $null; $stream = $null
+  try {
+    $resp = $req.GetResponse()
+
+    # If the server declares a length, refuse before reading a single byte.
+    $declared = -1
+    try { $declared = [int64]$resp.ContentLength } catch {}
+
+    # A real print job can be hundreds of megabytes, but everything we need - the
+    # preamble with the mode, source and parameter codes - is in the first few KB.
+    # So for an oversized file we take the HEAD of it and stop, rather than skipping
+    # it entirely or dragging the whole thing into RAM.
+    $stream = $resp.GetResponseStream()
+    $ms  = New-Object System.IO.MemoryStream
+    $buf = New-Object byte[] 65536
+    $total = 0
+    $partial = $false
+    while ($true) {
+      $n = $stream.Read($buf, 0, $buf.Length)
+      if ($n -le 0) { break }
+      $ms.Write($buf, 0, $n)
+      $total += $n
+      if ($total -ge $HeadBytes -and ($declared -gt $cap -or $total -gt $cap)) { $partial = $true; break }
+    }
+    return @{ tooBig = $false; partial = $partial; declared = $(if ($declared -ge 0) { $declared } else { $total }); bytes = $ms.ToArray() }
+  } finally {
+    if ($stream) { $stream.Dispose() }
+    if ($resp)   { $resp.Close() }
+  }
+}
+
 function Grab($path, $analyse) {
   Say ''
   Say ('  =================== ' + $path + ' ===================') 'White'
   try {
-    $r = Invoke-WebRequest -Uri ($base + $path) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
-    $bytes = $r.Content
-    if ($bytes -isnot [byte[]]) { $bytes = [System.Text.Encoding]::UTF8.GetBytes([string]$bytes) }
-    if ($bytes.Length -gt $MaxFileBytes) { Say ('  ' + $bytes.Length + ' bytes - over the size cap, skipped') 'DarkYellow'; return }
+    $res = Get-Capped ($base + $path) $MaxFileBytes
+    $bytes = $res.bytes
+    if (-not $bytes -or $bytes.Length -eq 0) { Say '  empty response' 'DarkYellow'; return }
+    if ($res.partial) {
+      Say ('  FILE IS ' + $res.declared + ' BYTES - fetched the first ' + $bytes.Length + ' only.') 'DarkYellow'
+      Say '  The preamble is what matters; the rest is bulk geometry.' 'DarkGray'
+    }
 
     $safe = ($path.TrimStart('/') -replace '[\\/:*?"<>|]', '_')
     [System.IO.File]::WriteAllBytes((Join-Path $outDir $safe), $bytes)
@@ -185,11 +228,27 @@ function Grab($path, $analyse) {
   }
 }
 
-foreach ($f in ($jobFiles | Select-Object -First 6)) { Grab $f $true }
-foreach ($f in ($cfgFiles | Select-Object -First 15)) { Grab $f $false }
+# Save the transcript after every grab, so an interrupt never loses what was already
+# captured. The G-code is the valuable part and it comes first.
+$fileName = "stage5-jobgcode-$slug-$($hostName.ToLower())-$stamp.txt"
+function Save-Log {
+  foreach ($d in @((Join-Path $repo 'captures'), $(if ($SharePath) { Join-Path $SharePath 'captures' } else { $null }))) {
+    if (-not $d) { continue }
+    try {
+      if (-not (Test-Path $d)) { New-Item -ItemType Directory -Force -Path $d -ErrorAction Stop | Out-Null }
+      Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8 -ErrorAction Stop
+    } catch {}
+  }
+}
+
+foreach ($f in ($jobFiles | Select-Object -First 6))  { Grab $f $true;  Save-Log }
+Say ''
+Say '  === G-code captured. Now sampling config files. ===' 'Cyan'
+Say '  (Safe to Ctrl+C from here - the G-code above is already saved.)' 'DarkGray'
+Save-Log
+foreach ($f in ($cfgFiles | Select-Object -First 15)) { Grab $f $false; Save-Log }
 
 # ------------------------------------------------------------------ save
-$fileName = "stage5-jobgcode-$slug-$($hostName.ToLower())-$stamp.txt"
 $written = @()
 foreach ($d in @((Join-Path $repo 'captures'), $(if ($SharePath) { Join-Path $SharePath 'captures' } else { $null }))) {
   if (-not $d) { continue }

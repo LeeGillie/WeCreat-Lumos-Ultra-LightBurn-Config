@@ -123,8 +123,14 @@ apply to the Ultra.
    `$I` returns **`[WeCreat Lumos :ver 000240]`** — note it does **not** say "Ultra" — at
    **1,000,000 baud**. No unsolicited banner on port open; it is emitted on power-up only.
    See [capture](../captures/stage1-serial-benchy.md).
-3. **What M-code selects UV vs MOPA on the Ultra?** *Test: Stage 5, differential MakeIt capture.*
-4. **Is there any G-code for MOPA pulse width / frequency?** *Test: Stage 5.*
+3. ~~**What M-code selects UV vs MOPA on the Ultra?**~~ — **ANSWERED 2026-08-24: `M18`.**
+   MakeIt emits `M18S0Q0` with the MOPA source selected — and `M18S0` is exactly what WeCreat's
+   own Lumos profile labels "1064red". The Lumos code carries over to the Ultra.
+   `CONFIRMED-vendor` — see [capture](../captures/stage5-framing-mopa-benchy.md).
+4. **Is there any G-code for MOPA pulse width / frequency?** — **STRONG LEAD.** `M18` on the Ultra
+   carries a **new `Q` parameter** absent from the Lumos (`M18S0Q0`). In fiber-laser usage `Q`
+   denotes the Q-switch/pulse width. *Test: capture two framing jobs at different pulse widths and
+   diff the `Q` value.* **This is the highest-value remaining experiment in the project.**
 5. **What is "U mode"?** *Test: firmware strings, or differential capture.*
 6. ~~**Is the REST API on :8080 unchanged on the Ultra?**~~ — **ANSWERED 2026-08-24: present.**
    Ports 22, 8080 and 8082 are all open on `192.168.42.1`. `/camera/take_photo` returns an
@@ -137,8 +143,10 @@ apply to the Ultra.
    bare `ok` and returns nothing. `$#` and `$G` are likewise stubs; `?` and `$I` are fully
    implemented. **Field size and scaling therefore cannot be read from the machine and must be
    measured** (Stage 4). See [capture](../captures/stage1-serial-benchy.md).
-9. **Does the Ultra's field really measure 210 × 210 mm?** Now the highest-value unknown, since
-   the controller will not tell us. *Test: Stage 4 framing with calipers.*
+9. ~~**Does the Ultra's field really measure 210 × 210 mm?**~~ — **ANSWERED 2026-08-24: yes.**
+   MakeIt writes `;canvas border: 0 0 210 210` into the header of every job, and pairs it with
+   `M107X-105Y-105` (half of 210) as the origin offset. **The draft profiles are correct.**
+   `CONFIRMED-vendor` — see [capture](../captures/stage5-framing-mopa-benchy.md).
 10. **Is `Pn:Z` (Z limit asserted at rest) normal, or a stuck input?** Matters before enabling Z
     or homing.
 

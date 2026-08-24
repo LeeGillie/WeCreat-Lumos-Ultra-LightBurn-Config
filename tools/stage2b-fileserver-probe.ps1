@@ -113,15 +113,45 @@ Say ('  === Sampling ' + $interesting.Count + ' candidate config files (max ' + 
 
 $dumpDir = Join-Path $repo ('captures\fileserver-' + $stamp)
 $grabbed = 0
+# Enforce the byte cap WHILE reading. Invoke-WebRequest buffers the whole response in
+# memory before you can check its size, so a runaway or endless file eats RAM until killed.
+function Get-Capped($url, $cap) {
+  $req = [System.Net.HttpWebRequest]::Create($url)
+  $req.Timeout = $TimeoutSec * 1000
+  $req.ReadWriteTimeout = $TimeoutSec * 1000
+  $resp = $null; $stream = $null
+  try {
+    $resp = $req.GetResponse()
+    $declared = -1
+    try { $declared = [int64]$resp.ContentLength } catch {}
+    if ($declared -gt $cap) { return @{ tooBig = $true; declared = $declared; bytes = $null } }
+    $stream = $resp.GetResponseStream()
+    $ms  = New-Object System.IO.MemoryStream
+    $buf = New-Object byte[] 32768
+    $total = 0
+    while ($true) {
+      $n = $stream.Read($buf, 0, $buf.Length)
+      if ($n -le 0) { break }
+      $total += $n
+      if ($total -gt $cap) { return @{ tooBig = $true; declared = $total; bytes = $null } }
+      $ms.Write($buf, 0, $n)
+    }
+    return @{ tooBig = $false; declared = $total; bytes = $ms.ToArray() }
+  } finally {
+    if ($stream) { $stream.Dispose() }
+    if ($resp)   { $resp.Close() }
+  }
+}
+
 foreach ($f in ($interesting | Select-Object -First 40)) {
   try {
-    $r = Invoke-WebRequest -Uri ($base + $f) -TimeoutSec $TimeoutSec -UseBasicParsing -ErrorAction Stop
-    $bytes = $r.Content
-    if ($bytes -isnot [byte[]]) { $bytes = [System.Text.Encoding]::UTF8.GetBytes([string]$bytes) }
-    if ($bytes.Length -gt $MaxFileBytes) {
-      Say ('  --- ' + $f + '   (' + $bytes.Length + ' bytes - too large, skipped)') 'DarkYellow'
+    $res = Get-Capped ($base + $f) $MaxFileBytes
+    if ($res.tooBig) {
+      Say ('  --- ' + $f + '   (' + $res.declared + '+ bytes - over cap, aborted)') 'DarkYellow'
       continue
     }
+    $bytes = $res.bytes
+    if (-not $bytes) { continue }
     $text = [System.Text.Encoding]::UTF8.GetString($bytes)
     Say ''
     Say ('  --- ' + $f + '   (' + $bytes.Length + ' bytes)') 'Yellow'
