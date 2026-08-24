@@ -77,8 +77,50 @@ Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
 
 Write-Output ''
 Write-Output '=== 8. LightBurn version ==='
+$lbFound = $false
+Get-ItemProperty $keys -ErrorAction SilentlyContinue |
+  Where-Object { $_.DisplayName -match 'LightBurn' } |
+  ForEach-Object { Write-Output ('  {0}' -f $_.DisplayName); $script:lbFound = $true; $lbFound = $true }
 foreach ($lb in @('C:\Program Files\LightBurn\LightBurn.exe','D:\Program Files\LightBurn\LightBurn.exe')) {
-  if (Test-Path $lb) { Write-Output ('  {0}  v{1}' -f $lb, (Get-Item $lb).VersionInfo.ProductVersion) }
+  if (Test-Path $lb) {
+    $vi = (Get-Item $lb).VersionInfo
+    Write-Output ('  {0}  file v{1}' -f $lb, $vi.FileVersion)
+    $lbFound = $true
+  }
+}
+if (-not $lbFound) { Write-Output '  LightBurn not found' }
+Write-Output '  NOTE: use LightBurn 2.1.02 or newer. Earlier builds desynchronise on WeCreat firmware.'
+
+Write-Output ''
+Write-Output '=== 9. Test-machine prerequisites ==='
+foreach ($t in @(
+  @{ n = 'git';    c = 'git';    a = '--version' },
+  @{ n = 'node';   c = 'node';   a = '--version' },
+  @{ n = 'python'; c = 'python'; a = '--version' },
+  @{ n = 'gh';     c = 'gh';     a = '--version' }
+)) {
+  $cmd = Get-Command $t.c -ErrorAction SilentlyContinue
+  if ($cmd) {
+    $v = (& $t.c $t.a 2>&1 | Select-Object -First 1)
+    Write-Output ('  {0,-8} {1}' -f $t.n, $v)
+  } else {
+    Write-Output ('  {0,-8} NOT INSTALLED' -f $t.n)
+  }
+}
+Write-Output '  (git is required to clone the repo. node is optional - only for the MakeIt inspection tools.'
+Write-Output '   python is optional - only if you prefer miniterm for the Stage 1 serial probe.)'
+
+Write-Output ''
+Write-Output '=== 10. Readiness summary ==='
+$serial = @(Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '\(COM\d+\)' -and $_.Name -notmatch 'Bluetooth' })
+$rndis  = @(Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'RNDIS|USB Ethernet|Remote NDIS' })
+Write-Output ('  non-Bluetooth COM ports : ' + $serial.Count)
+Write-Output ('  RNDIS gadgets           : ' + $rndis.Count)
+if ($serial.Count -eq 0 -and $rndis.Count -eq 0) {
+  Write-Output '  >> No laser detected. Is the Ultra powered on and the USB cable connected?'
+  Write-Output '  >> Also close WeCreat MakeIt entirely - it holds the serial port.'
+} else {
+  Write-Output '  >> Something is attached. Record the hardware IDs from sections 4-6 above.'
 }
 
 Write-Output ''

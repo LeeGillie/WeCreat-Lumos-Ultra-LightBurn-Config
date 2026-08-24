@@ -1,5 +1,11 @@
 # WeCreat Lumos Ultra — LightBurn Configuration Project
 
+![LightBurn Configuration for the WeCreat Lumos Ultra](docs/images/LightburnConfigProject.png)
+
+<sub>Banner artwork is aspirational — it shows where this project is going, not where it is.
+For actual, current status of every feature see the
+[feature inventory](docs/02-feature-inventory.md). Lens part numbers shown are decorative.</sub>
+
 An open, evidence-graded effort to build a working **LightBurn** device configuration for the
 **WeCreat Lumos Ultra** (6 W UV + optional 60 W / 100 W JPT MOPA fiber), covering every field
 lens, work mode and accessory.
@@ -63,7 +69,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\build-profiles.ps1
 
 ## Quick start (with a Lumos Ultra)
 
-**Do not skip [SAFETY.md](SAFETY.md).** Then work through
+**Do not skip [SAFETY.md](SAFETY.md).** If the laser lives on a different machine from the one
+you author on, [docs/13-test-machine-setup.md](docs/13-test-machine-setup.md) covers getting the
+repo onto it and checking it is ready. Then work through
 [docs/03-bringup-plan.md](docs/03-bringup-plan.md) in order. Stage 0 and Stage 1 involve no beam
 at all and are the most valuable thing any owner can contribute right now.
 
