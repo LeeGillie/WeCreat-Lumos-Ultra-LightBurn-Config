@@ -63,7 +63,14 @@ function Sync-Local {
       Write-Host '    local changes present - fetching only, not merging:' -ForegroundColor DarkYellow
       $dirty | ForEach-Object { Write-Host ('      ' + $_) -ForegroundColor DarkYellow }
     } else {
-      & git merge --ff-only ("origin/" + $branch) 2>&1 | ForEach-Object { Write-Host ('    ' + $_) }
+      $merge = (& git merge --ff-only ("origin/" + $branch) 2>&1)
+      $merge | ForEach-Object { Write-Host ('    ' + $_) }
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host '    Could not fast-forward the local copy.' -ForegroundColor DarkYellow
+        Write-Host '    This is harmless: the stages run from the share, which is authoritative.' -ForegroundColor DarkYellow
+        Write-Host '    To get a clean local clone for committing captures, rename the folder and' -ForegroundColor DarkYellow
+        Write-Host '    pick (s) again, or delete it and re-run this launcher.' -ForegroundColor DarkYellow
+      }
     }
     Pop-Location
   }
@@ -84,8 +91,11 @@ function Sync-Local {
 }
 
 function Run-Stage($scriptName, $extraArgs) {
-  $p = Join-Path $script:local ('tools\' + $scriptName)
-  if (-not (Test-Path $p)) { $p = Join-Path $source ('tools\' + $scriptName) }
+  # Prefer the copy on the SHARE. It is the authoritative one, and a local clone can be
+  # stale or have an unrelated history that will not fast-forward - in which case running
+  # the local copy would silently use an older script.
+  $p = Join-Path $source ('tools\' + $scriptName)
+  if (-not (Test-Path $p)) { $p = Join-Path $script:local ('tools\' + $scriptName) }
   if (-not (Test-Path $p)) { Write-Host ('  not found: ' + $scriptName) -ForegroundColor Red; Read-Host '  Enter'; return }
   Write-Host ''
   # Always tell the stage where the share is, so the capture comes back even if
@@ -96,8 +106,8 @@ function Run-Stage($scriptName, $extraArgs) {
 }
 
 function Stage0 {
-  $probe = Join-Path $script:local 'tools\probe-workstation.ps1'
-  if (-not (Test-Path $probe)) { $probe = Join-Path $source 'tools\probe-workstation.ps1' }
+  $probe = Join-Path $source 'tools\probe-workstation.ps1'
+  if (-not (Test-Path $probe)) { $probe = Join-Path $script:local 'tools\probe-workstation.ps1' }
   $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
   $result = & powershell -NoProfile -ExecutionPolicy Bypass -File $probe 2>&1 | Out-String
   $fileName = "stage0-usb-$who-$stamp.txt"
