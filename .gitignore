@@ -26,6 +26,7 @@ prefs.ini
 *.lbset
 
 # Contributor captures land in captures/ and ARE tracked, but not raw dumps
+captures/_runlog-*.txt
 captures/**/*.pcap
 captures/**/*.pcapng
 captures/**/*.jpg
