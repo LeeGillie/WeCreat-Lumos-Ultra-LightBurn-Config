@@ -154,6 +154,7 @@ foreach ($s in ($shareTargets | Select-Object -Unique)) {
   }
 }
 
+$written = @($written | Select-Object -Unique)   # local and share can be the same path
 Write-Host ''
 Write-Host '  ------------------------------------------------------------------'
 if ($written.Count -eq 0) { Write-Host '  NOTHING SAVED - copy the text above by hand' -ForegroundColor Red }

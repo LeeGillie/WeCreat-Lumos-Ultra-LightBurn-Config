@@ -16,6 +16,17 @@ if (-not $who) { try { $who = (Get-CimInstance Win32_ComputerSystem).Name } catc
 if (-not $who) { $who = 'unknown-host' }
 $who = $who.ToLower()
 
+# A breadcrumb on the share, so the authoring machine can see how far a run got even
+# when the test machine cannot easily copy text off itself.
+function Trace($what) {
+  try {
+    $d = Join-Path $source 'captures'
+    if (-not (Test-Path $d)) { New-Item -ItemType Directory -Force -Path $d -ErrorAction Stop | Out-Null }
+    $line = ('{0}  {1}  {2}' -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $who, $what)
+    Add-Content -Path (Join-Path $d ('_runlog-' + $who + '.txt')) -Value $line -ErrorAction Stop
+  } catch { }
+}
+
 function Banner {
   Clear-Host
   Write-Host ''
@@ -137,8 +148,10 @@ function Stage0 {
 }
 
 # ---------------------------------------------------------------- menu
+Trace 'launcher started'
 Banner
 Sync-Local
+Trace 'sync complete'
 Write-Host ''
 Read-Host '  Press Enter for the menu'
 
@@ -156,14 +169,15 @@ while ($true) {
   Write-Host '     q   quit'
   Write-Host ''
   $c = (Read-Host '   choice').Trim().ToLower()
+  if ($c) { Trace ("menu choice: '" + $c + "'") }
   switch ($c) {
-    '0'  { Banner; Stage0 }
-    '1'  { Run-Stage 'stage1-serial-probe.ps1' $null }
-    '2'  { Run-Stage 'stage2-rest-probe.ps1' $null }
-    '2a' { Run-Stage 'stage2-rest-probe.ps1' @('-AllowAutofocus') }
+    '0'  { Banner; Stage0; Trace 'stage 0 returned' }
+    '1'  { Run-Stage 'stage1-serial-probe.ps1' $null;               Trace 'stage 1 returned' }
+    '2'  { Run-Stage 'stage2-rest-probe.ps1' $null;                 Trace 'stage 2 returned' }
+    '2a' { Run-Stage 'stage2-rest-probe.ps1' @('-AllowAutofocus');  Trace 'stage 2a returned' }
     's'  { Banner; Sync-Local; Read-Host '  Enter' }
     'e'  { Start-Process explorer.exe $script:local }
-    'q'  { return }
-    default { }
+    'q'  { Trace 'quit'; return }
+    default { Write-Host ('   not a choice: ' + $c) -ForegroundColor DarkYellow; Start-Sleep -Milliseconds 900 }
   }
 }

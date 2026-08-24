@@ -47,7 +47,10 @@ Say ''
 if (-not $Port) {
   $cand = Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue |
           Where-Object { $_.Name -match '\(COM\d+\)' -and $_.Name -notmatch 'Bluetooth' }
-  if (-not $cand) { Say '  No non-Bluetooth COM port found. Is the laser on and MakeIt closed?' 'Red'; return }
+  if (-not $cand) {
+    Say '  No non-Bluetooth COM port found. Is the laser on and MakeIt closed?' 'Red'
+    $script:noPort = $true
+  }
   foreach ($c in $cand) {
     if ($c.Name -match '\((COM\d+)\)') {
       Say ('  found: ' + $c.Name)
@@ -129,10 +132,16 @@ if ($IncludeM27) {
   Start-Sleep -Seconds 4
 }
 
-foreach ($b in $bauds) {
-  $ok = Probe-Port $Port $b
-  if (-not $ok) { continue }
-  if (-not $AllBauds) { break }
+if (-not $script:noPort -and $Port) {
+  foreach ($b in $bauds) {
+    $ok = Probe-Port $Port $b
+    if (-not $ok) { continue }
+    if (-not $AllBauds) { break }
+  }
+} else {
+  Say ''
+  Say '  Skipping the port probe - no port to open.' 'Red'
+  Say '  A capture is still being written so the run is on record.' 'DarkYellow'
 }
 
 # ---------------------------------------------------------------- save
@@ -165,6 +174,7 @@ foreach ($s in ($shareTargets | Select-Object -Unique)) {
   }
 }
 
+$written = @($written | Select-Object -Unique)   # local and share can be the same path
 Write-Host ''
 Write-Host '  ------------------------------------------------------------------'
 if ($written.Count -eq 0) { Write-Host '  NOTHING SAVED - copy the text above by hand' -ForegroundColor Red }
