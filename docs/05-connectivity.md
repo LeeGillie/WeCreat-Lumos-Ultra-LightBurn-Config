@@ -29,14 +29,34 @@ USB\VID_1d6b&PID_0104&MI_00    ; Linux Foundation multifunction composite gadget
 ```
 
 `1d6b:0104` is the generic Linux Foundation multifunction composite gadget. `MI_00` confirms a
-multi-interface device. **The Ultra's own VID/PID has not been captured by anyone** — that is
-Stage 0.
+multi-interface device.
+
+### Confirmed on a physical Lumos Ultra — 2026-08-24
+
+**CONFIRMED-hardware.** ([capture](../captures/stage0-usb-benchy.md))
+
+| Device | Hardware ID | Role |
+|---|---|---|
+| USB-SERIAL CH340 (**COM7**) | `USB\VID_1A86&PID_7523\A&336F6178&0&2` | WCH CH340 bridge → the **motion MCU**. This is what LightBurn talks to |
+| USB Ethernet/RNDIS Gadget | `USB\VID_0525&PID_A4A2\A&336F6178&0&3` | The **Linux SBC** → camera, REST API |
+
+Three things worth drawing out:
+
+1. **The CH340 is a discrete bridge, not a CDC-ACM interface on the Linux gadget.** They are two
+   separate USB devices with different vendor IDs, sitting on ports 2 and 3 of the same internal
+   hub (`A&336F6178`). So the G-code path and the SBC path are genuinely independent — a bridge
+   program could use both at once.
+2. **No galvo controller is present.** No `VID_9588` (BJJCZ/JCZ), no driverless device, nothing
+   resembling an EZCAD board anywhere in the enumeration.
+3. **The RNDIS link comes up on `192.168.42.0/24`**, with the PC at `192.168.42.100`. The
+   controller is therefore at (almost certainly) `192.168.42.1`. This is a private USB-only
+   subnet — not reachable from the rest of your LAN, and not something to confuse with the
+   machine's Wi-Fi address.
 
 WeCreat's troubleshooting article for the current generation tells users to look in Device
-Manager for **"USB Ethernet/RNDIS Gadget"** under Network adapters *and* **"USB-Serial CH 340
-(COMx)"** under Ports. Whether the Ultra still uses a discrete CH340 or a CDC-ACM gadget on the
-SBC is unknown, and it matters: it determines whether the serial endpoint is the MCU directly or
-the Linux front-end.
+Manager for exactly these two: **"USB Ethernet/RNDIS Gadget"** under Network adapters *and*
+**"USB-Serial CH 340 (COMx)"** under Ports. The Ultra matches that description precisely, so
+their article applies to it even though it predates the machine.
 
 ### Driver installation
 

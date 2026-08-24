@@ -80,7 +80,7 @@ apply to the Ultra.
 
 | # | Function | Status | Notes |
 |---|---|---|---|
-| E1 | USB connection | 🟨 `DRAFT` | WeCreat: "Only USB connection is supported" for LightBurn (article predates the Ultra) |
+| E1 | USB connection | 🟦 `NEEDS-HW` | **Port confirmed on hardware** — CH340 bridge at COM7 (`VID_1A86&PID_7523`), plus an RNDIS gadget on the same internal hub. Still needs LightBurn actually talking over it (Stage 3) |
 | E2 | Wi-Fi connection | 🟥 `BLOCKED-FW` | Ultra spec says USB/Wi-Fi, but Wi-Fi is a MakeIt path. No evidence LightBurn can use it |
 | E3 | Ethernet | — | Not documented on the Ultra at all |
 | E4 | Autofocus | 🟦 `NEEDS-HW` | Vision family: `M130X<mm>Y<mm>` as a macro or as LightBurn's Focus Z command. Ultra code unverified |
@@ -115,8 +115,10 @@ apply to the Ultra.
 
 ## Open questions
 
-1. **Does the Ultra present as a GRBL serial device?** Everything else depends on this.
-   *Test: Stage 0, USB enumeration.*
+1. ~~**Does the Ultra present as a GRBL serial device?**~~ — **ANSWERED 2026-08-24: yes.**
+   A physical Ultra enumerates as a CH340 serial bridge (`VID_1A86&PID_7523`, COM7) plus a Linux
+   RNDIS gadget (`VID_0525&PID_A4A2`), with no galvo controller present. The RNDIS link comes up
+   on `192.168.42.0/24`. See [01-architecture.md §4](01-architecture.md#4-confirmed-on-a-physical-lumos-ultra--2026-08-24).
 2. **What is the Ultra's serial banner and baud rate?** *Test: Stage 1.*
 3. **What M-code selects UV vs MOPA on the Ultra?** *Test: Stage 5, differential MakeIt capture.*
 4. **Is there any G-code for MOPA pulse width / frequency?** *Test: Stage 5.*

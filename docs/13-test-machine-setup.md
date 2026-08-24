@@ -80,6 +80,22 @@ Then the normal loop: test machine commits captures and pushes, authoring machin
 If the test machine has no git, copy the working folder across and install git later. You lose
 history until then, so prefer A or B if you can.
 
+### Route D — one short path, for a machine with no shared clipboard
+
+If you reach the test machine through a remote-desktop tool with no clipboard sharing (NoMachine,
+some VNC setups), typing long commands is miserable. Put a small launcher at the root of a share
+the test machine can read, and it needs one short path typed into **Win+R**:
+
+```cmd
+@echo off
+set "PS=%~dp0path\to\repo\tools\test-machine.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PS%"
+```
+
+`tools/test-machine.ps1` then syncs a local copy and offers the bring-up stages as a menu, so
+every stage is one keystroke. `%~dp0` means the launcher works over any share name, drive letter
+or IP without editing.
+
 ## 3. Check readiness
 
 With the **Ultra powered on and connected by USB**, and **MakeIt fully closed** (it holds the
@@ -124,14 +140,31 @@ What the result means is tabulated in
 The short version: Linux-gadget IDs plus a COM port confirms the current architecture; a BJJCZ/JCZ
 ID means the Ultra is a real galvo controller and much more of LightBurn becomes available.
 
-## 5. Then Stage 1
+## 5. Then Stage 1 and Stage 2
 
-Serial identity — still no beam. Talk to the port directly before involving LightBurn, so you see
-the raw truth rather than LightBurn's interpretation of it. Template:
+**Stage 1 — serial identity.** Still no beam. Talk to the port directly before involving
+LightBurn, so you see the raw truth rather than LightBurn's interpretation of it.
+
+```powershell
+.\tools\stage1-serial-probe.ps1              # auto-detects the CH340 port
+.\tools\stage1-serial-probe.ps1 -AllBauds    # if the default baud is silent
+```
+
+Needs nothing but Windows PowerShell — no Python, no PuTTY. It leaves DTR and RTS alone so the
+controller is not reset, and sends only GRBL queries (`?`, `$$`, `$I`, `$#`, `$G`).
+**No M-codes** — WeCreat renumbers them between models. Template:
 `captures/templates/serial-banner.md`.
 
-Only read-only probes (`?`, `$$`, `$I`, `$#`, `$G`, `M27`). **No M-codes.** WeCreat renumbers them
-between models and nothing is known about the Ultra's set.
+**Stage 2 — the controller's HTTP API.** Also no beam.
+
+```powershell
+.\tools\stage2-rest-probe.ps1
+```
+
+Auto-detects the RNDIS subnet (confirmed as `192.168.42.0/24` on a real Ultra, controller at
+`.1`), scans the ports, and calls only read-only endpoints. It never calls `/test/cmd/mcu` —
+that one bypasses the lid interlock — and skips the head-moving autofocus probe unless you pass
+`-AllowAutofocus`.
 
 ## 6. Housekeeping on a test machine
 

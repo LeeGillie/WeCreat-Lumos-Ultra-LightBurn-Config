@@ -59,16 +59,45 @@ Then, one at a time, send these **read-only** probes:
 | `$I` | Build info |
 | `$#` | Work coordinate offsets |
 | `$G` | Parser state |
-| `M27` | Position report — believed to answer `M27 X…,Y…,Z…`. Publish the literal reply |
 
 **Do not send anything else.** Not `M1`, `M6`, `M16`, `M17`, `M18`, `M19`, `M57`, `M107`.
+
+> **A note on `M27`.** Earlier drafts of this document listed `M27` among the safe probes, on the
+> grounds that `weburn` parses a reply shaped `M27 X…,Y…,Z…` from the Vision. That was
+> inconsistent with our own rule in [SAFETY.md](../SAFETY.md) — *no blind M-codes* — because
+> WeCreat renumbers M-codes between models and `M27` is unverified on the Ultra. It is now
+> **opt-in only**: `tools/stage1-serial-probe.ps1 -IncludeM27`, which warns and pauses first.
+> The `$`-commands above are GRBL queries, not WeCreat M-codes, and carry no such risk.
+
+### The scripted way
+
+`tools/stage1-serial-probe.ps1` does all of the above with nothing but Windows PowerShell — no
+Python, no PuTTY. It auto-detects the CH340 port, leaves DTR and RTS alone so the controller is
+not reset, sends only the `$` queries and `?`, and writes the transcript into `captures/`.
+
+```powershell
+.\tools\stage1-serial-probe.ps1                 # auto-detect, 1000000 baud
+.\tools\stage1-serial-probe.ps1 -AllBauds       # try each known baud in turn
+```
 
 → Template: `captures/templates/serial-banner.md`
 
 ## Stage 2 — Network side *(no beam, but see the interlock warning)*
 
-If Stage 0 found an RNDIS adapter, find its subnet (`ipconfig` / `ip -br a`) and probe the
-machine's address:
+**Confirmed on a real Ultra:** the RNDIS adapter comes up at **192.168.42.100/24**, which puts
+the controller on `192.168.42.0/24` — almost certainly **`192.168.42.1`**. Note this is a
+*private USB-only* subnet; it is not reachable from anywhere else on your LAN.
+
+`tools/stage2-rest-probe.ps1` auto-detects that subnet, scans ports 22/80/8080/8082, and calls
+only the read-only endpoints. It never calls `/test/cmd/mcu`, and it skips the head-moving
+autofocus probe unless you pass `-AllowAutofocus`.
+
+```powershell
+.\tools\stage2-rest-probe.ps1
+.\tools\stage2-rest-probe.ps1 -Target 192.168.42.1
+```
+
+By hand, if you prefer:
 
 ```bash
 curl -X POST "http://<ip>:8080/process/status"

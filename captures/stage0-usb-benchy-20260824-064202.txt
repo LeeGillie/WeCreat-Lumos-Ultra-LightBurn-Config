@@ -1,0 +1,85 @@
+﻿WeCreat Lumos Ultra / LightBurn workstation probe  -  2026-08-24 06:42:03
+Host: BENCHY   User: Lee   OS: Microsoft Windows 11 Pro
+
+=== 1. Install locations ===
+  C:\Program Files\LightBurn
+  C:\Program Files\WeCreat
+
+=== 2. Uninstall registry entries ===
+  WeCreat MakeIt! 3.0.6 | v3.0.6 | 
+  LightBurn version 2.1.04 | v2.1.04 | C:\Program Files\LightBurn\
+
+=== 3. Config / data folders ===
+  FOUND  C:\Users\Lee\AppData\Roaming\LightBurn
+  FOUND  C:\Users\Lee\AppData\Local\LightBurn
+  -      C:\Users\Lee\AppData\Roaming\MakeIt
+  -      C:\Users\Lee\AppData\Roaming\WeCreat
+  -      C:\Users\Lee\AppData\Local\MakeIt
+  -      C:\Users\Lee\AppData\Local\WeCreat
+  FOUND  C:\Users\Lee\.LightBurn
+
+=== 4. Serial ports present right now ===
+  USB-SERIAL CH340 (COM7)
+      HWID: USB\VID_1A86&PID_7523\A&336F6178&0&2
+
+=== 5. RNDIS / USB-Ethernet gadgets (the WeCreat controller shows up here) ===
+  USB Ethernet/RNDIS Gadget
+      HWID: USB\VID_0525&PID_A4A2\A&336F6178&0&3
+
+=== 6. All USB devices with a VID/PID (grep this for your laser) ===
+  VID_8087&PID_0B40       Generic SuperSpeed USB Hub
+  VID_1A40&PID_0101       Generic USB Hub
+  VID_046D&PID_085E       HID-compliant consumer control device
+  VID_046D&PID_C534       HID-compliant vendor-defined device
+  VID_8087&PID_0032       Intel(R) Wireless Bluetooth(R)
+  VID_046D&PID_085E       Logitech BRIO
+  VID_046D&PID_C534       Logitech Driver Interface
+  VID_046D&PID_C534       Logitech HID Keyboard Consumer Controls
+  VID_046D&PID_C534       Logitech HID Keyboard Power Key
+  VID_046D&PID_C534       Logitech HID-compliant Cordless Mouse
+  VID_046D&PID_C534       Logitech HID-Compliant Keyboard
+  VID_0451&PID_ACE1       TPS DMC Family
+  VID_1E45&PID_8022       USB camera
+  VID_046D&PID_085E       USB Composite Device
+  VID_0525&PID_A4A2       USB Ethernet/RNDIS Gadget
+  VID_046D&PID_C534       USB Input Device
+  VID_1022&PID_1668       USB4 Root Router (1.0)
+  VID_8087&PID_0B26       USB4 Router (1.0), CalDigit. Inc. - TS4
+  VID_1A86&PID_7523       USB-SERIAL CH340 (COM7)
+
+=== 7. Network adapters + addresses (find the RNDIS subnet) ===
+  Ethernet                 Realtek Gaming 2.5GbE Family Controller  Disconnected 0 bps
+  Ethernet 2               Realtek Gaming 2.5GbE Family Controller #2 Disconnected 0 bps
+  Bluetooth Network Connection Bluetooth Device (Personal Area Network) Disconnected 3 Mbps
+  Ethernet 6               Intel(R) Ethernet Controller (3) I225-LMvP Disconnected 2.5 Gbps
+  Ethernet 7               USB Ethernet/RNDIS Gadget                Up 1.1 Gbps
+  Wi-Fi                    Intel(R) Wi-Fi 6E AX210 160MHz           Up 865 Mbps
+  Ethernet 7               192.168.42.100/24
+  Ethernet 6               169.254.169.239/16
+  Bluetooth Network Connection 169.254.119.125/16
+  Local Area Connection* 2 169.254.231.83/16
+  Ethernet 2               169.254.124.157/16
+  Local Area Connection* 1 169.254.31.26/16
+  Ethernet                 169.254.156.176/16
+  Wi-Fi                    192.168.1.248/24
+
+=== 8. LightBurn version ===
+  LightBurn version 2.1.04
+  C:\Program Files\LightBurn\LightBurn.exe  file v
+  NOTE: use LightBurn 2.1.02 or newer. Earlier builds desynchronise on WeCreat firmware.
+
+=== 9. Test-machine prerequisites ===
+  git      git version 2.55.0.windows.3
+  node     NOT INSTALLED
+  python   Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+  gh       NOT INSTALLED
+  (git is required to clone the repo. node is optional - only for the MakeIt inspection tools.
+   python is optional - only if you prefer miniterm for the Stage 1 serial probe.)
+
+=== 10. Readiness summary ===
+  non-Bluetooth COM ports : 1
+  RNDIS gadgets           : 1
+  >> Something is attached. Record the hardware IDs from sections 4-6 above.
+
+=== END ===
+

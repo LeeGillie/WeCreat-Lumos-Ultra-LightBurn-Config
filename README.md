@@ -15,9 +15,10 @@ Vision, Vision Pro, Vista and Lumos — but not the Ultra — while simultaneous
 "Lightburn" as supported software on the Ultra product page. This repository exists to close
 that gap in the open, with contributions from anyone who owns the machine.
 
-> **Status: pre-hardware.** Nothing in `profiles/draft/` has been confirmed against a physical
-> Lumos Ultra yet. Every claim in this repository carries an evidence grade. Read
-> [SAFETY.md](SAFETY.md) before you connect anything.
+> **Status: Stage 0 complete.** The architecture is now **confirmed against a physical Lumos
+> Ultra** — see below. The device profiles in `profiles/draft/` remain untested. Every claim in
+> this repository carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
+> anything.
 
 ---
 
@@ -29,14 +30,16 @@ that gap in the open, with contributions from anyone who owns the machine.
 | The Lumos-family controller is a **Linux SBC front-end with a separate MCU** | **CONFIRMED** — WeCreat's bundled RNDIS driver binds `USB\VID_0525&PID_a4a2` and `USB\VID_1d6b&PID_0104&MI_00` (Linux USB gadget IDs); the reverse-engineered REST endpoint is literally `/test/cmd/mcu` |
 | WeCreat uses a **private M-code dialect** that is renumbered per machine model | **CONFIRMED** — see [docs/04-mcode-dictionary.md](docs/04-mcode-dictionary.md) |
 | MakeIt! 3.0.6 ships **nine distinct Lumos Ultra work modes** | **CONFIRMED** — enumerated from the shipping application bundle, see [docs/06-modes-and-lenses.md](docs/06-modes-and-lenses.md) |
-| The Ultra specifically uses the same GRBL-over-serial path | **STRONG INFERENCE, UNVERIFIED** — no one has publicly connected an Ultra to LightBurn. This is [open question #1](docs/02-feature-inventory.md#open-questions) |
-| LightBurn's galvo features (Q-Pulse Width, lens bulge/skew correction, galvo rotary, Split Marking, 3D depth-map) are **unavailable** on a GRBL-typed device | **CONFIRMED for the Lumos**, inferred for the Ultra |
+| **The Ultra specifically is a GRBL-over-serial device** | **CONFIRMED-hardware, 2026-08-24** — a physical Lumos Ultra enumerates as a CH340 serial bridge (`VID_1A86&PID_7523`) plus a Linux RNDIS gadget (`VID_0525&PID_A4A2`), with **no galvo controller present**. [Capture](captures/) · [analysis](docs/01-architecture.md#4-confirmed-on-a-physical-lumos-ultra--2026-08-24) |
+| The controller sits on a private USB network at `192.168.42.0/24` | **CONFIRMED-hardware** — the RNDIS adapter comes up at `192.168.42.100`, putting the controller at (almost certainly) `192.168.42.1` |
+| LightBurn's galvo features (Q-Pulse Width, lens bulge/skew correction, galvo rotary, Split Marking, 3D depth-map) are **unavailable** on a GRBL-typed device | **CONFIRMED for the Lumos**, and now that the Ultra is confirmed GRBL, it inherits the same limits |
 
-The single most consequential consequence: **if the Ultra is a GRBL device to LightBurn, then
-LightBurn cannot drive MOPA pulse width, cannot do 16-bit depth-map relief, and cannot do K9
-internal 3D engraving** — not because of a missing config file, but because those features live
-in LightBurn's galvo device class, which this machine does not use. Anything we recover there
-has to come through custom G-code, not through LightBurn's UI.
+The consequence, and it is the important one: **LightBurn cannot drive the Ultra's MOPA pulse
+width, cannot do 16-bit depth-map relief, and cannot do K9 internal 3D engraving** — not because
+of a missing config file, but because those features live in LightBurn's galvo device class, and
+this machine is not a galvo device to LightBurn. Anything recovered there has to come through
+custom G-code, not through LightBurn's UI. See
+[docs/09-k9-and-mopa-limits.md](docs/09-k9-and-mopa-limits.md).
 
 ## What this repository contains
 

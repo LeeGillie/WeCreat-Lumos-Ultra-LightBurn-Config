@@ -101,24 +101,45 @@ LightBurn for MOPA work is precisely frequency and pulse-width control, and that
 LightBurn's GRBL class does not have. Read [09-k9-and-mopa-limits.md](09-k9-and-mopa-limits.md)
 before deciding how much to invest here.
 
-## 4. What we still do not know about the **Ultra** specifically
+## 4. Confirmed on a physical Lumos Ultra — 2026-08-24
 
-Everything above is confirmed for the **Lumos** and the Vision family. Nobody has publicly
-connected a **Lumos Ultra** to LightBurn — the machine began shipping in July 2026 in small
-numbers, and there is not one Lumos Ultra thread in LightBurn's own WeCreat forum category.
+**The inference above has been tested and holds.** A Lumos Ultra was connected by USB to a
+Windows 11 machine and enumerated. Both expected devices appeared, and no galvo controller did.
+**CONFIRMED-hardware.**
 
-The Ultra is *strongly* expected to be the same architecture because:
+```
+=== Serial ports ===
+  USB-SERIAL CH340 (COM7)
+      HWID: USB\VID_1A86&PID_7523\A&336F6178&0&2
 
-- WeCreat's Ultra spec sheet lists the same "USB / Wi-Fi" connection method as the Lumos.
-- MakeIt! ships as iOS / iPadOS / Android apps as well as desktop — a phone cannot host a
-  PC-tethered galvo card, so the marking engine must live in the machine.
-- The Ultra has on-machine features no PC-hosted galvo card provides: 50 MP camera batch fill,
-  autofocus, field-lens auto-detection, on-board project library, one-button start.
-- MakeIt! 3.0.6 ships Ultra assets alongside the Lumos ones in the same application, with the
-  same code path. See [11-makeit-internals.md](11-makeit-internals.md).
+=== RNDIS / USB-Ethernet gadgets ===
+  USB Ethernet/RNDIS Gadget
+      HWID: USB\VID_0525&PID_A4A2\A&336F6178&0&3
+```
 
-But it is inference. **The falsifying test is trivial and takes two minutes:** see
-[03-bringup-plan.md](03-bringup-plan.md) Stage 0.
+Full capture: [`captures/stage0-usb-benchy-20260824-064202.txt`](../captures/stage0-usb-benchy-20260824-064202.txt).
+
+What this establishes:
+
+1. **The Ultra is a GRBL-over-serial device to LightBurn.** `VID_1A86&PID_7523` is a WCH CH340
+   USB-to-serial bridge. There is **no BJJCZ / JCZ / EZCAD device present** — so LightBurn's
+   galvo device class, and everything gated behind it, is genuinely unavailable. The consequences
+   table in section 3 stands.
+2. **The two-tier architecture is real, and the serial link goes to the MCU, not the SBC.** The
+   CH340 is a *discrete* USB-serial bridge, not a CDC-ACM interface on the Linux gadget. So the
+   G-code stream reaches the motion MCU directly, while the SBC sits on its own USB interface.
+   This was previously inference; it is now observed.
+3. **Both devices share one internal hub** (instance `A&336F6178`, ports 2 and 3) — one cable
+   into the machine, an internal hub, two independent USB devices behind it.
+4. **The RNDIS gadget ID matches WeCreat's own driver INF exactly** (`VID_0525&PID_A4A2`), so the
+   Ultra uses the same Linux USB gadget stack as the Vision and Lumos generations.
+5. **The controller has its own private USB network.** The RNDIS adapter came up at
+   **192.168.42.100/24**, which places the controller itself on `192.168.42.0/24` — almost
+   certainly `192.168.42.1`. That is the address to aim Stage 2's HTTP probe at.
+
+Remaining Ultra-specific unknowns are now narrower: the serial banner and baud, whether `$$` is
+implemented, the Ultra's own M-code numbering, and whether the REST API survived. All are
+Stage 1 and Stage 2.
 
 ## 5. The two possible integration paths
 
