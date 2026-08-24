@@ -1,0 +1,73 @@
+name: Calibration data
+description: Measured field size, offsets, mirroring, or steps-per-rotation
+title: "[cal] "
+labels: ["calibration", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Numbers measured off a real machine. These feed directly into
+        `tools/profile-spec.json`.
+
+        Framing with the red dot (Stage 4) needs no laser output and gives most of this.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What did you measure?
+      options:
+        - Field size / scale (framing)
+        - Origin and mirroring
+        - Process offset
+        - Rotary steps per rotation
+        - Slide travel / steps
+        - Conveyor feed increment
+        - Z / focus
+        - other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: lens
+    attributes:
+      label: Lens installed
+      options: ["Purple (210)", "Green (70)", "Red (210)", "n/a"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: method
+    attributes:
+      label: How you measured
+      description: Calipers? Steel rule? Test grid? Say what, and at what nominal sizes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: numbers
+    attributes:
+      label: The numbers
+      value: |
+        | Nominal | Measured X | Measured Y |
+        |---------|------------|------------|
+        | 10 mm   |            |            |
+        | 50 mm   |            |            |
+        | 100 mm  |            |            |
+        | 200 mm  |            |            |
+
+        Scale error X: ____ %    Y: ____ %
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Machine configuration
+      value: |
+        - Sources fitted:
+        - Accessories fitted:
+        - MakeIt version:
+        - LightBurn version:
+        - Firmware banner:
+    validations:
+      required: true

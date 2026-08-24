@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# reference/ is a LOCAL working area. Nothing in it is redistributable:
+# WeCreat's own .lbdev files, firmware, and anything extracted from MakeIt!.
+# Keep the scripts and the README, ignore everything they produce.
+# ---------------------------------------------------------------------------
+reference/*
+!reference/README.md
+!reference/.gitkeep
+
+# Extracted / downloaded vendor material, wherever it lands
+**/vendor-lbdev/
+**/makeit-extract/
+*.lbdev.vendor
+*.asar
+*.jsc
+*.enc
+*.tar.gz
+*.cor
+markcfg*
+BslCAD.cfg
+LmcPar.cfg
+
+# LightBurn user files that are not ours to publish
+prefs.ini
+*.lbprefs
+*.lbset
+
+# Contributor captures land in captures/ and ARE tracked, but not raw dumps
+captures/**/*.pcap
+captures/**/*.pcapng
+captures/**/*.jpg
+captures/**/*.png
+!captures/templates/**
+
+# OS / editor noise
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/
+
+# Build / scratch
+tmp/
+temp/
+scratch/
+*.log

@@ -1,0 +1,149 @@
+{
+  "_comment": [
+    "Source of truth for the generated LightBurn device profiles.",
+    "Edit THIS file, then run tools/build-profiles.ps1. Do not hand-edit profiles/draft/*.lbdev.",
+    "",
+    "SAFETY: startGCode / endGCode / macros are deliberately EMPTY. WeCreat renumbers M-codes",
+    "between machine models, and no Lumos Ultra M-code has been verified by anyone. Candidate",
+    "values live in docs/04-mcode-dictionary.md and stay there until hardware confirms them."
+  ],
+
+  "shared": {
+    "driver": "GRBL",
+    "connection": "Serial",
+    "baudRate": 1000000,
+    "commPort": "(Choose)",
+    "sScale": 1000,
+    "cutOrigin": 2,
+    "mirrorX": false,
+    "mirrorY": true,
+    "enableZ": false,
+    "relativeZOnly": false,
+    "homeOnStartup": false,
+    "startGCode": "",
+    "endGCode": "",
+    "rotaryAxis": 3,
+    "rotarySteps": 360,
+    "rotaryDiameter": 50,
+    "rotaryIsChuck": true,
+    "rotaryMode": false,
+    "simMaxSpeedX": 500,
+    "simMaxSpeedY": 400,
+    "simMaxAccelX": 3000,
+    "simMaxAccelY": 3000
+  },
+
+  "profiles": [
+    {
+      "file": "WeCreat-Lumos-Ultra-UV-Purple-210.lbdev",
+      "displayName": "WeCreat Lumos Ultra - UV Purple 210",
+      "guid": "LumUltUV21",
+      "width": 210,
+      "height": 210,
+      "source": "6W UV 355nm",
+      "lens": "Purple",
+      "evidence": "Working area from WeCreat spec table. All other values inherited from the vendor Lumos profile. UNVERIFIED on an Ultra.",
+      "checklist": [
+        "LENS:     PURPLE field lens installed?          (210 x 210 mm)",
+        "SOURCE:   UV (355 nm) selected?",
+        "GOGGLES:  190-550 nm UV goggles ON?",
+        "FOCUS:    Focus set for this material height?",
+        "EXHAUST:  Extraction running? (UV on wood/leather/coated goods)",
+        "BED:      Purple lens is for FLAT and CYLINDRICAL work"
+      ]
+    },
+    {
+      "file": "WeCreat-Lumos-Ultra-UV-Green-K9-70.lbdev",
+      "displayName": "WeCreat Lumos Ultra - UV Green K9 70",
+      "guid": "LumUltUVK9",
+      "width": 70,
+      "height": 70,
+      "source": "6W UV 355nm",
+      "lens": "Green",
+      "evidence": "70 x 70 mm field from WeCreat spec table (volume 70 x 70 x 135 mm). True K9 internal 3D engraving is not reachable from LightBurn - see docs/09.",
+      "checklist": [
+        "LENS:     GREEN field lens installed?           (70 x 70 mm ONLY)",
+        "SOURCE:   UV (355 nm) selected?",
+        "GOGGLES:  190-550 nm UV goggles ON?",
+        "FIELD:    Artwork fits within 70 x 70 mm?",
+        "NOTE:     K9 internal 3D engraving is NOT available from LightBurn.",
+        "          This profile is for surface / 2D work through the green lens."
+      ]
+    },
+    {
+      "file": "WeCreat-Lumos-Ultra-MOPA60-Red-210.lbdev",
+      "displayName": "WeCreat Lumos Ultra - MOPA 60W Red 210",
+      "guid": "LumUltM060",
+      "width": 210,
+      "height": 210,
+      "source": "60W JPT MOPA fiber",
+      "lens": "Red",
+      "evidence": "Separate from the 100W profile so material libraries and checklists stay distinct. Q-Pulse Width and Frequency are NOT available on a GRBL-typed device - see docs/09.",
+      "checklist": [
+        "LENS:     RED field lens installed?             (210 x 210 mm)",
+        "SOURCE:   MOPA fiber selected -- NOT UV?",
+        "POWER:    This is the 60 W profile. Is this a 60 W machine?",
+        "GOGGLES:  800-1100 nm fiber goggles ON?  (UV goggles do NOT protect you)",
+        "REFLECT:  Workpiece secured? Specular metal reflects the beam",
+        "EXHAUST:  Extraction running?"
+      ]
+    },
+    {
+      "file": "WeCreat-Lumos-Ultra-MOPA100-Red-210.lbdev",
+      "displayName": "WeCreat Lumos Ultra - MOPA 100W Red 210",
+      "guid": "LumUltM100",
+      "width": 210,
+      "height": 210,
+      "source": "100W JPT MOPA fiber",
+      "lens": "Red",
+      "evidence": "Same geometry as the 60W profile. Kept separate for material libraries and for the power warning in the checklist.",
+      "checklist": [
+        "LENS:     RED field lens installed?             (210 x 210 mm)",
+        "SOURCE:   MOPA fiber selected -- NOT UV?",
+        "POWER:    *** 100 WATT PROFILE ***  Is this a 100 W machine?",
+        "          A 60 W machine running 100 W settings will not behave as expected.",
+        "GOGGLES:  800-1100 nm fiber goggles ON?  (UV goggles do NOT protect you)",
+        "REFLECT:  Workpiece secured? Specular metal reflects the beam",
+        "POWER:    First run on this material? START LOW.",
+        "EXHAUST:  Extraction running?"
+      ]
+    },
+    {
+      "file": "WeCreat-Lumos-Ultra-Slide-520x183.lbdev",
+      "displayName": "WeCreat Lumos Ultra - Slide Extension 520x183",
+      "guid": "LumUltSlid",
+      "width": 520,
+      "height": 183,
+      "source": "any",
+      "lens": "any",
+      "evidence": "SPECULATIVE. Working area from WeCreat spec table. Assumes the machine can be told to treat a larger area as its workspace, which is UNPROVEN. LightBurn Split Marking is galvo-only and unavailable here.",
+      "checklist": [
+        "SLIDE:    Slide Extension mounted and clear of obstructions?",
+        "TRAVEL:   Full 520 mm travel path clear -- nothing in the carriage's way?",
+        "LENS:     Correct field lens for the source in use?",
+        "GOGGLES:  Matching wavelength goggles ON?",
+        "NOTE:     LightBurn Split Marking is galvo-only and NOT available here.",
+        "          Slide positioning is manual or macro-driven. Verify before running.",
+        "STATUS:   This profile is SPECULATIVE and unverified on hardware."
+      ]
+    },
+    {
+      "file": "WeCreat-Lumos-Ultra-Conveyor-206.lbdev",
+      "displayName": "WeCreat Lumos Ultra - AutoFlow Conveyor 206",
+      "guid": "LumUltConv",
+      "width": 206,
+      "height": 206,
+      "source": "any",
+      "lens": "any",
+      "evidence": "SPECULATIVE. 206 x 206 mm is the Kickstarter FAQ's per-cycle figure; WeCreat's own pages also quote 200 x 500 mm and 1000 x 200 mm. Precedent from the Vision passthrough conveyor is an A-axis feed via LightBurn's rotary setup.",
+      "checklist": [
+        "BELT:     Belt clear, parts seated, load under 10 kg?",
+        "FEED:     Feed increment verified on a dry run WITHOUT the beam?",
+        "ATTEND:   Batch jobs run long. Do NOT leave unattended.",
+        "FIRE:     Extinguisher within reach? Extraction running?",
+        "LENS:     Correct field lens?  GOGGLES: matching wavelength ON?",
+        "STATUS:   This profile is SPECULATIVE and unverified on hardware."
+      ]
+    }
+  ]
+}

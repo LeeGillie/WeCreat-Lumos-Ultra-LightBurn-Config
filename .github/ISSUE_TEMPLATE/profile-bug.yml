@@ -1,0 +1,76 @@
+name: Profile bug
+description: A profile in profiles/ behaves wrongly
+title: "[profile] "
+labels: ["profile", "needs-triage"]
+body:
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Which profile?
+      options:
+        - WeCreat-Lumos-Ultra-UV-Purple-210
+        - WeCreat-Lumos-Ultra-UV-Green-K9-70
+        - WeCreat-Lumos-Ultra-MOPA60-Red-210
+        - WeCreat-Lumos-Ultra-MOPA100-Red-210
+        - WeCreat-Lumos-Ultra-Slide-520x183
+        - WeCreat-Lumos-Ultra-Conveyor-206
+        - other / my own
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+      description: Console output raw, please.
+    validations:
+      required: true
+
+  - type: textarea
+    id: fix
+    attributes:
+      label: Settings that actually worked
+      description: |
+        If you found values that work, paste them — they go straight into tools/profile-spec.json.
+      value: |
+        Width               =
+        Height              =
+        MirrorX             =
+        MirrorY             =
+        CutOrigin           =
+        ProcessOffsetX      =
+        ProcessOffsetY      =
+        BaudRate            =
+        EnableZ             =
+      render: text
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Machine configuration
+      value: |
+        - Sources fitted:
+        - Lens installed:
+        - Accessories fitted:
+        - MakeIt version:
+        - LightBurn version:
+        - Firmware banner:
+        - OS:
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmation
+      options:
+        - label: MakeIt was fully closed when I tested (it holds the serial port)
+        - label: I did not add unverified M-codes to the profile's start G-code
+          required: true

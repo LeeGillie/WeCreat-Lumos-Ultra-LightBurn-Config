@@ -1,0 +1,37 @@
+MIT License
+
+Copyright (c) 2026 Lee Gillie and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+ADDITIONAL NOTICE
+
+This project controls high-power laser equipment. The MIT warranty disclaimer
+above applies with particular force: nothing in this repository has been
+validated against a physical WeCreat Lumos Ultra. Read SAFETY.md.
+
+This project is not affiliated with, endorsed by, or supported by WeCreat or
+LightBurn Software. "WeCreat", "Lumos", "MakeIt" and "LightBurn" are the marks
+of their respective owners and are used here only to identify the equipment and
+software this configuration is intended to work with.
+
+WeCreat's own device profiles, firmware, and application code are not
+redistributed in this repository.

@@ -1,0 +1,83 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  profiles:
+    name: Profiles are valid, clean and safe
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate profiles from the spec
+        shell: pwsh
+        run: ./tools/build-profiles.ps1
+
+      - name: Fail if the committed profiles drifted from the spec
+        shell: pwsh
+        run: |
+          $diff = git status --porcelain profiles/
+          if ($diff) {
+            Write-Host "profiles/ is out of date with tools/profile-spec.json:"
+            Write-Host $diff
+            Write-Host ""
+            Write-Host "Run ./tools/build-profiles.ps1 and commit the result."
+            exit 1
+          }
+          Write-Host "profiles/ matches the spec."
+
+      - name: Validate hygiene and safety rules
+        shell: pwsh
+        run: ./tools/validate-lbdev.ps1
+
+  hygiene:
+    name: No vendor material committed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refuse vendor .lbdev, firmware and extracted app content
+        run: |
+          set -e
+          bad=$(git ls-files \
+            | grep -Ei 'vendor-lbdev/|makeit-extract/|\.asar$|\.jsc$|\.enc$|\.tar\.gz$|WeCreat-(Vision|Vista)[^/]*\.lbdev$|WeCreat-Lumos-v[0-9][^/]*\.lbdev$|WECREAT-LC\.lbdev$|(^|/)prefs\.ini$' \
+            || true)
+          # reference/ may only ever contain its README
+          bad="$bad $(git ls-files reference/ | grep -v '^reference/README\.md$' || true)"
+          bad=$(echo "$bad" | tr ' ' '\n' | grep -v '^$' || true)
+          if [ -n "$bad" ]; then
+            echo "These files must not be committed:"
+            echo "$bad"
+            exit 1
+          fi
+          echo "No vendor material committed."
+
+  links:
+    name: Internal doc links resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check relative markdown links
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            dir=$(dirname "$f")
+            # pull out ](target) where target is not a URL or anchor
+            grep -oE '\]\([^)#][^)]*\)' "$f" 2>/dev/null \
+              | sed -E 's/^\]\(//; s/\)$//' \
+              | grep -vE '^(https?:|mailto:)' \
+              | sed -E 's/#.*$//' \
+              | while IFS= read -r t; do
+                  [ -z "$t" ] && continue
+                  if [ ! -e "$dir/$t" ]; then
+                    echo "BROKEN  $f  ->  $t"
+                    fail=1
+                  fi
+                done
+          done < <(git ls-files '*.md')
+          exit 0   # advisory for now; flip to `exit $fail` once the tree is stable

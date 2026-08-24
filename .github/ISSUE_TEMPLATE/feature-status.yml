@@ -1,0 +1,86 @@
+name: Feature status report
+description: You tested something from the inventory and can move its status
+title: "[status] "
+labels: ["feature-status", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Hardware reports are what this project runs on.
+
+        **Please read [SAFETY.md](../blob/main/SAFETY.md) if you have not.**
+
+        If you are reporting **Stage 0 USB enumeration**, that is the single most valuable
+        test in the project — thank you especially.
+
+  - type: input
+    id: feature
+    attributes:
+      label: Which inventory item?
+      description: The ID from docs/02-feature-inventory.md, e.g. A4, C2, D1, E4
+      placeholder: "E4 - Autofocus"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: newstatus
+    attributes:
+      label: Status you are proposing
+      options:
+        - WORKING - confirmed working on hardware
+        - NEEDS-HW - still blocked on testing
+        - BLOCKED-LB - blocked by LightBurn (galvo-class feature)
+        - BLOCKED-FW - blocked by WeCreat firmware
+        - DRAFT - approach exists, untested
+        - NOT-STARTED
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What you did and what happened
+      description: |
+        Be concrete. Exact steps, exact output. Paste console text raw rather than retyping it.
+        Say what you did NOT test — a report that quietly omits a step reads as a negative result.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: grade
+    attributes:
+      label: Evidence grade
+      description: See CONTRIBUTING.md. An honest "inferred" is a real contribution.
+      options:
+        - CONFIRMED-community (I observed this on hardware)
+        - CONFIRMED-vendor (a WeCreat artifact says so)
+        - INFERRED (reasoned from other facts)
+        - UNKNOWN (I have the thing but not its meaning)
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Machine configuration
+      description: Almost every question here turns out to be model- or firmware-specific.
+      value: |
+        - Machine:            Lumos Ultra
+        - Sources fitted:     6W UV / 60W MOPA / 100W MOPA
+        - Lens installed:     Purple / Green / Red
+        - Accessories fitted:
+        - MakeIt version:
+        - LightBurn version:
+        - LightBurn licence:  Core / Pro
+        - Firmware banner:    [WeCreat ... :ver ......]
+        - OS:
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmation
+      options:
+        - label: I did not send undocumented M-codes to find out what they do
+          required: true

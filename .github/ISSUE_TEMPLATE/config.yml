@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the safety notes first
+    url: https://github.com/OWNER/REPO/blob/main/SAFETY.md
+    about: This project drives a 6W UV and up to a 100W MOPA fiber laser. Please read before testing anything.
+  - name: Feature & mode inventory
+    url: https://github.com/OWNER/REPO/blob/main/docs/02-feature-inventory.md
+    about: Current status of every source, lens, mode and accessory - check here before filing.
+  - name: Staged bring-up plan
+    url: https://github.com/OWNER/REPO/blob/main/docs/03-bringup-plan.md
+    about: What to test, in what order, and what each result means.

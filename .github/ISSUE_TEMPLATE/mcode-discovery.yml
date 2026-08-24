@@ -1,0 +1,88 @@
+name: M-code discovery
+description: Evidence about what a WeCreat G-code / M-code does
+title: "[mcode] M"
+labels: ["mcode", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The safe way to learn an M-code is to **watch what MakeIt already sends** — run the same
+        job twice, change one variable, diff the G-code. See
+        [Stage 5](../blob/main/docs/03-bringup-plan.md#stage-5).
+
+        **We do not accept "I sent it and nothing bad happened" as evidence of meaning.**
+        Absence of an observed effect is not a definition.
+
+  - type: input
+    id: code
+    attributes:
+      label: The code
+      placeholder: "M18 S1"
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Which machine model did you see it on?
+      description: WeCreat renumbers M-codes between models, so every entry is model-scoped.
+      placeholder: "Lumos Ultra"
+    validations:
+      required: true
+
+  - type: textarea
+    id: meaning
+    attributes:
+      label: What you believe it does
+    validations:
+      required: true
+
+  - type: dropdown
+    id: grade
+    attributes:
+      label: Evidence grade
+      options:
+        - CONFIRMED-vendor (a WeCreat label, article, or shipped file says so)
+        - CONFIRMED-community (observed effect on hardware, method described below)
+        - INFERRED (reasoned from context, not directly observed)
+        - UNKNOWN (I have the code, not its meaning)
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: The evidence
+      description: |
+        A diff from a differential capture, a firmware string dump, a vendor macro label, or a
+        described observation. Paste raw. Post the diff, not the whole file.
+      render: text
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source URL, if any
+      description: Goes into docs/evidence/sources.md
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Machine configuration
+      value: |
+        - Sources fitted:
+        - Lens installed:
+        - MakeIt version:
+        - Firmware banner:
+        - Capture method:   Wireshark on RNDIS / MakeIt console / other
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmation
+      options:
+        - label: I obtained this by observing MakeIt or by documented evidence, not by sending unknown codes to the machine
+          required: true
