@@ -15,7 +15,8 @@
 param(
   [string] $Target,
   [switch] $AllowAutofocus,
-  [int]    $TimeoutSec = 5
+  [int]    $TimeoutSec = 5,
+  [string] $SharePath       # also write the capture here (the share this was launched from)
 )
 
 $ErrorActionPreference = 'Continue'
@@ -132,17 +133,31 @@ try {
   Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8
   $written += (Join-Path $d $fileName)
 } catch {}
+$shareTargets = @()
+if ($SharePath) { $shareTargets += $SharePath }
 try {
   $origin = (& git -C $repo remote get-url origin 2>$null)
-  if ($origin -and $origin.StartsWith('\\')) {
-    $d = Join-Path $origin 'captures'
-    if (Test-Path $d) { Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8; $written += (Join-Path $d $fileName) }
-  }
+  if ($origin -and $origin.StartsWith('\\')) { $shareTargets += $origin }
 } catch {}
+
+foreach ($s in ($shareTargets | Select-Object -Unique)) {
+  try {
+    $d = Join-Path $s 'captures'
+    if (-not (Test-Path $d)) { New-Item -ItemType Directory -Force -Path $d -ErrorAction Stop | Out-Null }
+    Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8 -ErrorAction Stop
+    $written += (Join-Path $d $fileName)
+    # the camera still, if we got one
+    $img = Join-Path $repo ('captures\camera-' + $stamp + '.jpg')
+    if (Test-Path $img) { Copy-Item $img (Join-Path $d ('camera-' + $stamp + '.jpg')) -Force -ErrorAction SilentlyContinue }
+  } catch {
+    Write-Host ('  could not write to ' + $s + ' : ' + $_.Exception.Message) -ForegroundColor DarkYellow
+  }
+}
 
 Write-Host ''
 Write-Host '  ------------------------------------------------------------------'
-foreach ($w in $written) { Write-Host ('  Saved : ' + $w) }
+if ($written.Count -eq 0) { Write-Host '  NOTHING SAVED - copy the text above by hand' -ForegroundColor Red }
+foreach ($w in $written) { Write-Host ('  Saved : ' + $w) -ForegroundColor Green }
 Write-Host '  ------------------------------------------------------------------'
 Write-Host ''
 Read-Host '  Press Enter to close'

@@ -20,7 +20,8 @@ param(
   [int]      $Baud = 1000000,
   [switch]   $AllBauds,
   [int]      $ReadMs = 1500,
-  [switch]   $IncludeM27      # opt-in, see the warning below
+  [switch]   $IncludeM27,     # opt-in, see the warning below
+  [string]   $SharePath       # also write the capture here (the share this was launched from)
 )
 
 $ErrorActionPreference = 'Continue'
@@ -139,18 +140,30 @@ foreach ($dest in @((Join-Path $repo 'captures'))) {
     $written += (Join-Path $dest $fileName)
   } catch {}
 }
-# and back to the share it was cloned from, if we can find it
+# and back to the share, so the capture is visible from the authoring machine.
+# Prefer an explicit -SharePath; fall back to the git origin if it looks like a UNC path.
+$shareTargets = @()
+if ($SharePath) { $shareTargets += $SharePath }
 try {
   $origin = (& git -C $repo remote get-url origin 2>$null)
-  if ($origin -and $origin.StartsWith('\\')) {
-    $d = Join-Path $origin 'captures'
-    if (Test-Path $d) { Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8 -ErrorAction Stop; $written += (Join-Path $d $fileName) }
-  }
+  if ($origin -and $origin.StartsWith('\\')) { $shareTargets += $origin }
 } catch {}
+
+foreach ($s in ($shareTargets | Select-Object -Unique)) {
+  try {
+    $d = Join-Path $s 'captures'
+    if (-not (Test-Path $d)) { New-Item -ItemType Directory -Force -Path $d -ErrorAction Stop | Out-Null }
+    Set-Content -Path (Join-Path $d $fileName) -Value $log.ToString() -Encoding UTF8 -ErrorAction Stop
+    $written += (Join-Path $d $fileName)
+  } catch {
+    Write-Host ('  could not write to ' + $s + ' : ' + $_.Exception.Message) -ForegroundColor DarkYellow
+  }
+}
 
 Write-Host ''
 Write-Host '  ------------------------------------------------------------------'
-foreach ($w in $written) { Write-Host ('  Saved : ' + $w) }
+if ($written.Count -eq 0) { Write-Host '  NOTHING SAVED - copy the text above by hand' -ForegroundColor Red }
+foreach ($w in $written) { Write-Host ('  Saved : ' + $w) -ForegroundColor Green }
 Write-Host '  ------------------------------------------------------------------'
 Write-Host ''
 Write-Host '  The $$ output is the prize here - no WeCreat machine has ever had its'

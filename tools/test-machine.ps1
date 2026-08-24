@@ -88,7 +88,9 @@ function Run-Stage($scriptName, $extraArgs) {
   if (-not (Test-Path $p)) { $p = Join-Path $source ('tools\' + $scriptName) }
   if (-not (Test-Path $p)) { Write-Host ('  not found: ' + $scriptName) -ForegroundColor Red; Read-Host '  Enter'; return }
   Write-Host ''
-  $a = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$p)
+  # Always tell the stage where the share is, so the capture comes back even if
+  # the local clone has no usable git origin.
+  $a = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$p,'-SharePath',$source)
   if ($extraArgs) { $a += $extraArgs }
   & powershell @a
 }
