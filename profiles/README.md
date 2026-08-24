@@ -1,5 +1,20 @@
 # profiles/
 
+> ## ⚠️ These profiles are the wrong device class — regeneration pending
+>
+> On first connection (2026-08-24) LightBurn 2.1.04 said:
+>
+> > *"Your laser has been detected as a WeCreat device but you are not using a custom gcode
+> > device with the WeCreat device flavor. The device may not work correctly as a result."*
+>
+> **LightBurn has a native WeCreat device flavor.** These profiles declare `"Name": "GRBL"`,
+> modelled on WeCreat's own `WeCreat-Lumos-v1.5.lbdev` — which dates from August 2025 and
+> predates that flavor. The vendor's profile is outdated too, and produces the same warning.
+>
+> They **do connect** and the handshake works. But the correct configuration is a **Custom GCode**
+> device with flavor **WeCreat**, plus *Supports G53 Command* and *Fetch configuration on connect*
+> both disabled. See [the capture](../captures/stage3-lightburn-connect-benchy.md).
+
 ## `draft/` — generated, unverified
 
 Six LightBurn device profiles for the Lumos Ultra. **None has been tested on a physical machine.**
