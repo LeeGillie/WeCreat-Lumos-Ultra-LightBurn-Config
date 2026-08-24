@@ -40,7 +40,27 @@ know of, assembled from WeCreat's own shipped `.lbdev` profiles, their support a
 | `~` | — | Cycle start / resume | CONFIRMED-community | All |
 | `0x18` | — | Soft reset (Ctrl-X) | CONFIRMED-community | All |
 
-### GRBL `$` command support — measured on a Lumos Ultra, 2026-08-24
+### Codes found in Lumos Ultra firmware configuration, 2026-08-24
+
+Recovered from `/etc/mbtc/inverse_distance.json` on the controller's filesystem
+([capture](../captures/stage2b-fileserver-benchy.md)). **These appear in no WeCreat `.lbdev` and
+in no prior reverse-engineering work.**
+
+```json
+"0": { "inverse_dis": "M101X0.001\n",                "inverse_cmd": "M104X1" },
+"1": { "inverse_dis": "M44K0.00003273B0.02181818\n", "inverse_cmd": "M104X2" }
+```
+
+| Code | Observed | Reading | Grade |
+|---|---|---|---|
+| `M104` | `M104X1`, `M104X2` | Selects between two configurations. The Ultra has exactly two optical paths (UV, MOPA) — a **source/lens select candidate** | **INFERRED** |
+| `M44` | `M44K<n>B<n>` | `K`/`B` read as slope and intercept of a linear fit — a distance calibration | INFERRED |
+| `M101` | `M101X<n>` | Scalar distance parameter, paired with `M104X1` | UNKNOWN |
+
+> **Do not send these to find out what they do.** The correct confirmation is to run one job per
+> source in MakeIt and diff the captured G-code — `tools/stage5-jobfile-grab.ps1`.
+
+## GRBL `$` command support — measured on a Lumos Ultra, 2026-08-24
 
 **CONFIRMED-hardware** ([capture](../captures/stage1-serial-benchy.md)). The controller
 implements enough GRBL to stream jobs and report status, and **not** the settings subsystem.
@@ -61,6 +81,8 @@ Stage 4.
 ### The identity string does not name the model
 
 `$I` returns **`[WeCreat Lumos :ver 000240]`** on a **Lumos Ultra**. It does not say "Ultra".
+(The machine's own `/etc/mbtc/devicename.txt` reads `Lumos Ultra`, so the serial string is
+confirmed to be a **family** string rather than the model.)
 A Lumos (non-Ultra) reported `[WeCreat Lumos :ver 000207]` in a public forum capture — same
 product string, same format, older build. Firmware appears to be shared across the family.
 

@@ -1,0 +1,43 @@
+﻿
+  Stage 2 - controller HTTP API probe (READ-ONLY)
+  host: BENCHY    2026-08-24 09:32:37
+
+  Locating the RNDIS link...
+    Ethernet 7  USB Ethernet/RNDIS Gadget  192.168.42.100/24
+  guessing controller at: 192.168.42.1
+
+  --- ports on 192.168.42.1 ---
+    22     SSH            OPEN
+    80     HTTP           closed
+    8080   REST API       OPEN
+    8082   file listing   OPEN
+    8888   ?              closed
+
+
+  --- GET /camera/take_photo
+      Single still from the overhead camera
+      HTTP 200      826793 bytes
+      image saved to \\cortex\d\DevHome\WeCreat Lumos Ultra Lightburn Config\captures\camera-20260824-093237.jpg
+      image saved to \\cortex\d\DevHome\WeCreat Lumos Ultra Lightburn Config\captures\camera-20260824-093237.jpg
+      >> open it: how many cameras? one frame or a composite? orientation?
+
+  --- GET /device/camera/download
+      Camera calibration data
+      HTTP 200      296 bytes
+      {"bottomData":{"points":[{"x":869,"y":1892},{"x":100,"y":100},{"x":2262,"y":1901},{"x":100,"y":100},{"x":100,"y":100},{"x":100,"y":100},{"x":865,"y":3280},{"x":100,"y":100},{"x":2256,"y":3289}]},"customThickness":0,"basicData":{"x":20,"y":20,"width":170,"height":170,"type":"5W","id":"lumosPro"}}
+
+  --- POST /process/status
+      Machine status
+      HTTP 200      48 bytes
+      {
+      	"code" : 0,
+      	"result" : "ok",
+      	"status" : 5
+      }
+
+  (skipped /device/camera/measure_distance - it moves the head.
+   re-run with -AllowAutofocus if you want it, bed clear.)
+
+  NOT CALLED, DELIBERATELY: POST /test/cmd/mcu
+  That endpoint executes G-code and bypasses the lid interlock. See SAFETY.md.
+

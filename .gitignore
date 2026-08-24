@@ -26,6 +26,13 @@ prefs.ini
 *.lbset
 
 # Contributor captures land in captures/ and ARE tracked, but not raw dumps
+#
+# Filesystem dumps pulled off a controller are NEVER committed. They contain
+# device serial numbers, MAC addresses and other per-unit identifiers. Curate the
+# findings into a .md capture record instead, and leave the raw dump local.
+captures/fileserver-*/
+captures/**/*sn.json
+captures/**/*mac*
 captures/_runlog-*.txt
 captures/**/*.pcap
 captures/**/*.pcapng

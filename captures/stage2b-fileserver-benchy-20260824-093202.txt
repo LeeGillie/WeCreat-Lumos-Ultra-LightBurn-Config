@@ -1,0 +1,4383 @@
+﻿
+  Stage 2b - controller file listing (READ-ONLY, GET requests only)
+  host: BENCHY    2026-08-24 09:32:02
+
+  target: http://192.168.42.1:8082/
+
+  [dir] /   (19 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  bin/
+          <dir>  dev/
+          <dir>  etc/
+          <dir>  lib/
+          <dir>  mnt/
+          <dir>  overlay/
+          <dir>  proc/
+          file   rdinit
+          <dir>  rom/
+          <dir>  root/
+          <dir>  sbin/
+          <dir>  sys/
+          <dir>  tmp/
+          <dir>  usr/
+          <dir>  var/
+          <dir>  www/
+  [dir] /bin/   (80 entries)
+          file   #
+          file   #
+          file   #
+          file   ash
+          file   board_detect
+          file   busybox
+          file   cat
+          file   chgrp
+          file   chmod
+          file   chown
+          FILE*  config_generate
+          file   cp
+          file   date
+          file   dd
+          file   df
+          file   dmesg
+          file   echo
+          file   egrep
+          file   false
+          file   fgrep
+          file   fsync
+          file   grep
+          file   gunzip
+          file   gzip
+          file   hostname
+          file   ipcalc.sh
+          file   kill
+          file   ln
+          file   lock
+          file   login
+          file   login.sh
+          file   ls
+          file   mkdir
+          file   mknod
+          file   mktemp
+          file   mount
+          file   mv
+          file   netmsg
+          file   netstat
+          file   nice
+          file   passwd
+          file   pidof
+          file   ping
+          file   ps
+          file   pwd
+          file   rm
+          file   rmdir
+          file   sed
+          file   setusbconfig
+          file   sh
+          file   sleep
+          file   stty
+          file   sync
+          file   tar
+          file   touch
+          file   traceroute
+          file   true
+          file   ubus
+          file   umount
+          file   uname
+          file   usleep
+          file   vi
+          file   wifi_connect_ap_test
+          file   wifi_connect_ap_with_netid_test
+          file   wifi_connect_chinese_ap_test
+          file   wifi_disconnect_ap_test
+          file   wifi_get_connection_info_test
+          file   wifi_get_netid_test
+          file   wifi_list_networks_test
+          file   wifi_longtime_scan_test
+          file   wifi_longtime_test
+          file   wifi_off_test
+          file   wifi_on_off_test
+          file   wifi_on_test
+          file   wifi_reconnect_ap_test
+          file   wifi_remove_all_networks_test
+          file   wifi_remove_network_test
+          file   wifi_scan_results_test
+          file   wifi_wps_pbc_test
+          file   zcat
+  [dir] /dev/   (151 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  v4l/
+          file   rtc
+          <dir>  disk/
+          <dir>  block/
+          file   root
+          <dir>  dev/
+          <dir>  char/
+          file   stderr
+          file   stdout
+          file   stdin
+          <dir>  fd/
+          file   fuse
+          <dir>  by-name/
+          file   usb1
+          file   usb2
+          file   1-1
+          <dir>  pts/
+          <dir>  shm/
+          file   ubiblock0_5
+          file   ubi0_9
+          file   ubi0_8
+          file   ubi0_7
+          file   ubi0_6
+          file   ubi0_5
+          file   ubi0_4
+          file   ubi0_3
+          file   ubi0_2
+          file   ubi0_1
+          file   ubi0_0
+          file   ubi0
+          file   video1
+          file   video0
+          file   ubi_ctrl
+          file   i2c-1
+          file   cpu_dma_latency
+          file   mmcblk0p2
+          file   mmcblk0p1
+          file   mmcblk0
+          file   watchdog0
+          file   watchdog
+          file   rtc0
+          <dir>  bus/
+          file   spidev1.0
+          file   mtdblock3
+          file   mtd3ro
+          file   mtd3
+          file   mtdblock2
+          file   mtd2ro
+          file   mtd2
+          file   mtdblock1
+          file   mtd1ro
+          file   mtd1
+          file   mtdblock0
+          file   mtd0ro
+          file   mtd0
+          file   sunxi-wlan
+          file   sunxi_soc_info
+          file   sunxi-reg
+          file   ttyS5
+          file   ttyS4
+          file   ttyS3
+          file   ttyS2
+          file   ttyS1
+          file   ttyS0
+          file   ptmx
+          file   sunxi_pwm0
+          file   tty63
+          file   tty62
+          file   tty61
+          file   tty60
+          file   tty59
+          file   tty58
+          file   tty57
+          file   tty56
+          file   tty55
+          file   tty54
+          file   tty53
+          file   tty52
+          file   tty51
+          file   tty50
+          file   tty49
+          file   tty48
+          file   tty47
+          file   tty46
+          file   tty45
+          file   tty44
+          file   tty43
+          file   tty42
+          file   tty41
+          file   tty40
+          file   tty39
+          file   tty38
+          file   tty37
+          file   tty36
+          file   tty35
+          file   tty34
+          file   tty33
+          file   tty32
+          file   tty31
+          file   tty30
+          file   tty29
+          file   tty28
+          file   tty27
+          file   tty26
+          file   tty25
+          file   tty24
+          file   tty23
+          file   tty22
+          file   tty21
+          file   tty20
+          file   tty19
+          file   tty18
+          file   tty17
+          file   tty16
+          file   tty15
+          file   tty14
+          file   tty13
+          file   tty12
+          file   tty11
+          file   tty10
+          file   tty9
+          file   tty8
+          file   tty7
+          file   tty6
+          file   tty5
+          file   tty4
+          file   tty3
+          file   tty2
+          file   tty1
+          file   vcsa1
+          file   vcsu1
+          file   vcs1
+          file   vcsa
+          file   vcsu
+          file   vcs
+          file   tty0
+          file   console
+          file   tty
+          file   kmsg
+          file   urandom
+          file   random
+          file   full
+          file   zero
+          file   null
+          file   kmem
+          file   mem
+          file   gpiochip0
+          file   rfkill
+  [dir] /etc/   (58 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  asound.conf
+          <dir>  avahi/
+          FILE*  awequal.conf
+          file   banner
+          file   banner.failsafe
+          <dir>  bluetooth/
+          <dir>  board.d/
+          <dir>  config/
+          <dir>  crontabs/
+          <dir>  dbus-1/
+          FILE*  device_info
+          file   diag.sh
+          FILE*  dnsmasq.conf
+          <dir>  dropbear/
+          FILE*  e2fsck.conf
+          file   filesystems
+          file   fw_env.config
+          file   group
+          file   hosts
+          FILE*  hotplug-preinit.json
+          <dir>  hotplug.d/
+          FILE*  hotplug.json
+          <dir>  init.d/
+          file   inittab
+          <dir>  iproute2/
+          <dir>  lib/
+          <dir>  mbtc/
+          <dir>  modules.d/
+          file   mtab
+          file   openwrt_release
+          file   openwrt_version
+          <dir>  opkg/
+          file   passwd
+          file   preinit
+          file   profile
+          file   protocols
+          <dir>  rc.button/
+          file   rc.common
+          <dir>  rc.d/
+          file   rc.local
+          FILE*  resolv.conf
+          file   services
+          file   shadow
+          file   shells
+          FILE*  sysctl.conf
+          <dir>  sysctl.d/
+          FILE*  sysupgrade.conf
+          file   test_mmm
+          <dir>  uci-defaults/
+          <dir>  udev/
+          FILE*  vsftpd.conf
+          <dir>  wifi/
+          FILE*  xattr.conf
+          FILE*  board.json
+          file   hostname
+  [dir] /lib/   (67 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  config/
+          <dir>  firmware/
+          <dir>  functions/
+          file   functions.sh
+          file   ld-2.23.so
+          file   ld-linux-armhf.so.3
+          file   libblkid-tiny.so
+          file   libblobmsg_json.so
+          file   libbtmg.so
+          file   libc-2.23.so
+          file   libc.so
+          file   libc.so.6
+          file   libcidn-2.23.so
+          file   libcidn.so
+          file   libcidn.so.1
+          file   libconfig.so.9
+          file   libconfig.so.9.1.3
+          file   libcrypt-2.23.so
+          file   libcrypt.so
+          file   libcrypt.so.1
+          file   libdl-2.23.so
+          file   libdl.so
+          file   libdl.so.2
+          file   libfstools.so
+          file   libgcc_s.so.1
+          file   libjson_script.so
+          file   libm-2.23.so
+          file   libm.so
+          file   libm.so.6
+          file   libnss_dns-2.23.so
+          file   libnss_dns.so
+          file   libnss_dns.so.2
+          file   libnss_files-2.23.so
+          file   libnss_files.so
+          file   libnss_files.so.2
+          file   libota-burnboot.so
+          file   libpthread-2.23.so
+          file   libpthread.so.0
+          file   libresolv-2.23.so
+          file   libresolv.so
+          file   libresolv.so.2
+          file   librt-2.23.so
+          file   librt.so.1
+          file   libsetlbf.so
+          file   libssp.so.0
+          file   libssp.so.0.0.0
+          file   libstdc%2b%2b.so.6
+          file   libstdc%2b%2b.so.6.0.22
+          file   libstdc%2b%2b.so.6.0.22-gdb.py
+          file   libubox.so
+          file   libubus.so
+          file   libuci.so
+          file   libutil-2.23.so
+          file   libutil.so
+          file   libutil.so.1
+          file   libvalidate.so
+          file   libwifimg.so
+          <dir>  modules/
+          <dir>  netifd/
+          <dir>  network/
+          <dir>  preinit/
+          file   uboot-envtools.sh
+          <dir>  udev/
+          <dir>  upgrade/
+  [dir] /mnt/   (7 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  SDCARD/
+          <dir>  UDISK/
+          <dir>  app/
+          <dir>  exUDISK/
+  [dir] /overlay/   (6 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  etc/
+          <dir>  work/
+          <dir>  upper/
+  [dir] /proc/   (119 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  fs/
+          <dir>  bus/
+          <dir>  cpu/
+          <dir>  irq/
+          file   mtd
+          <dir>  net/
+          <dir>  sys/
+          <dir>  tty/
+          file   keys
+          file   kmsg
+          file   misc
+          <dir>  scsi/
+          file   stat
+          file   iomem
+          file   locks
+          file   crypto
+          <dir>  driver/
+          file   mounts
+          file   uptime
+          file   vmstat
+          file   cgroups
+          file   cmdline
+          file   cpuinfo
+          FILE*  devices
+          file   ioports
+          file   loadavg
+          file   meminfo
+          file   modules
+          <dir>  sysvipc/
+          file   version
+          file   consoles
+          file   kallsyms
+          file   softirqs
+          file   zoneinfo
+          <dir>  bluetooth/
+          file   buddyinfo
+          FILE*  config.gz
+          file   diskstats
+          file   key-users
+          file   interrupts
+          file   partitions
+          file   timer_list
+          <dir>  device-tree/
+          file   execdomains
+          file   filesystems
+          file   vmallocinfo
+          file   pagetypeinfo
+          <dir>  dynamic_debug/
+          file   sysrq-trigger
+          <dir>  self/
+          <dir>  thread-self/
+          <dir>  1/
+          <dir>  2/
+          <dir>  3/
+          <dir>  4/
+          <dir>  6/
+          <dir>  8/
+          <dir>  9/
+          <dir>  10/
+          <dir>  11/
+          <dir>  12/
+          <dir>  13/
+          <dir>  14/
+          <dir>  15/
+          <dir>  16/
+          <dir>  17/
+          <dir>  18/
+          <dir>  19/
+          <dir>  21/
+          <dir>  525/
+          <dir>  526/
+          <dir>  528/
+          <dir>  559/
+          <dir>  560/
+          <dir>  711/
+          <dir>  808/
+          <dir>  813/
+          <dir>  818/
+          <dir>  829/
+          <dir>  1076/
+          <dir>  1078/
+          <dir>  1079/
+          <dir>  1117/
+          <dir>  1137/
+          <dir>  1138/
+          <dir>  1184/
+          <dir>  1185/
+          <dir>  1204/
+          <dir>  1251/
+          <dir>  1395/
+          <dir>  1413/
+          <dir>  1414/
+          <dir>  1503/
+          <dir>  1519/
+          <dir>  1594/
+          <dir>  1617/
+          <dir>  1630/
+          <dir>  1631/
+          <dir>  1632/
+          <dir>  1633/
+          <dir>  1634/
+          <dir>  1680/
+          <dir>  1720/
+          <dir>  1721/
+          <dir>  1821/
+          <dir>  1824/
+          <dir>  1887/
+          <dir>  2151/
+          <dir>  2154/
+          <dir>  2334/
+          <dir>  2352/
+          <dir>  4343/
+          <dir>  4850/
+          <dir>  6469/
+          <dir>  6911/
+          <dir>  7088/
+  [dir] /rom/   (19 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  bin/
+          <dir>  dev/
+          <dir>  etc/
+          <dir>  lib/
+          <dir>  mnt/
+          <dir>  overlay/
+          <dir>  proc/
+          file   rdinit
+          <dir>  rom/
+          <dir>  root/
+          <dir>  sbin/
+          <dir>  sys/
+          <dir>  tmp/
+          <dir>  usr/
+          <dir>  var/
+          <dir>  www/
+  [dir] /root/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /sbin/   (60 entries)
+          file   #
+          file   #
+          file   #
+          file   askfirst
+          file   blkid
+          file   block
+          file   devstatus
+          file   fdisk
+          file   firstboot
+          file   fw_printenv
+          file   fw_setenv
+          file   halt
+          file   hotplug-call
+          file   hwclock
+          file   ifconfig
+          file   ifdown
+          file   ifstatus
+          file   ifup
+          file   init
+          file   ip
+          file   jffs2mark
+          file   jffs2reset
+          file   kmodloader
+          file   led.sh
+          file   logd
+          file   logread
+          file   mkfs.vfat
+          file   mkswap
+          file   mount.ntfs-3g
+          file   mount_root
+          file   mtdbadblk
+          file   netifd
+          file   ota-burnboot0
+          file   ota-burnuboot
+          file   pivot_root
+          file   poweroff
+          file   procd
+          file   reboot
+          file   reload_config
+          file   route
+          file   snapshot
+          file   snapshot_tool
+          file   spidev_test
+          file   start-stop-daemon
+          file   suspendtomem.sh
+          file   switch_root
+          file   swupdate
+          file   swupdate-client
+          file   swupdate-progress
+          file   swupdate_cmd.sh
+          file   sysctl
+          file   sysupgrade
+          file   ubusd
+          file   uci
+          file   udevadm
+          file   udevd
+          file   udevtrigger
+          file   udhcpc
+          file   validate_data
+          file   wifi
+  [dir] /sys/   (14 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  kernel/
+          <dir>  nand_driver0/
+          <dir>  devices/
+          <dir>  power/
+          <dir>  class/
+          <dir>  dev/
+          <dir>  firmware/
+          <dir>  fs/
+          <dir>  bus/
+          <dir>  module/
+          <dir>  block/
+  [dir] /tmp/   (15 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  resolv.conf
+          file   resolv.conf.auto
+          <dir>  .uci/
+          <dir>  tmp/
+          <dir>  lib/
+          <dir>  log/
+          <dir>  sysinfo/
+          file   booting_state
+          <dir>  state/
+          <dir>  lock/
+          <dir>  run/
+          <dir>  shm/
+  [dir] /usr/   (8 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  bin/
+          <dir>  include/
+          <dir>  lib/
+          <dir>  sbin/
+          <dir>  share/
+  [dir] /var/   (15 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  resolv.conf
+          file   resolv.conf.auto
+          <dir>  .uci/
+          <dir>  tmp/
+          <dir>  lib/
+          <dir>  log/
+          <dir>  sysinfo/
+          file   booting_state
+          <dir>  state/
+          <dir>  lock/
+          <dir>  run/
+          <dir>  shm/
+  [dir] /www/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /dev/v4l/   (5 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  by-path/
+          <dir>  by-id/
+  [dir] /dev/disk/   (7 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  by-uuid/
+          <dir>  by-partuuid/
+          <dir>  by-path/
+          <dir>  by-id/
+  [dir] /dev/block/   (11 entries)
+          file   #
+          file   #
+          file   #
+          file   254%3a0
+          file   179%3a1
+          file   179%3a2
+          file   31%3a3
+          file   31%3a2
+          file   179%3a0
+          file   31%3a1
+          file   31%3a0
+  [dir] /dev/dev/   (134 entries)
+          file   #
+          file   #
+          file   #
+          file   ubi0_9
+          file   vcsu1
+          file   vcsu
+          file   vcsa1
+          file   vcsa
+          file   ubi0_8
+          file   vcs1
+          file   ubi0_7
+          file   ubi0_6
+          file   ubi0_5
+          file   ubi0_4
+          file   ubi0_3
+          file   ubi0_2
+          file   ubi0_1
+          file   ubi0_0
+          file   ubi0
+          file   vcs
+          file   tty9
+          file   tty7
+          file   tty8
+          file   tty63
+          file   tty61
+          file   tty62
+          file   tty6
+          file   tty60
+          file   tty58
+          file   tty59
+          file   tty56
+          file   tty57
+          file   tty55
+          file   tty53
+          file   tty54
+          file   tty51
+          file   tty52
+          file   tty5
+          file   tty50
+          file   tty49
+          file   tty48
+          file   tty46
+          file   tty47
+          file   tty45
+          file   tty43
+          file   tty44
+          file   tty41
+          file   tty42
+          file   tty4
+          file   tty40
+          file   tty38
+          file   tty39
+          file   tty37
+          file   tty35
+          file   tty36
+          file   tty33
+          file   tty34
+          file   tty31
+          file   tty32
+          file   tty30
+          file   tty3
+          file   tty28
+          file   tty29
+          file   tty27
+          file   tty26
+          file   tty24
+          file   tty25
+          file   tty22
+          file   tty23
+          file   tty21
+          file   tty2
+          file   tty20
+          file   tty19
+          file   tty18
+          file   tty16
+          file   tty17
+          file   tty14
+          file   tty15
+          file   tty12
+          file   tty13
+          file   tty10
+          file   tty11
+          file   tty0
+          file   tty1
+          file   ptmx
+          file   tty
+          file   console
+          file   sunxi_pwm0
+          file   ubi_ctrl
+          file   sunxi_soc_info
+          file   sunxi-wlan
+          file   sunxi-reg
+          file   rfkill
+          file   fuse
+          file   cpu_dma_latency
+          file   zero
+          file   urandom
+          file   random
+          file   null
+          file   mem
+          file   kmsg
+          file   kmem
+          file   full
+          file   video0
+          file   video1
+          file   ubiblock0_5
+          file   rtc0
+          file   mtd0ro
+          file   mtd1ro
+          file   mtd2ro
+          file   mtd3ro
+          file   mmcblk0p1
+          <dir>  bus/
+          file   mmcblk0p2
+          file   spidev1.0
+          file   mtdblock3
+          file   mtd3
+          file   mtdblock2
+          file   mtd2
+          file   mmcblk0
+          file   mtdblock1
+          file   mtd1
+          file   mtdblock0
+          file   mtd0
+          file   i2c-1
+          file   ttyS5
+          file   ttyS4
+          file   ttyS3
+          file   ttyS2
+          file   ttyS1
+          file   ttyS0
+          file   watchdog
+          file   watchdog0
+          file   gpiochip0
+  [dir] /dev/char/   (128 entries)
+          file   #
+          file   #
+          file   #
+          file   7%3a65
+          file   7%3a64
+          file   7%3a129
+          file   7%3a128
+          file   246%3a10
+          file   246%3a9
+          file   7%3a1
+          file   246%3a8
+          file   246%3a7
+          file   246%3a6
+          file   246%3a5
+          file   246%3a4
+          file   246%3a3
+          file   246%3a2
+          file   246%3a1
+          file   246%3a0
+          file   7%3a0
+          file   4%3a9
+          file   4%3a7
+          file   4%3a8
+          file   4%3a63
+          file   4%3a61
+          file   4%3a62
+          file   4%3a6
+          file   4%3a60
+          file   4%3a58
+          file   4%3a59
+          file   4%3a56
+          file   4%3a57
+          file   4%3a55
+          file   4%3a53
+          file   4%3a54
+          file   4%3a51
+          file   4%3a52
+          file   4%3a5
+          file   4%3a50
+          file   4%3a49
+          file   4%3a48
+          file   4%3a46
+          file   4%3a47
+          file   4%3a45
+          file   4%3a43
+          file   4%3a44
+          file   4%3a41
+          file   4%3a42
+          file   4%3a4
+          file   4%3a40
+          file   4%3a38
+          file   4%3a39
+          file   4%3a37
+          file   4%3a35
+          file   4%3a36
+          file   4%3a33
+          file   4%3a34
+          file   4%3a31
+          file   4%3a32
+          file   4%3a30
+          file   4%3a3
+          file   4%3a28
+          file   4%3a29
+          file   4%3a27
+          file   4%3a26
+          file   4%3a24
+          file   4%3a25
+          file   4%3a22
+          file   4%3a23
+          file   4%3a21
+          file   4%3a2
+          file   4%3a20
+          file   4%3a19
+          file   4%3a18
+          file   4%3a16
+          file   4%3a17
+          file   4%3a14
+          file   4%3a15
+          file   4%3a12
+          file   4%3a13
+          file   4%3a10
+          file   4%3a11
+          file   4%3a0
+          file   4%3a1
+          file   5%3a2
+          file   5%3a0
+          file   5%3a1
+          file   250%3a0
+          file   10%3a123
+          file   10%3a126
+          file   10%3a125
+          file   10%3a127
+          file   10%3a242
+          file   10%3a229
+          file   10%3a124
+          file   1%3a5
+          file   1%3a9
+          file   1%3a8
+          file   1%3a3
+          file   1%3a1
+          file   1%3a11
+          file   1%3a2
+          file   1%3a7
+          file   81%3a0
+          file   81%3a1
+          file   253%3a0
+          file   90%3a1
+          file   189%3a128
+          file   189%3a1
+          file   90%3a3
+          file   90%3a5
+          file   90%3a7
+          file   189%3a0
+          file   153%3a0
+          file   90%3a6
+          file   90%3a4
+          file   90%3a2
+          file   90%3a0
+          file   89%3a1
+          file   249%3a5
+          file   249%3a4
+          file   249%3a3
+          file   249%3a2
+          file   249%3a1
+          file   249%3a0
+          file   10%3a130
+          file   252%3a0
+          file   254%3a0
+  [dir] /dev/fd/   (36 entries)
+          file   #
+          file   #
+          file   #
+          file   0
+          file   1
+          file   2
+          file   3
+          file   4
+          file   5
+          file   6
+          file   7
+          file   8
+          file   9
+          file   10
+          file   11
+          file   12
+          file   13
+          file   14
+          file   15
+          file   16
+          file   17
+          file   18
+          file   19
+          file   20
+          file   21
+          file   22
+          file   23
+          file   24
+          file   25
+          file   26
+          file   27
+          file   28
+          file   29
+          file   30
+          <dir>  31/
+          file   33
+  [dir] /dev/by-name/   (14 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  dev/
+          file   UDISK
+          file   recovery
+          file   private
+          file   dsp0
+          file   rootfs
+          file   boot
+          file   env-redund
+          file   env
+          file   boot-resource
+          file   mbr
+  [dir] /dev/pts/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   ptmx
+  [dir] /dev/shm/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /dev/bus/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  usb/
+  [dir] /etc/avahi/   (7 entries)
+          file   #
+          file   #
+          file   #
+          file   avahi-autoipd.action
+          FILE*  avahi-daemon.conf
+          file   avahi-dnsconfd.action
+          <dir>  services/
+  [dir] /etc/bluetooth/   (12 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  bluetooth.json
+          file   bluetoothd
+          file   bt-init
+          file   bt_init.sh
+          FILE*  input.conf
+          <dir>  keys/
+          FILE*  main.conf
+          <dir>  mesh/
+          FILE*  network.conf
+  [dir] /etc/board.d/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   99-default_network
+  [dir] /etc/config/   (11 entries)
+          file   #
+          file   #
+          file   #
+          file   dhcp
+          file   dropbear
+          file   fstab
+          file   fstab_old
+          file   smartlinkd
+          file   system
+          FILE*  udhcpd.conf
+          file   network
+  [dir] /etc/crontabs/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /etc/dbus-1/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  system.d/
+  [dir] /etc/dropbear/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   dropbear_rsa_host_key
+  [dir] /etc/hotplug.d/   (10 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  block/
+          <dir>  dhcp/
+          <dir>  iface/
+          <dir>  neigh/
+          <dir>  net/
+          <dir>  ntp/
+          <dir>  tftp/
+  [dir] /etc/init.d/   (21 entries)
+          file   #
+          file   #
+          file   #
+          file   S99swupdate_autorun
+          file   avahi-daemon
+          file   boot
+          file   cron
+          file   dbus
+          file   dnsmasq
+          file   done
+          file   dropbear
+          file   fstab
+          file   log
+          file   network
+          file   ntpd
+          file   sysctl
+          file   sysfixtime
+          file   system
+          file   udev
+          file   umount
+          file   wpa_supplicant
+  [dir] /etc/iproute2/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   rt_tables
+  [dir] /etc/lib/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  bluetooth/
+  [dir] /etc/mbtc/   (22 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  bluetooth.json
+          FILE*  camera_factory.json
+          FILE*  cfgs.json
+          file   dynamic_mac.sh
+          FILE*  focus_light_cfg.json
+          file   init_pd21.sh
+          FILE*  inverse_distance.json
+          FILE*  materialinfo.json
+          FILE*  oldcamera.json
+          FILE*  print.json
+          FILE*  pwm_multi.json
+          file   restart.sh
+          file   sdcard_format.sh
+          FILE*  sn.json
+          FILE*  version.json
+          FILE*  wlan0_mac.json
+          FILE*  wlan0_mac.txt
+          FILE*  devicename.txt
+          FILE*  camera.json
+  [dir] /etc/modules.d/   (8 entries)
+          file   #
+          file   #
+          file   #
+          file   80-fuse
+          file   ipt-core
+          file   net-rtl8723ds
+          file   spi-dev
+          file   spi-gpio
+  [dir] /etc/opkg/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  keys/
+  [dir] /etc/rc.button/   (7 entries)
+          file   #
+          file   #
+          file   #
+          file   failsafe
+          file   power
+          file   reset
+          file   rfkill
+  [dir] /etc/rc.d/   (28 entries)
+          file   #
+          file   #
+          file   #
+          file   K50dropbear
+          file   K80udev
+          file   K89log
+          file   K90network
+          file   K90sysfixtime
+          file   K98boot
+          file   K98wpa_supplicant
+          file   K99dbus
+          file   K99umount
+          file   S00sysfixtime
+          file   S10boot
+          file   S10dbus
+          file   S10system
+          file   S11sysctl
+          file   S12log
+          file   S20network
+          file   S40fstab
+          file   S50cron
+          file   S50dropbear
+          file   S60dnsmasq
+          file   S61avahi-daemon
+          file   S80udev
+          file   S95done
+          file   S96wpa_supplicant
+          file   S99swupdate_autorun
+  [dir] /etc/sysctl.d/   (4 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  local.conf
+  [dir] /etc/uci-defaults/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /etc/udev/   (5 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  rules.d/
+          FILE*  udev.conf
+  [dir] /etc/wifi/   (8 entries)
+          file   #
+          file   #
+          file   #
+          file   udhcpc_wlan0
+          FILE*  wpa_supplicant.conf
+          FILE*  wpa_supplicant_overlay.conf
+          FILE*  wpa_supplicant_src.conf
+          <dir>  sockets/
+  [dir] /lib/config/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   uci.sh
+  [dir] /lib/firmware/   (7 entries)
+          file   #
+          file   #
+          file   #
+          file   mp_rtl8723d_config_h4
+          file   mp_rtl8723d_config_h5
+          file   mp_rtl8723d_fw
+          <dir>  rtlbt/
+  [dir] /lib/functions/   (11 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  fsck/
+          file   leds.sh
+          file   network.sh
+          file   preinit.sh
+          file   procd.sh
+          file   service.sh
+          file   system.sh
+          file   uci-defaults.sh
+  [dir] /lib/modules/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  5.4.61/
+  [dir] /lib/netifd/   (8 entries)
+          file   #
+          file   #
+          file   #
+          file   dhcp.script
+          file   netifd-proto.sh
+          file   netifd-wireless.sh
+          <dir>  proto/
+          file   utils.sh
+  [dir] /lib/network/   (4 entries)
+          file   #
+          file   #
+          file   #
+          FILE*  config.sh
+  [dir] /lib/preinit/   (16 entries)
+          file   #
+          file   #
+          file   #
+          file   02_default_set_state
+          file   10_indicate_failsafe
+          file   10_indicate_preinit
+          file   10_sysinfo
+          file   30_failsafe_wait
+          file   40_run_failsafe_hook
+          file   50_indicate_regular_preinit
+          file   70_initramfs_test
+          file   79_format_partition
+          file   80_mount_root
+          file   81_initramfs_config
+          file   99_10_failsafe_login
+          file   99_10_run_init
+  [dir] /lib/udev/   (9 entries)
+          file   #
+          file   #
+          file   #
+          file   ata_id
+          file   cdrom_id
+          file   mtd_probe
+          <dir>  rules.d/
+          file   scsi_id
+          file   v4l_id
+  [dir] /lib/upgrade/   (5 entries)
+          file   #
+          file   #
+          file   #
+          file   common.sh
+          <dir>  keep.d/
+  [dir] /mnt/SDCARD/   (9 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  configs/
+          <dir>  framing/
+          <dir>  printing/
+          <dir>  tmp/
+          <dir>  data/
+          <dir>  config/
+  [dir] /mnt/UDISK/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /mnt/app/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /mnt/exUDISK/   (3 entries)
+          file   #
+          file   #
+          file   #
+  [dir] /overlay/etc/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   .extroot-uuid
+  [dir] /overlay/work/   (6 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  work/
+          FILE*  logfile.txt
+          FILE*  logfile.1.txt
+  [dir] /overlay/upper/   (6 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  etc/
+          <dir>  mnt/
+          <dir>  usr/
+  [dir] /proc/fs/   (6 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  ext4/
+          <dir>  jbd2/
+          <dir>  nfsd/
+  [dir] /proc/bus/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  input/
+  [dir] /proc/cpu/   (5 entries)
+          file   #
+          file   #
+          file   #
+          file   alignment
+          file   swp_emulation
+  [dir] /proc/irq/   (30 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  16/
+          <dir>  17/
+          <dir>  18/
+          <dir>  19/
+          <dir>  20/
+          <dir>  21/
+          <dir>  24/
+          <dir>  25/
+          <dir>  26/
+          <dir>  34/
+          <dir>  35/
+          <dir>  36/
+          <dir>  38/
+          <dir>  42/
+          <dir>  43/
+          <dir>  44/
+          <dir>  45/
+          <dir>  47/
+          <dir>  48/
+          <dir>  52/
+          <dir>  53/
+          <dir>  54/
+          <dir>  56/
+          <dir>  59/
+          <dir>  60/
+          <dir>  195/
+          file   default_smp_affinity
+  [dir] /proc/net/   (59 entries)
+          file   #
+          file   #
+          file   #
+          file   arp
+          file   dev
+          file   hci
+          file   raw
+          file   sco
+          file   tcp
+          file   udp
+          file   icmp
+          file   igmp
+          file   raw6
+          file   snmp
+          <dir>  stat/
+          file   tcp6
+          file   udp6
+          file   unix
+          <dir>  vlan/
+          file   icmp6
+          file   igmp6
+          file   l2cap
+          file   ptype
+          file   route
+          file   snmp6
+          file   packet
+          file   psched
+          file   rfcomm
+          file   netlink
+          file   netstat
+          file   udplite
+          file   anycast6
+          file   fib_trie
+          file   if_inet6
+          file   mcfilter
+          file   rt_cache
+          file   sockstat
+          file   udplite6
+          file   dev_mcast
+          <dir>  dev_snmp6/
+          file   ip_mr_vif
+          file   mcfilter6
+          <dir>  netfilter/
+          file   protocols
+          file   rt6_stats
+          <dir>  rtl8723ds/
+          file   sockstat6
+          file   ip6_mr_vif
+          file   ipv6_route
+          file   ip_mr_cache
+          file   fib_triestat
+          file   ip6_mr_cache
+          file   nf_conntrack
+          file   softnet_stat
+          file   ip6_flowlabel
+          file   ip_tables_names
+          file   ip_tables_matches
+          file   ip_tables_targets
+          file   nf_conntrack_expect
+  [dir] /proc/sys/   (10 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  debug/
+          <dir>  dev/
+          <dir>  fs/
+          <dir>  kernel/
+          <dir>  net/
+          <dir>  user/
+          <dir>  vm/
+  [dir] /proc/tty/   (7 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  ldisc/
+          <dir>  driver/
+          file   ldiscs
+          file   drivers
+  [dir] /proc/scsi/   (5 entries)
+          file   #
+          file   #
+          file   #
+          file   scsi
+          FILE*  device_info
+  [dir] /proc/driver/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   rtc
+  [dir] /proc/sysvipc/   (6 entries)
+          file   #
+          file   #
+          file   #
+          file   msg
+          file   sem
+          file   shm
+  [dir] /proc/bluetooth/   (4 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  sleep/
+  [dir] /proc/device-tree/   (36 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  power-management%40ff000000/
+          <dir>  ext32k_clk/
+          file   compatible
+          <dir>  reserved-memory/
+          <dir>  rc16m_clk/
+          <dir>  cpu-opp-table/
+          <dir>  dsp0_gpio_int/
+          <dir>  iommu%402010000/
+          <dir>  interrupt-controller%403020000/
+          <dir>  memory%4040000000/
+          <dir>  usb1-vbus/
+          <dir>  share_space%400x42100000/
+          <dir>  dcxo24M_clk/
+          <dir>  firmware/
+          FILE*  model
+          <dir>  pio-33/
+          <dir>  aliases/
+          <dir>  chosen/
+          <dir>  usb0-vbus/
+          file   interrupt-parent
+          file   %23address-cells
+          <dir>  vdd-cpu/
+          <dir>  thermal-zones/
+          file   %23size-cells
+          <dir>  dump_reg%4020000/
+          <dir>  pio-18/
+          <dir>  pmu/
+          <dir>  dsp0/
+          <dir>  cpus/
+          <dir>  soc%403000000/
+          <dir>  dram/
+          file   name
+          <dir>  timer_arch/
+  [dir] /proc/dynamic_debug/   (4 entries)
+          file   #
+          file   #
+          file   #
+          file   control
+  [dir] /proc/self/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/thread-self/   (35 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  fd/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   time_in_state
+  [dir] /proc/1/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/2/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/3/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/4/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/6/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/8/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/9/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/10/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/11/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/12/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/13/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/14/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/15/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/16/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/17/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/18/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/19/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/21/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/525/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/526/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/528/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/559/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/560/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/711/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/808/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/813/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/818/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/829/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1076/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1078/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1079/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1117/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1137/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1138/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1184/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1185/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1204/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1251/   (39 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1395/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1413/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1414/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1503/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+  [dir] /proc/1519/   (40 entries)
+          file   #
+          file   #
+          file   #
+          <dir>  task/
+          <dir>  fd/
+          <dir>  map_files/
+          <dir>  fdinfo/
+          <dir>  ns/
+          <dir>  net/
+          file   environ
+          file   auxv
+          file   status
+          file   personality
+          file   limits
+          file   comm
+          file   syscall
+          file   cmdline
+          file   stat
+          file   statm
+          file   maps
+          file   mem
+          <dir>  cwd/
+          <dir>  root/
+          file   exe
+          file   mounts
+          file   mountinfo
+          file   mountstats
+          file   wchan
+          file   stack
+          file   cgroup
+          file   oom_score
+          file   oom_adj
+          file   oom_score_adj
+          file   coredump_filter
+          file   uid_map
+          file   gid_map
+          file   projid_map
+          file   setgroups
+          file   timerslack_ns
+          file   time_in_state
+
+  [stopped at the 120 directory cap - raise -MaxDirs to go further]
+
+  === Sampling 49 candidate config files (max 65536 bytes each) ===
+
+  --- /bin/config_generate   (7486 bytes)
+      #!/bin/sh
+      
+      CFG=/etc/board.json
+      
+      . /usr/share/libubox/jshn.sh
+      
+      [ -f $CFG ] || exit 1
+      
+      generate_static_network() {
+      	uci -q batch <<-EOF
+      		delete network.loopback
+      		set network.loopback='interface'
+      		set network.loopback.ifname='lo'
+      		set network.loopback.proto='static'
+      		set network.loopback.ipaddr='127.0.0.1'
+      		set network.loopback.netmask='255.0.0.0'
+      		delete network.globals
+      		set network.globals='globals'
+      		set network.globals.ula_prefix='auto'
+      	EOF
+      
+      	if json_is_a dsl object; then
+      		json_select dsl
+      			if json_is_a atmbridge object; then
+      				json_select atmbridge
+      					local vpi vci encaps payload
+      					json_get_vars vpi vci encaps payload
+      					uci -q batch <<-EOF
+      						delete network.atm
+      						set network.atm='atm-bridge'
+      						set network.atm.vpi='$vpi'
+      						set network.atm.vci='$vci'
+      						set network.atm.encaps='$encaps'
+      						set network.atm.payload='$payload'
+      					EOF
+      				json_select ..
+      			fi
+      
+      			if json_is_a modem object; then
+      				json_select modem
+      					local type annex firmware tone xfer_mode
+      					json_get_vars type annex firmware tone xfer_mode
+      					uci -q batch <<-EOF
+      						delete network.dsl
+      						set network.dsl='$type'
+      						set network.dsl.annex='$annex'
+      						set network.dsl.firmware='$firmware'
+      						set network.dsl.tone='$tone'
+      						set network.dsl.xfer_mode='$xfer_mode'
+      					EOF
+      				json_select ..
+      			fi
+      		json_select ..
+      	fi
+      }
+      
+      addr_offset=2
+      generate_network() {
+      	local ifname macaddr protocol type
+      
+      	json_select network
+      		json_select "$1"
+      			json_get_vars ifname macaddr protocol
+      		json_select ..
+      	json_select ..
+      
+      	[ -n "$ifname" ] || return
+      
+      	# force bridge for multi-interface devices (and lan)
+      	case "$1:$ifname" in
+      		*\ * | lan:*) type="bridge" ;;
+      	esac
+      
+      	uci -q batch <<-EOF
+      		delete network.$1
+      		set network.$1='interface'
+      		set network.$1.type='$type'
+      		set network.$1.ifname='$ifname'
+      		set network.$1.proto='none'
+      	EOF
+      
+      	[ -n "$macaddr" ] && uci -q batch <<-EOF
+      		delete network.$1_dev
+      		set network.$1_dev='device'
+      		set network.$1_dev.name='$ifname' ...[truncated in log, full copy saved]
+
+  --- /etc/asound.conf   (2610 bytes)
+      
+      # R528
+      # audiocodec
+      
+      ctl.!default {
+          type hw
+          card audiocodec
+      }
+      
+      pcm.!default {
+          type asym
+          playback.pcm "Playback"
+          capture.pcm "CaptureDsnoop"
+      }
+      
+      pcm.PlaybackEQ {
+          type plug
+          slave.pcm {
+              type awequal
+              slave.pcm "Playback"
+              config_file "/etc/awequal.conf"
+              tuning_support false
+              verbose true
+          }
+          slave.rate 48000
+          slave.format S16_LE
+          slave.channels 2
+      }
+      
+      pcm.Playback {
+          type plug
+          slave.pcm {
+              type softvol
+              slave.pcm PlaybackDmix
+              control {
+                  name "Soft Volume Master"
+                  card audiocodec
+              }
+              min_dB -51.0
+              max_dB 0.0
+              resolution 256
+          }
+          slave.rate 48000
+          slave.format S16_LE
+      }
+      
+      pcm.PlaybackDmix {
+          type plug
+          slave.pcm {
+              type dmix
+              ipc_key 1111
+              ipc_perm 0666
+              slave {
+                  pcm "hw:audiocodec"
+                  format S16_LE
+                  rate 48000
+                  channels 2
+                  period_size 1024
+                  periods 4
+              }
+          }
+      }
+      
+      pcm.Capture {
+          type hw
+          card audiocodec
+      }
+      
+      pcm.CaptureMic {
+          type plug
+          slave {
+              pcm "CaptureDsnoop"
+              channels 2
+          }
+      }
+      
+      pcm.CaptureDsnoop {
+          type plug
+          slave.pcm {
+              type dsnoop
+              ipc_key 2222
+              ipc_perm 0666
+              slave {
+                  pcm "hw:audiocodec"
+                  rate 16000
+                  channels 3
+                  period_size 1024
+                  periods 4
+              }
+          }
+      }
+      
+      pcm.CaptureDmic {
+          type plug
+          slave.pcm {
+              type dsnoop
+              ipc_key 3333
+              ipc_perm 0666
+              slave {
+                  pcm "hw:snddmic"
+                  rate 16000
+                  channels 4
+                  period_size 1024
+                  periods 4
+              }
+          }
+      }
+      
+      pcm.CaptureDaudio1 {
+          type plug
+          slave.pcm {
+              type dsnoop
+              ipc_key 4444
+              ipc_perm 0666
+              slave {
+                  pcm "hw:snddaudio1"
+                  rate 16000
+                  channels 2
+                  period_size 1024
+                  periods 4
+              }
+       ...[truncated in log, full copy saved]
+
+  --- /etc/awequal.conf   (1510 bytes)
+      #This is the parameter of Equalizer
+      #AllWinner all rights reserved
+      #21-06-18 16-11-12
+      #EQ
+      #PreGainDB = 0
+      #GlobalEnable = True
+      
+      #### Basic parameters ####
+      channels=2 # set according to file format
+      dump_flag=1 # dump params of struct eq_prms_t@eq.c
+      enabled=1 # 1:enable awequal,0:disable
+      bin_num=8 #no. of bands
+      samplerate=48000 #should be equal to formats of audio flie
+      
+      #### Core parameters ####
+      #[BQn]: nth biquad filter
+      #type 0:Low pass shelving filter
+      #     1:Band pass peak filter
+      #     2:High pass shelving filter
+      #     3:Low pass filter
+      #     4:High pass filter
+      #frequency  : frequency point
+      #gain       :-15db ~ 15db
+      #quality : 0.1-20
+      #FilterType       Fc      Gain        Quality
+      #BQ1
+      #FilterType = 4, Fc = 70, G = 0, Q = 0.7, Enable = True
+      params=4 70 0 0.7
+      #BQ2
+      #FilterType = 4, Fc = 70, G = -0.2800007, Q = 0.7, Enable = True
+      params=4 70 0 0.7
+      #BQ3
+      #FilterType = 1, Fc = 75, G = 5.5, Q = 2, Enable = True
+      params=1 75 6 2
+      #BQ4
+      #FilterType = 1, Fc = 100, G = 5, Q = 2, Enable = True
+      params=1 100 5 2
+      #BQ5
+      #FilterType = 1, Fc = 1200, G = -1, Q = 4, Enable = True
+      params=1 1200 -1 4
+      #BQ6
+      #FilterType = 1, Fc = 7000, G = 1, Q = 2, Enable = True
+      params=1 7000 1 2
+      #BQ7
+      #FilterType = 1, Fc = 8100, G = 5, Q = 2, Enable = True
+      params=1 8100 5 2
+      #BQ8
+      #FilterType = 1, Fc = 15100, G = -2, Q = 5, Enable = True
+      params=1 15100 -2 5
+      #BQ9
+      #FilterType = 1, Fc = 8005.816, G = -15, Q = 1, Enable = False
+      #params=1 8006 -15 1
+      #BQ10
+      #FilterType = 1, Fc = 8830.343, G = -15, Q = 1, Enable = False
+      #params=1 8830 -15 1
+      
+
+  --- /etc/device_info   (129 bytes)
+      DEVICE_MANUFACTURER='allwinnertech'
+      DEVICE_MANUFACTURER_URL='www.allwinnertech.com'
+      DEVICE_PRODUCT='v3.5'
+      DEVICE_REVISION='v1.0'
+      
+
+  --- /etc/dnsmasq.conf   (1539 bytes)
+      # Change the following lines if you want dnsmasq to serve SRV
+      # records.
+      # You may add multiple srv-host lines.
+      # The fields are <name>,<target>,<port>,<priority>,<weight>
+      
+      # A SRV record sending LDAP for the example.com domain to
+      # ldapserver.example.com port 289
+      #srv-host=_ldap._tcp.example.com,ldapserver.example.com,389
+      
+      # Two SRV records for LDAP, each with different priorities
+      #srv-host=_ldap._tcp.example.com,ldapserver.example.com,389,1
+      #srv-host=_ldap._tcp.example.com,ldapserver.example.com,389,2
+      
+      # A SRV record indicating that there is no LDAP server for the domain
+      # example.com
+      #srv-host=_ldap._tcp.example.com
+      
+      # The following line shows how to make dnsmasq serve an arbitrary PTR
+      # record. This is useful for DNS-SD.
+      # The fields are <name>,<target>
+      #ptr-record=_http._tcp.dns-sd-services,"New Employee Page._http._tcp.dns-sd-services"
+      
+      # Change the following lines to enable dnsmasq to serve TXT records.
+      # These are used for things like SPF and zeroconf.
+      # The fields are <name>,<text>,<text>...
+      
+      #Example SPF.
+      #txt-record=example.com,"v=spf1 a -all"
+      
+      #Example zeroconf
+      #txt-record=_http._tcp.example.com,name=value,paper=A4
+      
+      # Provide an alias for a "local" DNS name. Note that this _only_ works
+      # for targets which are names from DHCP or /etc/hosts. Give host
+      # "bert" another name, bertrand
+      # The fields are <cname>,<target>
+      #cname=bertand,bert
+      resolv-file=/etc/resolv.dnsmasq.conf
+      strict-order
+      cache-size=102400
+      interface=wlan0
+      min-cache-ttl=3600
+      dhcp-range=192.168.5.2,192.168.5.255
+      all-servers
+      dhcp-sequential-ip
+      
+
+  --- /etc/e2fsck.conf   (38 bytes)
+      [options]
+      broken_system_clock = true
+      
+      
+
+  --- /etc/hotplug-preinit.json   (326 bytes)
+      [
+      	[ "case", "ACTION", {
+      		"add": [
+      			[ "if",
+      				[ "has", "FIRMWARE" ],
+      				[
+      					[ "exec", "/sbin/hotplug-call", "%SUBSYSTEM%" ],
+      					[ "load-firmware", "/lib/firmware" ],
+      					[ "return" ]
+      				]
+      			],
+      		],
+      	}, ],
+      	[ "if",
+      		[ "and",
+      			[ "eq", "SUBSYSTEM", "button" ],
+      		],
+      		[ "exec", "/etc/rc.button/failsafe" ]
+      	],
+      ]
+      
+
+  --- /etc/hotplug.json   (1668 bytes)
+      [
+      	[ "case", "ACTION", {
+      		"add": [
+      			[ "if",
+      				[ "and",
+      					[ "has", "MAJOR" ],
+      					[ "has", "MINOR" ],
+      				],
+      				[
+      					[ "if",
+      						[ "or",
+      							[ "eq", "DEVNAME",
+      								[ "null", "full", "ptmx", "zero" ],
+      							],
+      							[ "regex", "DEVNAME",
+      								[ "^gpio", "^hvc" ],
+      							],
+      						],
+      						[
+      							[ "makedev", "/dev/%DEVNAME%", "0666" ],
+      							[ "return" ],
+      						]
+      					],
+      					[ "if",
+      						[ "or",
+      							[ "eq", "DEVNAME", "mapper/control" ],
+      							[ "regex", "DEVPATH", "^ppp" ],
+      						],
+      						[
+      							[ "makedev", "/dev/%DEVNAME%", "0600" ],
+      							[ "return" ],
+      						],
+      					],
+      					[ "if",
+      						[ "has", "DEVNAME" ],
+      						[ "makedev", "/dev/%DEVNAME%", "0644" ],
+      					],
+      				],
+      			],
+      			[ "if",
+      				[ "has", "FIRMWARE" ],
+      				[
+      					[ "exec", "/sbin/hotplug-call", "%SUBSYSTEM%" ],
+      					[ "load-firmware", "/lib/firmware" ],
+      					[ "return" ]
+      				]
+      			],
+      		],
+      		"remove" : [
+      			[ "if",
+      				[ "and",
+      					[ "has", "DEVNAME" ],
+      					[ "has", "MAJOR" ],
+      					[ "has", "MINOR" ],
+      				],
+      				[ "rm", "/dev/%DEVNAME%" ]
+      			]
+      		]
+      	} ],
+      	[ "if",
+      		[ "eq", "SUBSYSTEM", "platform" ],
+      		[ "exec", "/sbin/hotplug-call", "%SUBSYSTEM%" ]
+      	],
+      	[ "if",
+      		[ "and",
+      			[ "has", "BUTTON" ],
+      			[ "eq", "SUBSYSTEM", "button" ],
+      		],
+      		[ "button", "/etc/rc.button/%BUTTON%" ]
+      	],
+      	[ "if",
+      		[ "eq", "SUBSYSTEM",
+      			[ "net", "input", "usb", "usbmisc", "ieee1394", "block", "atm", "zaptel", "tty", "button", "sound" ]
+      		],
+      		[ "exec", "/sbin/hotplug-call", "%SUBSYSTEM%" ]
+      	],
+      	[ "if",
+      		[ "and",
+      			[ "eq", "SUBSYSTEM", "usb-serial" ],
+      			[ "regex", "DEVNAME",
+      				[ "^ttyUSB", "^ttyACM" ]
+      			],
+      		],
+      		[ "exec", "/sbin/hotplug-call", "tty" ]
+      	],
+      ]
+      
+
+  --- /etc/resolv.conf   (23 bytes)
+      nameserver 192.168.1.1
+      
+
+  --- /etc/sysctl.conf   (896 bytes)
+      kernel.panic=3
+      kernel.core_pattern=/tmp/%e.%t.%p.%s.core
+      
+      net.ipv4.conf.default.arp_ignore=1
+      net.ipv4.conf.all.arp_ignore=1
+      net.ipv4.ip_forward=1
+      net.ipv4.icmp_echo_ignore_broadcasts=1
+      net.ipv4.icmp_ignore_bogus_error_responses=1
+      net.ipv4.igmp_max_memberships=100
+      net.ipv4.tcp_fin_timeout=30
+      net.ipv4.tcp_keepalive_time=120
+      net.ipv4.tcp_syncookies=1
+      net.ipv4.tcp_timestamps=1
+      net.ipv4.tcp_sack=1
+      net.ipv4.tcp_dsack=1
+      
+      net.ipv6.conf.default.forwarding=0
+      net.ipv6.conf.all.forwarding=0
+      
+      net.netfilter.nf_conntrack_acct=1
+      net.netfilter.nf_conntrack_checksum=0
+      net.netfilter.nf_conntrack_max=16384
+      net.netfilter.nf_conntrack_tcp_timeout_established=7440
+      net.netfilter.nf_conntrack_udp_timeout=60
+      net.netfilter.nf_conntrack_udp_timeout_stream=180
+      
+      # disable bridge firewalling by default
+      net.bridge.bridge-nf-call-arptables=0
+      net.bridge.bridge-nf-call-ip6tables=0
+      net.bridge.bridge-nf-call-iptables=0
+      
+
+  --- /etc/sysupgrade.conf   (128 bytes)
+      ## This file contains files and directories that should
+      ## be preserved during an upgrade.
+      
+      # /etc/example.conf
+      # /etc/openvpn/
+      
+
+  --- /etc/vsftpd.conf   (4784 bytes)
+      # Example config file /etc/vsftpd.conf
+      #
+      # The default compiled in settings are fairly paranoid. This sample file
+      # loosens things up a bit, to make the ftp daemon more usable.
+      # Please see vsftpd.conf.5 for all compiled in defaults.
+      #
+      # READ THIS: This example file is NOT an exhaustive list of vsftpd options.
+      # Please read the vsftpd.conf.5 manual page to get a full idea of vsftpd's
+      # capabilities.
+      #
+      # Allow anonymous FTP? (Beware - allowed by default if you comment this out).
+      #anonymous_enable=YES
+      #
+      # Uncomment this to allow local users to log in.
+      local_enable=YES
+      #
+      # Uncomment this to enable any form of FTP write command.
+      write_enable=YES
+      #
+      # Default umask for local users is 077. You may wish to change this to 022,
+      # if your users expect that (022 is used by most other ftpd's)
+      #local_umask=022
+      #
+      # Uncomment this to allow the anonymous FTP user to upload files. This only
+      # has an effect if the above global write enable is activated. Also, you will
+      # obviously need to create a directory writable by the FTP user.
+      # anon_upload_enable=YES
+      #
+      # Uncomment this if you want the anonymous FTP user to be able to create
+      # new directories.
+      # anon_mkdir_write_enable=YES
+      #
+      # Activate directory messages - messages given to remote users when they
+      # go into a certain directory.
+      #dirmessage_enable=YES
+      #
+      # Activate logging of uploads/downloads.
+      #xferlog_enable=YES
+      #
+      # Make sure PORT transfer connections originate from port 20 (ftp-data).
+      # connect_from_port_20=YES
+      #
+      # If you want, you can arrange for uploaded anonymous files to be owned by
+      # a different user. Note! Using "root" for uploaded files is not
+      # recommended!
+      chown_uploads=YES
+      chown_username=mbtc
+      #secure_chroot_dir=/mnt/SDCARD/data
+      secure_chroot_dir=/usr/share/empty
+      #
+      # You may override where the log file goes if you like. The default is shown
+      # below.
+      #xferlog_file=/var/log/vsftpd.log
+      #
+      # If you want, you can have your log file in standard ftpd xferlog format.
+      # Note that the default log file location is /var/log/xferlog i ...[truncated in log, full copy saved]
+
+  --- /etc/xattr.conf   (589 bytes)
+      # /etc/xattr.conf
+      #
+      # Format:
+      # <pattern> <action>
+      #
+      # Actions:
+      #   permissions - copy when trying to preserve permissions.
+      #   skip - do not copy.
+      
+      system.nfs4_acl			permissions
+      system.nfs4acl			permissions
+      system.posix_acl_access		permissions
+      system.posix_acl_default	permissions
+      trusted.SGI_ACL_DEFAULT		skip		# xfs specific
+      trusted.SGI_ACL_FILE		skip		# xfs specific
+      trusted.SGI_CAP_FILE		skip		# xfs specific
+      trusted.SGI_DMI_*		skip		# xfs specific
+      trusted.SGI_MAC_FILE		skip		# xfs specific
+      xfsroot.*			skip		# xfs specific; obsolete
+      user.Beagle.*			skip		# ignore Beagle index data
+      
+
+  --- /etc/board.json   (144 bytes)
+      {
+      	"model": {
+      		"id": "allwinner,r528",
+      		"name": "sun8iw20"
+      	},
+      	"network": {
+      		"lan": {
+      			"ifname": "eth0",
+      			"protocol": "static"
+      		}
+      	}
+      }
+      
+
+  --- /proc/devices   (0 bytes)
+      
+
+  --- /proc/config.gz   (25228 bytes)
+      �     �<�r۸������n�J��-۵��%�H�!@]��R%�5����d����� ���J"t�4}C���爼�^���������я���?���?<�g�Q��L~������������ŧ�d�:��#����Ï7�����ǟ�<	٢��bM3�xRH�����Ǘ���_���G������a������O_�G���9�>�P���h������������d2¿?N&����&���( ��wմhF���/Ɠ7"ɢ�>I��%��4.�(�������K�ᙁ��,
+      $�iK%^D�3	p�ǟ��b����pz��p�%L4Y$[��1���)�W��8e@IR!G���R�zG�'Q���~&� ���j�� �Įe㒬i��YB�bq��fy&$���������  �'nmN��	8�dN�ۅS�phH�HK.dBbj1YlH��#vb�RC��ۗQӞr��E�%�9u�v����i̳]A�$��\j.h�<�2IG؄(�)��}}��z:<5R��	͘��<͸gL��%��C���i��0��d $����/f��H�nCx� @�_dT�$pw����bK�c�W[�d4#�����X���8��� d���!�|r�Q�daHAJ2A����3��/Bao������{k���9e��fX\h<��anE@$�rLa�~%R������_^�I�!{[hJ�������3E�'�� ��by��/V�^�
+      S��w�:݋���>�5̣�����l�D�*P�gB�)��YB3B�Q��%�y�*�5��D�l�I�c(���ϡO�Y��\?�?���_�Lq��龞���������������n�P_���YOt�2��;��L]��0"@��S�Y�h,�)�3s*��D
+      7Gs��3xQ�QX&<"&/3?���V{`s��=H��0�\-(��p��Մa�Q�ȾI(�A�1u��e�Ӯ��J��PO�zA�7W�VKPV �N�:����lG&�dk§�X"W�]��Mc���_�ڔ��B�������p}?�Oo�ë���́���NAp�7~��<�����N�V%���[��Jp���N���� &wJw7�R0�R��	���1�ă�<@u_�7.����Ʊ��@`���6m9���������Y��wB����oI�U�A�PK��5���n�\�8;
+      X)b�H{˚�L#�sBP���M�ܝ!BࠒcvG������b��Եm-l��<E��S�r΂��P�i���
+      �`���|� ��bA%z\j4b[�������PJ�P�"m϶����h�.�������h�����
+      �|��p�~��TRn��HH����٠��A,Au�3�C^����`���e0 �x$˘鵭e[��j+����(��_�@rwE�;�K���`3_����� �rp��Q��@�Z�G�h;���X�cX�m�R2��7en"=����������;�O ^�iX�����L�Քױ&�ݸʧ��'ʽ�
+      �""��^�O_D<���� ܍F<��lA���P4F�i�b�N�A��,�[K�e�7��T�G@���@y.IF"K9J+���2�r�g��,jy����9�F��C��J�Z!+ZD�o%�����fX����ژz!�4�K��X�f�ĵ(����UC����܊BC�	L[���I#�]xz��,����Rb�O��P�\�,σ�%�f+X������y8����F����Ӆ΢�4������rsG���C㢷v�c�V��İ��Cp����m4�)lsS��z�L&cw�E!�7��r.��ڏ�x:��`��bh�����[��R���>�v1����IG]�o����������	�+��eF��vA���������=�Ά��}���_�Ŧ�!���Zk`����@�R��(Ŕ�)�Q�.o&�PϏ�4�: nl�|�Z�u*����S0IVC���ھ� kVbnL�m5�!� by��8 ���'��=:��Fx�>��s �gd���9�5>�n� ...[truncated in log, full copy saved]
+
+  --- /tmp/resolv.conf   (23 bytes)
+      nameserver 192.168.1.1
+      
+
+  --- /var/resolv.conf   (23 bytes)
+      nameserver 192.168.1.1
+      
+
+  --- /etc/avahi/avahi-daemon.conf   (22 bytes)
+      host-name=mbtc_B01BAE
+      
+
+  --- /etc/bluetooth/bluetooth.json   (480 bytes)
+      {
+      	"profile":{
+      		"a2dp_sink":1,
+      		"a2dp_source":0,
+      		"avrcp":1,
+      		"hfp_hf":1,
+      		"hfp_ag":0,
+      		"gatt_client":0,
+      		"gatt_server":0
+      	},
+      	"a2dp_sink":{
+      		"device":"default",
+      		"buffer_size":30080,
+      		"period_size":3760
+      	},
+      	"a2dp_source":{
+      		"hci_index":0,
+      		"DEV":"00:00:00:00:00:00",
+      		"DELAY":20000
+      	},
+      	"hfp_pcm":{
+      		"rate":16000,
+      		"phone_to_dev_cap":"hw:snddaudio1",
+      		"phone_to_dev_play":"default",
+      		"dev_to_phone_cap":"CaptureMic",
+      		"dev_to_phone_play":"hw:snddaudio1"
+      	}
+      }
+      
+      
+
+  --- /etc/bluetooth/input.conf   (772 bytes)
+      # Configuration file for the input service
+      
+      # This section contains options which are not specific to any
+      # particular interface
+      [General]
+      
+      # Set idle timeout (in minutes) before the connection will
+      # be disconnect (defaults to 0 for no timeout)
+      #IdleTimeout=30
+      
+      # Enable HID protocol handling in userspace input profile
+      # Defaults to false (HIDP handled in HIDP kernel module)
+      #UserspaceHID=true
+      
+      # Limit HID connections to bonded devices
+      # The HID Profile does not specify that devices must be bonded, however some
+      # platforms may want to make sure that input connections only come from bonded
+      # device connections. Several older mice have been known for not supporting
+      # pairing/encryption.
+      # Defaults to false to maximize device compatibility.
+      #ClassicBondedOnly=true
+      
+
+  --- /etc/bluetooth/main.conf   (4823 bytes)
+      [General]
+      
+      # Default adapter name
+      # Defaults to 'BlueZ X.YZ'
+      #Name = BlueZ
+      
+      # Default device class. Only the major and minor device class bits are
+      # considered. Defaults to '0x000000'.
+      #Class = 0x000100
+      
+      # How long to stay in discoverable mode before going back to non-discoverable
+      # The value is in seconds. Default is 180, i.e. 3 minutes.
+      # 0 = disable timer, i.e. stay discoverable forever
+      #DiscoverableTimeout = 0
+      
+      # Always allow pairing even if there are no agent registered
+      # Possible values: true, false
+      # Default: false
+      #AlwaysPairable = false
+      
+      # How long to stay in pairable mode before going back to non-discoverable
+      # The value is in seconds. Default is 0.
+      # 0 = disable timer, i.e. stay pairable forever
+      #PairableTimeout = 0
+      
+      # Use vendor id source (assigner), vendor, product and version information for
+      # DID profile support. The values are separated by ":" and assigner, VID, PID
+      # and version.
+      # Possible vendor id source values: bluetooth, usb (defaults to usb)
+      #DeviceID = bluetooth:1234:5678:abcd
+      
+      # Do reverse service discovery for previously unknown devices that connect to
+      # us. For BR/EDR this option is really only needed for qualification since the
+      # BITE tester doesn't like us doing reverse SDP for some test cases, for LE
+      # this disables the GATT client functionally so it can be used in system which
+      # can only operate as peripheral.
+      # Defaults to 'true'.
+      #ReverseServiceDiscovery = true
+      
+      # Enable name resolving after inquiry. Set it to 'false' if you don't need
+      # remote devices name and want shorter discovery cycle. Defaults to 'true'.
+      #NameResolving = true
+      
+      # Enable runtime persistency of debug link keys. Default is false which
+      # makes debug link keys valid only for the duration of the connection
+      # that they were created for.
+      #DebugKeys = false
+      
+      # Restricts all controllers to the specified transport. Default value
+      # is "dual", i.e. both BR/EDR and LE enabled (when supported by the HW).
+      # Possible values: "dual", "bredr", "le"
+      #ControllerMode = dual
+      
+      # Enable ...[truncated in log, full copy saved]
+
+  --- /etc/bluetooth/network.conf   (120 bytes)
+      # Configuration file for the network service
+      
+      [General]
+      
+      # Disable link encryption: default=false
+      #DisableSecurity=true
+      
+
+  --- /etc/config/udhcpd.conf   (3548 bytes)
+      # Sample udhcpd configuration file (/etc/udhcpd.conf)
+      # Values shown are defaults
+      
+      # The start and end of the IP lease block
+      start		192.168.42.100
+      end		192.168.42.254
+      
+      # The interface that udhcpd will use
+      interface	usb0
+      
+      # The maximum number of leases (includes addresses reserved
+      # by OFFER's, DECLINE's, and ARP conflicts). Will be corrected
+      # if it's bigger than IP lease block, but it ok to make it
+      # smaller than lease block.
+      #max_leases	254
+      
+      # The time period at which udhcpd will write out a dhcpd.leases
+      # file. If this is 0, udhcpd will never automatically write a
+      # lease file. Specified in seconds.
+      #auto_time	7200
+      
+      # The amount of time that an IP will be reserved (leased to nobody)
+      # if a DHCP decline message is received (seconds)
+      #decline_time	3600
+      
+      # The amount of time that an IP will be reserved
+      # if an ARP conflict occurs (seconds)
+      #conflict_time	3600
+      
+      # How long an offered address is reserved (seconds)
+      #offer_time	60
+      
+      # If client asks for lease below this value, it will be rounded up
+      # to this value (seconds)
+      #min_lease	60
+      
+      # The location of the leases file
+      #lease_file	/var/lib/misc/udhcpd.leases
+      
+      # The location of the pid file
+      #pidfile	/var/run/udhcpd.pid
+      
+      # Every time udhcpd writes a leases file, the below script will be called
+      #notify_file			# default: no script
+      #notify_file	dumpleases	# useful for debugging
+      
+      # The following are bootp specific options
+      # next server to use in bootstrap
+      #siaddr		192.168.0.22	# default: 0.0.0.0 (none)
+      # tftp server name
+      #sname		zorak		# default: none
+      # tftp file to download (e.g. kernel image)
+      #boot_file	/var/nfs_root	# default: none
+      
+      # Static leases map
+      #static_lease 00:60:08:11:CE:4E 192.168.0.54
+      #static_lease 00:60:08:11:CE:3E 192.168.0.44
+      
+      # The remainder of options are DHCP options and can be specified with the
+      # keyword 'opt' or 'option'. If an option can take multiple items, such
+      # as the dns option, they can be listed on the same line, or multiple
+      # lines.
+      # Examples:
+      #opt	dns	192.168.42.1 192.168.42.10
+      option	subne ...[truncated in log, full copy saved]
+
+  --- /etc/mbtc/bluetooth.json   (38 bytes)
+      {
+          "suffix":"LC2301111MB31800001"
+      }
+
+  --- /etc/mbtc/camera_factory.json   (332 bytes)
+      {"f":2463.529411764706,"bottomData":{"points":[{"x":868,"y":1890},{"x":100,"y":100},{"x":2264,"y":1899},{"x":100,"y":100},{"x":100,"y":100},{"x":100,"y":100},{"x":864,"y":3283},{"x":100,"y":100},{"x":2258,"y":3296}],"xy":1396,"f":2463.529411764706},"basicData":{"x":20,"y":20,"width":170,"height":170,"type":"5W","id":"lumosUltra"}}
+
+  --- /etc/mbtc/cfgs.json   (123 bytes)
+      {
+          "savepath_gcode":"/mnt/UDISK/",
+          "savepath_img":"/mnt/UDISK/",
+          "debug_mode":"1",
+          "videoid":"/dev/video0"
+      }
+
+  --- /etc/mbtc/focus_light_cfg.json   (207 bytes)
+      {
+          "focus_light_list": [
+              {
+                  "id": "focus_light_short",
+                  "status": "on"
+              },
+              {
+                  "id": "focus_light_long",
+                  "status": "on"
+              }
+          ]
+      }
+
+  --- /etc/mbtc/inverse_distance.json   (210 bytes)
+      {
+          "flag" :0,
+          "0": {
+              "inverse_dis": "M101X0.001\n",
+              "inverse_cmd": "M104X1"
+          },
+          "1": {
+              "inverse_dis": "M44K0.00003273B0.02181818\n",
+              "inverse_cmd": "M104X2"
+          }
+      }
+
+  --- /etc/mbtc/materialinfo.json   (331 bytes)
+      {
+          "vistaThicknessData":[
+          {
+              "x": 2164.1982421875,
+              "y": -18
+          },
+          {
+              "x": 2081.666015625,
+              "y": 3
+          },
+          {
+              "x": 2069.112548828125,
+              "y": 6
+          },
+          {
+              "x": 2055.100341796875,
+              "y": 9
+          },
+          {
+              "x": 2042.0943603515625,
+              "y": 12
+          }
+      ]
+      
+      }
+
+  --- /etc/mbtc/oldcamera.json   (3371 bytes)
+      {
+          "f": 1769.6756756756756,
+          "points": [
+              {
+                  "x": 374,
+                  "y": 549
+              },
+              {
+                  "x": 1887,
+                  "y": 500
+              },
+              {
+                  "x": 3492,
+                  "y": 501
+              },
+              {
+                  "x": 377,
+                  "y": 1549
+              },
+              {
+                  "x": 1883,
+                  "y": 1554
+              },
+              {
+                  "x": 3474,
+                  "y": 1558
+              },
+              {
+                  "x": 375,
+                  "y": 2595
+              },
+              {
+                  "x": 1879,
+                  "y": 2596
+              },
+              {
+                  "x": 3465,
+                  "y": 2602
+              }
+          ],
+          "topData": {
+              "points": [
+                  {
+                      "x": 878,
+                      "y": 804
+                  },
+                  {
+                      "x": 1929,
+                      "y": 807
+                  },
+                  {
+                      "x": 3043,
+                      "y": 807
+                  },
+                  {
+                      "x": 880,
+                      "y": 1535
+                  },
+                  {
+                      "x": 1926,
+                      "y": 1538
+                  },
+                  {
+                      "x": 3031,
+                      "y": 1541
+                  },
+                  {
+                      "x": 876,
+                      "y": 2264
+                  },
+                  {
+                      "x": 1924,
+                      "y": 2264
+                  },
+                  {
+                      "x": 3027,
+                      "y": 2268
+                  }
+              ],
+              "offset": {
+                  "x": 0,
+                  "y": 0
+              },
+              "xy": 2165,
+              "f": 1796.3648648648648
+          },
+          "bottomData": {
+              "points": [
+                  {
+                      "x": 374,
+                      "y": 549
+                  },
+                  {
+                      "x": 1887,
+                      "y": 500
+                  },
+                  {
+                      "x": 3492,
+                      "y": 501
+                  },
+                  {
+                      "x": 377,
+                      "y": 1549
+                  },
+                  {
+                      "x": 1883,
+                      "y": 1554
+                  },
+             ...[truncated in log, full copy saved]
+
+  --- /etc/mbtc/print.json   (120 bytes)
+      {
+          "framing_file": "/mnt/SDCARD/framing/framing_data.gcode",
+          "print_file": "/mnt/SDCARD/curve/print_data.gcode"
+      }
+
+  --- /etc/mbtc/pwm_multi.json   (863 bytes)
+      {
+          "version": 2,
+          "pwm_list": [
+              {
+                  "id": "frontlight",
+                  "chip": 0,
+                  "channel": 5,
+                  "periodns": 100000,
+                  "dutyns": 90000,
+                  "polarity": "inversed",
+                  "enable": true
+              },
+              {
+                  "id": "backlight",
+                  "chip": 0,
+                  "channel": 7,
+                  "periodns": 100000,
+                  "dutyns": 90000,
+                  "polarity": "inversed",
+                  "enable": true
+              },
+              {
+                  "id": "servo",
+                  "chip": 1,
+                  "channel": 0,
+                  "periodns": 20000000,
+                  "dutyns": 1500000,
+                  "polarity": "normal",
+                  "enable": false
+              }
+          ],
+          "limits": {
+              "min_periodns": 100,
+              "max_periodns": 100000000,
+              "min_dutyns": 50,
+              "max_dutyns": 99999950
+          }
+      }
+
+  --- /etc/mbtc/sn.json   (36 bytes)
+      {"factory_sn":"LU2501712BA621J0008"}
+
+  --- /etc/mbtc/version.json   (0 bytes)
+      
+
+  --- /etc/mbtc/wlan0_mac.json   (37 bytes)
+      {
+      "wlan0_mac":"4C:43:31:B0:1B:AE"
+      }
+
+  --- /etc/mbtc/wlan0_mac.txt   (17 bytes)
+      4C:43:31:42:1D:4F
+
+  --- /etc/mbtc/devicename.txt   (11 bytes)
+      Lumos Ultra
+
+  --- /etc/mbtc/camera.json   (296 bytes)
+      {"bottomData":{"points":[{"x":869,"y":1892},{"x":100,"y":100},{"x":2262,"y":1901},{"x":100,"y":100},{"x":100,"y":100},{"x":100,"y":100},{"x":865,"y":3280},{"x":100,"y":100},{"x":2256,"y":3289}]},"customThickness":0,"basicData":{"x":20,"y":20,"width":170,"height":170,"type":"5W","id":"lumosPro"}}
+
+  --- /etc/sysctl.d/local.conf   (56 bytes)
+      # local sysctl settings can be stored in this directory
+      
+
+  Saved 40 file(s) to \\cortex\d\DevHome\WeCreat Lumos Ultra Lightburn Config\captures\fileserver-20260824-093202
+

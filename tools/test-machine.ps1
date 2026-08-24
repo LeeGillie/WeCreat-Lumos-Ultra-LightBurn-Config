@@ -164,6 +164,8 @@ while ($true) {
   Write-Host '     2   Stage 2  controller HTTP API      no beam, no motion'
   Write-Host '     2a  Stage 2  + autofocus probe        MOVES THE HEAD' -ForegroundColor DarkYellow
   Write-Host '     3   Stage 2b controller file listing  no beam, no motion' -ForegroundColor Cyan
+  Write-Host '     5   Stage 5  grab the job G-code      no beam, no motion' -ForegroundColor Cyan
+  Write-Host '             (run a job in MakeIt first, then use this)' -ForegroundColor DarkGray
   Write-Host ''
   Write-Host '     s   sync local copy from the share'
   Write-Host '     e   open the local repo in Explorer'
@@ -177,6 +179,15 @@ while ($true) {
     '2'  { Run-Stage 'stage2-rest-probe.ps1' $null;                 Trace 'stage 2 returned' }
     '2a' { Run-Stage 'stage2-rest-probe.ps1' @('-AllowAutofocus');  Trace 'stage 2a returned' }
     '3'  { Run-Stage 'stage2b-fileserver-probe.ps1' $null;          Trace 'stage 2b returned' }
+    '5'  {
+            Write-Host ''
+            Write-Host '   Label this grab so two runs can be told apart.' -ForegroundColor Cyan
+            Write-Host '   e.g.  uv-square   mopa-pw100   focus-20mm   rotary-on' -ForegroundColor DarkGray
+            $lbl = (Read-Host '   label').Trim()
+            if (-not $lbl) { $lbl = 'job' }
+            Run-Stage 'stage5-jobfile-grab.ps1' @('-Label', $lbl)
+            Trace ("stage 5 returned (label: " + $lbl + ")")
+          }
     's'  { Banner; Sync-Local; Read-Host '  Enter' }
     'e'  { Start-Process explorer.exe $script:local }
     'q'  { Trace 'quit'; return }
