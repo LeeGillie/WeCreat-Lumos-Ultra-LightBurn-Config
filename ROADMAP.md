@@ -59,7 +59,15 @@ safety risks:
 **Method:** frame 10 / 50 / 100 / 200 mm squares with the red pointer, measure with calipers,
 check orientation against the screen. Template: `captures/templates/field-calibration.md`.
 
-**Done when:** a framed 100 mm square measures 100 mm and appears where the screen says.
+**Test the corners, not just the centre.** This is a galvo — two mirrors sweeping a beam across
+an f-theta lens — so any residual barrel or pincushion distortion appears at the *edges* of a
+210 mm field and is invisible in the middle. A 200 mm square is therefore the diagnostic one:
+if its sides bow, the firmware's own field correction is not carrying, and that is a much bigger
+problem than mirroring. LightBurn's lens-correction UI is gated to its galvo device classes and
+is not available to us here, so we would have nowhere to put a correction of our own.
+
+**Done when:** a framed 100 mm square measures 100 mm and appears where the screen says, and a
+200 mm square has straight sides.
 
 ## 3. First marks 🟡 *(beam — red lens fitted, 800–1100 nm goggles)*
 
@@ -111,7 +119,9 @@ Not failures — scope control. Each is genuinely useful and none blocks a usabl
 
 Worth stating, because it is most of the hard part — and none of it existed publicly before:
 
-- Architecture confirmed on hardware: GRBL-over-serial, CH340 + Linux RNDIS gadget, no galvo board
+- Architecture confirmed on hardware: GRBL-over-serial, CH340 + Linux RNDIS gadget. The machine
+  **is** a galvo — nothing moves in the work area — but it exposes no galvo control board to the
+  host. The controller accepts G-code and does the scanner driving itself
 - `Custom GCode` + `GCodeFlavor: wecreat` — LightBurn now reports **"Found WeCreat Device"**
 - **Field size confirmed at 210 × 210 mm** from the vendor's own G-code
 - **`M18` source select**, **`M107` origin offset**, **`M38F` frequency**, **`M39P` pulse width** —
@@ -127,7 +137,8 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 
 ## Right now
 
-**Stage 4 framing — no beam.** Draw a 100 mm square in LightBurn, hit **Frame**, and watch where
-the red pointer goes. That single test resolves `MirrorX`/`MirrorY`, the origin corner, and scale
-at once, and simultaneously proves whether the two `err:20` lines matter. Template:
+**Stage 4 framing — no beam, nothing moves in the work area.** Draw a 100 mm square in LightBurn,
+hit **Frame**, and watch where the red pointer goes. That single test resolves `MirrorX`/`MirrorY`,
+the origin corner, and scale at once, and simultaneously proves whether the two `err:20` lines
+matter. Then repeat at 200 mm to check the field edges for galvo distortion. Template:
 `captures/templates/field-calibration.md`.
