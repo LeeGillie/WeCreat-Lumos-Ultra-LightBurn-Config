@@ -80,3 +80,43 @@ exercise** — and any real error will announce itself immediately at first mark
 
 > **If you are short on time, skip to Test 4.** Test 4 can find something we do not already know;
 > Test 3 mostly confirms something three independent sources already agree on.
+
+---
+
+## ⚠️ Gotcha: positioning coordinates after the origin change
+
+**Observed:** a 200 × 200 square set to `XPos 5, YPos 5` lands mostly *outside* the workspace —
+it appears as a thin sliver along the top edge.
+
+**Cause.** Two things combine:
+
+1. With the origin at **top-left**, LightBurn counts Y **downward**. `YPos 5` means 5 mm from the
+   *top*, not from the bottom.
+2. The **position anchor** — the small 3 × 3 dot grid beside the `XPos` / `YPos` fields — is set to
+   **lower-left**. So `YPos 5` places the object's *lower-left corner* 5 mm from the top, and the
+   object extends upward off the canvas.
+
+Neither is wrong on its own. Together they produce a shape that is 195 mm off the page.
+
+### The fix that avoids the whole problem: anchor to centre
+
+Click the **centre dot** of the 3 × 3 anchor grid, then position by centre:
+
+| Square | Anchor | XPos | YPos | Occupies |
+|---|---|---|---|---|
+| 200 × 200 | centre | **105** | **105** | 5 → 205 in both axes |
+| 100 × 100 | centre | **105** | **105** | 55 → 155 in both axes |
+| 20 × 20 | centre | 105 | 105 | 95 → 115 |
+
+Centring is immune to which way Y counts, and 105 is the field centre either way — which is also
+`MPos 0,0`, so it lines up with the machine's own native origin. Use it for every centred test in
+this stage.
+
+For the deliberately **off-centre** corner tests, keep watching the on-screen preview rather than
+trusting the numbers; the canvas is the source of truth.
+
+### Worth shipping
+
+This belongs in the published notes. An Ultra owner who correctly sets the origin to top-left will
+then find every positioning tutorial written for a front-left-origin machine gives them
+upside-down results. Say so plainly rather than letting them discover it as we did.
