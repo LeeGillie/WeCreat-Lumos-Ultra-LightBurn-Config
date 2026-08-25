@@ -227,3 +227,68 @@ Reported working areas for the conveyor disagree across WeCreat's own pages: 206
 cycle (Kickstarter FAQ), 200 × 500 mm (conveyor product page), 1000 × 200 mm (main spec table).
 Most plausible reading — 206 × 206 mm is the per-pass galvo field on the belt, 500 mm the initial
 load area, 1000 mm the total fed length — but that is **INFERRED**, not confirmed.
+
+---
+
+## Setting focus
+
+**Focus is manual, by knob, and LightBurn does not drive it.** `Enable Z Axis` is off in the
+device profile, so the machine sits at whatever height it was last set to. Nothing in a LightBurn
+job will focus the machine for you.
+
+### The convergence indicator
+
+The Lumos Ultra projects **red focus dots onto the work surface, and they converge to a single
+point at the correct focal distance.** Turn the focus knob until they merge.
+
+This also settles a question raised during Stage 4
+([capture](../captures/stage4-test4-field-distortion-benchy.md)): the stationary red spot at the
+centre of the bed is **the focus indicator**, not the galvo pointer parked at field centre. It is
+lit continuously — measured present in 600 of 600 video frames, including 455 where the galvo was
+demonstrably tracing a frame elsewhere.
+
+**Do not use the focus dots to judge position.** They are a height aid and they do not move.
+
+### Judging convergence with a camera
+
+The dots are small, red, and close together, and merging them by eye is genuinely hard — more so
+under bright shop lighting, or for anyone whose eyes do not resolve fine red detail crisply.
+Astigmatism in particular smears small red points.
+
+**A phone camera makes the convergence far easier to call.** Frame the dots on the screen and turn
+the knob until they merge in the image. The sensor does not share your eyes' aberrations, and the
+screen lets you zoom.
+
+This is a legitimate technique, not a workaround — it is more repeatable than eyeballing, and it
+keeps your head further from the work.
+
+> ⚠️ **Focus dots only. Never during marking.**
+>
+> Camera sensors are damaged far more easily than eyes: no blink reflex, no aversion response, and
+> the optics concentrate whatever arrives onto a few square millimetres of silicon. A specular
+> 1064 nm glint off metal will kill pixels permanently.
+>
+> Use the phone for the **red focus dots with the source idle**. If you want a camera watching
+> during an actual job, put a dual-band filter in front of it —
+> [docs/15](15-viewing-windows-and-camera-filters.md) covers a material that blocks both 355 nm and
+> 1064 nm at OD 7 while passing enough visible light to still see the work.
+
+### Known focus values
+
+Read off the controller ([Stage 5 capture](../captures/stage5-framing-mopa-benchy.md)):
+
+| Source | Value | Meaning |
+|---|---|---|
+| `/mnt/SDCARD/config/heightZ.txt` | `43.35` | current / default focus height |
+| `/mnt/SDCARD/config/greenZ.txt` | `8.03` | green / crystal lens |
+| MakeIt marking preamble | `G0Z47.8` | Z commanded in a real job |
+
+**Focus height is per-lens.** The purple and red lenses share a 290 mm focal length
+([above](#field-lenses)), so their focus should be the same; the green crystal lens at 100 mm is
+different, and `greenZ` reflects that.
+
+### Why this matters beyond sharpness
+
+On a galvo, **field size is proportional to working distance**. Focus is not only about a crisp
+mark — it sets the scale of the whole field. A measurement taken at the wrong height gives a clean,
+believable, wrong number ([Test 3 notes](../captures/STAGE4-TEST3-SCALE.md)).
