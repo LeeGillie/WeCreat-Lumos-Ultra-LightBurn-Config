@@ -62,6 +62,15 @@ use?" and "laser busy" reports. See
 before you close the lid, and wear the matching pair. This is the reason every profile in this
 repository carries a start-of-job checklist.
 
+Note that both UV lenses — purple *and* green — run the 355 nm source, confirmed from the glass
+itself ([docs/06](docs/06-modes-and-lenses.md)). Only the red lens moves you to 1064 nm. So the
+eyewear question is really "which lens is fitted", and there are two answers, not three.
+
+For **fixed windows and camera filters** — where you cannot swap a filter every time the source
+changes — dual-band material exists that covers both 355 nm and 1064 nm at OD 7. See
+[docs/15](docs/15-viewing-windows-and-camera-filters.md). That is guard-rated material,
+**not eyewear**, and does not replace your goggles.
+
 ## The interlock caveat — read this one twice
 
 The Lumos-family lid interlock is enforced by the **controller**, not by the software.

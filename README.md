@@ -4,7 +4,9 @@
 
 <sub>Banner artwork is aspirational — it shows where this project is going, not where it is.
 For actual, current status of every feature see the
-[feature inventory](docs/02-feature-inventory.md). Lens part numbers shown are decorative.</sub>
+[feature inventory](docs/02-feature-inventory.md). Any lens part numbers in the artwork are
+decorative — the real ones, read off the glass, are in
+[docs/06](docs/06-modes-and-lenses.md).</sub>
 
 An open, evidence-graded effort to build a working **LightBurn** device configuration for the
 **WeCreat Lumos Ultra** (6 W UV + optional 60 W / 100 W JPT MOPA fiber), covering every field
