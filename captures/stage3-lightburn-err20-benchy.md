@@ -3,6 +3,11 @@
 **Date:** 2026-08-24 · **Machine:** BENCHY / Lumos Ultra · **LightBurn 2.1.04** · **COM7**
 **Contributor:** Lee Gillie
 
+> **Follow-up:** the two offending lines were identified from LightBurn's own saved G-code.
+> See [`stage3-err20-diagnosis-benchy.md`](stage3-err20-diagnosis-benchy.md). Short version:
+> they are modal setup words (`G17`/`G40`/`G54`) that GRBL rejects and then skips. Nothing
+> that moves the head or fires the source is affected.
+
 ## Console
 
 ```

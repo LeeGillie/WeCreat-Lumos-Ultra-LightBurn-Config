@@ -1,0 +1,22 @@
+;LightBurn Core 2.1.04
+;Custom GCode device profile, absolute coords
+;Bounds: X97 Y100 to X107 Y110
+G00 G17 G40
+G21;Restore metric mode
+G54
+
+G90;Restore absolute mode
+M4
+;Cut @ 636.524 mm/min, 90% power
+
+M8
+G0 X107Y100
+;Layer VirtArray
+G1 Y110S900F636.52
+G1 X97
+G1 Y100
+G1 X107
+M9
+M5
+G90;Restore absolute mode
+M2

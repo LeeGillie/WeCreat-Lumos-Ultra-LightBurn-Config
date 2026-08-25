@@ -60,3 +60,4 @@ tmp/
 temp/
 scratch/
 *.log
+_commitmsg.txt

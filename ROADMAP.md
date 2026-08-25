@@ -18,8 +18,8 @@ use for real work, plus a truthful map of what is and is not possible.
 
 | # | Item | Status | Effort |
 |---|---|---|---|
-| 1 | **Fix `err:20`** so a job streams | 🔴 blocker | minutes, once we see the G-code |
-| 2 | **Stage 4 calibration** — mirroring, origin, scale | 🟡 next | ~20 min, no beam |
+| 1 | **`err:20`** — diagnosed, likely cosmetic | 🟢 downgraded | ~5 min to confirm |
+| 2 | **Stage 4 calibration** — mirroring, origin, scale | 🟡 **next** | ~20 min, no beam |
 | 3 | **First marks** — power/speed behave sanely | 🟡 | ~30 min, beam |
 | 4 | **Verify `M38`/`M39` survive from LightBurn** | 🟡 | ~15 min |
 | 5 | **Package and publish** | ⬜ | ~1 hour |
@@ -29,17 +29,22 @@ latch — is **already confirmed on hardware**. What remains is small.
 
 ---
 
-## 1. Fix `err:20` 🔴
+## 1. `err:20` — diagnosed 🟢
 
-GRBL error 20 = *unsupported or invalid G-code command*. Two lines LightBurn emits are not
-implemented by WeCreat's firmware. Rejection is safe — nothing executed.
+**Resolved as far as it can be without a framing pass.** Full analysis:
+[`captures/stage3-err20-diagnosis-benchy.md`](captures/stage3-err20-diagnosis-benchy.md).
 
-**Method:** LightBurn → Laser window → **Save GCode** → save to `captures/`. Diff its preamble
-against MakeIt's known-good one ([Stage 5](captures/stage5-uv-vs-mopa-benchy.md)). MakeIt never
-sends `G20`/`G21`, `$H`, `M8`/`M9` or `G54` — the offenders are almost certainly among those.
+LightBurn's saved G-code contains exactly three lines outside MakeIt's vocabulary that could
+produce two errors: `G00 G17 G40`, `G21`, and `G54`. All three are modal setup — plane select,
+cutter-comp cancel, metric mode, work coordinate system. GRBL reports `error:20` and **continues
+to the next line**; it does not abort. Everything that moves the head or fires the source —
+`G0`, `G1`, `M4`, `M5`, `S`, `F` — is standard and accepted.
 
-**Then:** suppress them via device settings if possible, or document the required setting.
-**Done when:** a 10 mm square streams without error.
+LightBurn hardcodes that block for every GCode-class device. There is no setting that removes it,
+and Start G-code is appended *after* it. So the resolution is to **document it, not fix it**.
+
+**Done when:** Stage 4 framing tracks the square accurately with the errors present. That is the
+only test that distinguishes "harmless" from "silently wrong".
 
 ## 2. Stage 4 — calibration 🟡 *(no beam)*
 
@@ -122,6 +127,7 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 
 ## Right now
 
-**Save the G-code and send it to me.** LightBurn → Laser window → **Save GCode** →
-`captures/lightburn-job.gc` on the share. That unblocks item 1, and items 2–5 are mostly
-measurement and packaging.
+**Stage 4 framing — no beam.** Draw a 100 mm square in LightBurn, hit **Frame**, and watch where
+the red pointer goes. That single test resolves `MirrorX`/`MirrorY`, the origin corner, and scale
+at once, and simultaneously proves whether the two `err:20` lines matter. Template:
+`captures/templates/field-calibration.md`.
