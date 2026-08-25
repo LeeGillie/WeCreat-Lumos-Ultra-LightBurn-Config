@@ -66,6 +66,9 @@ Still genuinely out of reach through LightBurn: 16-bit depth-map relief and K9 i
 engraving, which need the galvo device class itself. See
 [docs/09-k9-and-mopa-limits.md](docs/09-k9-and-mopa-limits.md).
 
+**Where this is going:** [ROADMAP.md](ROADMAP.md) defines v1.0 narrowly — two profiles that
+connect, place accurately and mark correctly — and lists exactly what remains.
+
 ## What this repository contains
 
 ```
