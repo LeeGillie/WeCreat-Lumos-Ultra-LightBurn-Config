@@ -106,3 +106,76 @@ thing** — and it is the same pattern Creality and xTool use, which is why all 
 
 Independent confirmation of a finding this project made the hard way, from the vendor's tooling
 rather than from our probes. Grade for the RNDIS-over-USB camera path: **CONFIRMED-vendor.**
+
+---
+
+## ✅ CONFIRMED by the operator, 2026-08-25
+
+**The selected device throughout Stage 4 was "WeCreat Lumos Ultra - MOPA 100W Red 210" — the
+GRBL-class profile.** Not the Custom GCode / `wecreat` one.
+
+### What a GRBL-class profile demonstrably does on a Lumos Ultra
+
+| Capability | Result |
+|---|---|
+| Connects at 1,000,000 baud over the CH340 | ✅ |
+| Recognised as **"Found WeCreat Device"** | ✅ |
+| Drives preview mode / red pointer (`Exit_Preview_Mode`, `M41Y1`) | ✅ |
+| Frames accurately, screen matches machine | ✅ |
+| Reaches all four corners of a 200 mm square | ✅ |
+| Live `MPos` tracking with the `−105` field-centre offset | ✅ |
+| Exposes `CutOrigin` — a real origin-corner control | ✅ |
+| Exposes `MirrorX` / `MirrorY` | ✅ |
+
+**Everything this project needs, on the better-supported device class.**
+
+## ⚠️ This also confounds the `err:20` diagnosis
+
+The two runs being compared were **not** on the same device:
+
+| Run | Device class | `M8`/`M9` present | `err:20` |
+|---|---|---|---|
+| Saved marking job (`captures/lightburn-job.gc`, 2026-08-24) | **Custom GCode** | yes | **2** |
+| Framing runs (2026-08-25) | **GRBL** | no | **0** |
+
+Two variables changed at once. The `M8`/`M9` reading remains plausible — it is still the only pair
+of commands that fits a count of exactly two — but **it is no longer a clean differential** and
+must not be written up as one.
+
+**The clean test:** on **one** device, run the same job twice, air assist **on** then **off**.
+One variable. That is the house method and it has not been applied here yet.
+
+## The decision this forces
+
+The repository currently recommends `Custom GCode` + `GCodeFlavor: "wecreat"`
+([docs/10](../docs/10-lbdev-format.md), `tools/profile-spec.json`, `tools/validate-lbdev.ps1`).
+That recommendation was reasoned, but it was never tested against GRBL on hardware — and GRBL is
+what actually did the work.
+
+Reasons GRBL may be the better recommendation:
+
+- **More of LightBurn is live.** Jogging, position readout, homing controls, origin corner
+- **`CutOrigin` exists.** The Custom GCode class has no such key, which is why
+  [Test 2](stage4-mirror-origin-benchy.md) had to resolve the corner through the Origin widget with
+  an unclear mapping to `MirrorX`/`MirrorY`
+- **It is the class WeCreat's own vendor profile uses** for the Lumos (device [1], `Name: GRBL`)
+- **It works.** Demonstrated, today, on this machine
+
+Reason to be careful: `GCodeFlavor: "wecreat"` may still change job output in ways framing did not
+exercise. Framing emits no `M4`, `M8`, `M9`, `S` or power terms.
+
+## The experiment that decides it — beam-free, ~10 minutes
+
+Same LightBurn file, same square, **Save GCode** from each device in turn, then diff.
+
+1. Draw a 20 mm square, air assist **OFF**. Save as `captures/gcode-grbl-noair.gc`
+2. Same file, air assist **ON**. Save as `captures/gcode-grbl-air.gc`
+3. Switch device to **"MOPA Red 210"** (Custom GCode). Repeat both:
+   `captures/gcode-customgcode-noair.gc`, `captures/gcode-customgcode-air.gc`
+
+Four files, no beam, no machine time. They settle **both** open questions at once:
+
+- `noair` vs `air` on the same device → **isolates `M8`/`M9`**, the clean differential we owe this
+- GRBL vs Custom GCode → **shows exactly what the device class changes** in emitted output
+
+Then one live run of the winning combination confirms `err:20` goes to zero.
