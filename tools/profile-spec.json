@@ -7,13 +7,21 @@
     "machines from their banner and warns if you use anything else. WeCreat's own",
     "WeCreat-Lumos-v1.5.lbdev says 'GRBL' - it predates the flavor and now triggers that warning.",
     "",
-    "SAFETY: no start/end G-code and no macros. The M-code dictionary is now well populated and",
-    "several codes are CONFIRMED-vendor, but emitting them FROM LightBurn is still untested.",
-    "See docs/04-mcode-dictionary.md and docs/14-mopa-parameters-in-lightburn.md.",
+    "TODO - START G-CODE IS NOW REQUIRED. 'M18S0' (MOPA) / 'M18S1' (UV) selects the laser",
+    "source. Without it the machine accepts a job, streams it, and marks NOTHING at any power.",
+    "It is also cleared by the \\x18 soft reset LightBurn issues on every Stop, so it cannot be",
+    "a one-off console command - it must be re-asserted per job. CONFIRMED-hardware, see",
+    "captures/stage5-source-select-required.md. The correct prefs key for this device class is",
+    "still being read back from a live prefs.ini rather than guessed.",
     "",
-    "UNVERIFIED: mirrorX/mirrorY. LightBurn's own wizard defaults both to false for a Custom",
-    "GCode device; the older GRBL-class vendor profile used mirrorY true. Determine by framing",
-    "(bring-up Stage 4) before running a job."
+    "AIR ASSIST: leave OFF. 'M8' is rejected by the firmware; with air off LightBurn emits 'M9'",
+    "twice and a marking job streams with ZERO err:20. There is no air assist for the fiber",
+    "source to drive anyway. See captures/stage5-first-mark-and-travel-scar.md.",
+    "",
+    "RESOLVED on hardware 2026-08-25: origin corner is TOP-LEFT, screen matches machine,",
+    "MPos = commanded - 105 on both axes, and there is no detectable field distortion at",
+    "200 mm. The exact mirrorX/mirrorY encoding of 'top-left' for this device class is pending",
+    "a fresh prefs.ini - do NOT set it from inference."
   ],
 
   "shared": {
