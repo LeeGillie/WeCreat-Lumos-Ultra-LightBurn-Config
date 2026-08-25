@@ -34,11 +34,14 @@ Two observations worth drawing out:
 
 ## Field lenses
 
-| Lens | Purpose | Working area | Marked part number | Notes |
-|---|---|---|---|---|
-| **Purple** | General UV — flat *and* cylindrical | 210 × 210 mm claimed | `H YL-355-200-F290-FS10-C` | **CONFIRMED-hardware.** 355 nm, 200 mm scan field, **290 mm focal length**, 10 mm input aperture |
-| **Green** | K9 crystal internal engraving | 70 × 70 mm | not yet photographed | Volume 70 × 70 × 135 mm. Reviewer-reported 70 mm focal length |
-| **Red** | MOPA fiber (60 W and 100 W share it) | 210 × 210 mm claimed | not yet photographed | Expect a 1064 nm equivalent. Wanted: a photo of the engraved ring |
+WeCreat's own names for the three, from the product photography: **UV**, **CRYSTAL**, **MOPA**.
+The anodising colour is a keying aid, not a wavelength.
+
+| Lens | Vendor name | Purpose | Working area | Marked part number | Notes |
+|---|---|---|---|---|---|
+| **Purple** | UV | General UV — flat *and* cylindrical | 210 × 210 mm claimed | `H YL-355-200-F290-FS10-C` | **CONFIRMED-hardware.** 355 nm, 200 mm field, **290 mm focal length**, 10 mm aperture |
+| **Green** | CRYSTAL | K9 crystal internal engraving | 70 × 70 mm | `JG-SL-355-100-70G-10` | **CONFIRMED-hardware. Also 355 nm** — same UV source, different optic. 70 mm field, 10 mm aperture |
+| **Red** | MOPA | MOPA fiber (60 W and 100 W share it) | 210 × 210 mm claimed | not yet photographed | Expect 1064 nm. Wanted: a photo of the engraved ring |
 
 ### Decoding the purple lens marking
 
@@ -55,11 +58,52 @@ Internally consistent: an f-theta at f = 290 mm sweeping the ±20° typical of a
 galvo scanner gives 2 × 290 × tan-ish(20°) ≈ 200 mm of field. The optics agree
 with the label.
 
-> ### ⚠️ The lens is rated for 200 mm. The machine is driven to 210 mm.
+### Decoding the green (CRYSTAL) lens marking
+
+```
+JG-SL - 355 - 100 - 70G - 10        SN: 2604100..
+  │      │     │     │     └─ 10 mm input beam aperture
+  │      │     │     └─────── 70 mm field  (matches the 70 x 70 mm spec)
+  │      │     └───────────── 100 mm focal length
+  │      └─────────────────── 355 nm design wavelength — UV, same as purple
+  └────────────────────────── different supplier prefix from the purple lens
+```
+
+Sanity check: f = 100 mm at ±20° gives ≈ 73 mm of field. That lands on the
+vendor's 70 × 70 mm crystal working area, so the reading holds together.
+
+**Caveat — the two suppliers order their fields differently.** The purple lens
+is `YL`, the green is `JG-SL`, and the purple puts field before focal length
+(`200-F290`) while the green appears to put focal length before field
+(`100-70G`). The `355` and the `10` are unambiguous; the `100` / `70G` split is
+**INFERRED** from the field-size match, not from a datasheet.
+
+### What the green lens confirms
+
+> **The green lens is a 355 nm optic.** The CRYSTAL lens runs on the *same UV
+> source* as the purple one — the colour is keying, not wavelength.
+
+This was previously inferred from `M18S1` selecting UV for both modes
+([docs/04](04-mcode-dictionary.md)). It is now **CONFIRMED-hardware** by the
+glass itself, which upgrades two things:
+
+1. **Eyewear.** Purple and green share the 190–550 nm UV requirement. Only the
+   red lens moves you to 800–1100 nm. `SAFETY.md` and
+   [docs/12](12-checklists.md) already said this; they were right.
+2. **Purple and green are both 10 mm input aperture.** They mount on a common
+   galvo output beam, which is why field-lens auto-detection can be a simple
+   identity read rather than an optical re-alignment. Expect the red lens to be
+   10 mm too — that is the thing to check first when its photo arrives.
+
+Also worth noting: the crystal lens's short 100 mm focal length is what buys the
+deep focal *travel* needed to sweep a focus through a 135 mm crystal — and what
+costs it the field, at 70 mm versus the purple lens's 200 mm.
+
+> ### ⚠️ The purple lens is rated for 200 mm. The machine is driven to 210 mm.
 >
 > The vendor's own G-code declares `;canvas border: 0 0 210 210` and centres at
-> `G0X105Y105`, and WeCreat's spec sheet says 210 × 210 mm. But this lens is
-> engraved **200**. The machine is being scanned roughly 5 % past its lens's
+> `G0X105Y105`, and WeCreat's spec sheet says 210 × 210 mm. But the purple lens
+> is engraved **200**. The machine is being scanned roughly 5 % past that lens's
 > rated field.
 >
 > Outside the rated field an f-theta's spot grows, its focal plane walks, and —
