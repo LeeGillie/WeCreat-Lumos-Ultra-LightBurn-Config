@@ -18,9 +18,9 @@ use for real work, plus a truthful map of what is and is not possible.
 
 | # | Item | Status | Effort |
 |---|---|---|---|
-| 1 | **`err:20`** — diagnosed, likely cosmetic | 🟢 downgraded | ~5 min to confirm |
-| 2 | **Stage 4 calibration** — mirroring, origin, scale | 🟡 **next** | ~20 min, no beam |
-| 3 | **First marks** — power/speed behave sanely | 🟡 | ~30 min, beam |
+| 1 | **`err:20`** — traced to `M8`/`M9`, cosmetic | ✅ **resolved** | document only |
+| 2 | **Stage 4 calibration** — origin, mirroring, distortion | ✅ **DONE** | — |
+| 3 | **First marks** — power/speed behave sanely | 🟡 **next** | ~30 min, beam |
 | 4 | **Verify `M38`/`M39` survive from LightBurn** | 🟡 | ~15 min |
 | 5 | **Package and publish** | ⬜ | ~1 hour |
 
@@ -29,27 +29,37 @@ latch — is **already confirmed on hardware**. What remains is small.
 
 ---
 
-## 1. `err:20` — diagnosed 🟢
+## 1. `err:20` — RESOLVED ✅
 
-**Resolved as far as it can be without a framing pass.** Full analysis:
-[`captures/stage3-err20-diagnosis-benchy.md`](captures/stage3-err20-diagnosis-benchy.md).
+**Cause: `M8`/`M9`, the air-assist commands.** Full analysis:
+[`captures/stage4-airassist-differential.md`](captures/stage4-airassist-differential.md).
 
-LightBurn's saved G-code contains exactly three lines outside MakeIt's vocabulary that could
-produce two errors: `G00 G17 G40`, `G21`, and `G54`. All three are modal setup — plane select,
-cutter-comp cancel, metric mode, work coordinate system. GRBL reports `error:20` and **continues
-to the next line**; it does not abort. Everything that moves the head or fires the source —
-`G0`, `G1`, `M4`, `M5`, `S`, `F` — is standard and accepted.
+The earlier suspects — `G17`, `G40`, `G21`, `G54` — are **eliminated**: all four appear in framing
+runs that produce **zero** errors. `M5` returns `ok`. `M4` is what MakeIt itself uses. `M8`/`M9` is
+the only pair left, and it is exactly two commands for exactly two errors.
 
-LightBurn hardcodes that block for every GCode-class device. There is no setting that removes it,
-and Start G-code is appended *after* it. So the resolution is to **document it, not fix it**.
+**It cannot be switched off.** Turning air assist off in the layer swaps `M8` for `M9` rather than
+removing it — LightBurn emits two air-assist codes either way.
 
-**Done when:** Stage 4 framing tracks the square accurately with the errors present. That is the
-only test that distinguishes "harmless" from "silently wrong".
+**It does not matter.** GRBL reports `error:20` and continues to the next line. Stage 4 proved
+geometry is correct with those errors present. The resolution is to **document it** so Ultra owners
+do not mistake it for a broken setup.
 
-## 2. Stage 4 — calibration 🟡 *(no beam)*
+## 2. Stage 4 — calibration ✅ DONE *(no beam)*
 
-Three values are currently unverified, and all three are wrong-looking-output risks rather than
-safety risks:
+| Question | Answer | Evidence |
+|---|---|---|
+| Origin corner | **top-left** — set via the Origin 2×2 widget, which is where this device class puts it | [Test 2](captures/stage4-mirror-origin-benchy.md), confirmed in two corners |
+| Coordinate mapping | `MPos = commanded − 105` on both axes — the `M107X-105Y-105` field-centre origin, seen from LightBurn's side | same |
+| Field distortion at 200 mm | **none detectable** — bow under 0.2 mm, probably under 0.1 mm | [Test 4](captures/stage4-test4-field-distortion-benchy.md) |
+| Scale | 1:1, unmeasured but agreed by three independent sources | [Test 3 notes](captures/STAGE4-TEST3-SCALE.md) |
+
+The distortion result is the significant one: **the controller's field correction applies to G-code
+motion**, not only to MakeIt's own jobs. LightBurn gates lens correction to galvo device classes we
+are not using, so had it been otherwise there would have been nowhere to put a fix.
+
+<details>
+<summary>Original plan, kept for reference</summary>
 
 - **`MirrorX` / `MirrorY`** — LightBurn's wizard defaults both `false`; the older GRBL vendor
   profile used `MirrorY: true`
@@ -75,6 +85,8 @@ calibration.
 
 **Done when:** a framed 100 mm square measures 100 mm and appears where the screen says, and a
 200 mm square has straight sides.
+
+</details>
 
 ## 3. First marks 🟡 *(beam — red lens fitted, 800–1100 nm goggles)*
 
@@ -139,7 +151,12 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 - **The MOPA wall is down**: pulse width and frequency are reachable via per-layer custom G-code
 - The **control-mode latch** — undocumented anywhere, and the likely explanation for the
   community's perennial "port already in use" reports
-- Camera working in LightBurn; one accessible stream, rotated, uncorrected
+- Camera working in LightBurn via its **built-in WeCreat preset** — whose URL,
+  `http://192.168.42.1:8080/camera/take_photo`, is character-for-character the endpoint this
+  project reverse-engineered by probing. Vendor tooling confirming our architecture
+- **Stage 4 complete**: origin resolved, coordinate mapping confirmed against `M107`, and **no
+  detectable field distortion at 200 mm** — the firmware's galvo correction reaches G-code jobs
+- **`err:20` traced to `M8`/`M9`** by single-variable differential, and shown to be harmless
 - Nine Ultra work modes enumerated from the shipping MakeIt bundle
 - The most complete public WeCreat M-code dictionary in existence
 
@@ -147,8 +164,13 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 
 ## Right now
 
-**Stage 4 framing — no beam, nothing moves in the work area.** Draw a 100 mm square in LightBurn,
-hit **Frame**, and watch where the red pointer goes. That single test resolves `MirrorX`/`MirrorY`,
-the origin corner, and scale at once, and simultaneously proves whether the two `err:20` lines
-matter. Then repeat at 200 mm to check the field edges for galvo distortion. Template:
-`captures/templates/field-calibration.md`.
+**First marks — the beam step.** Items 1 and 2 are closed; everything that can be learned without
+firing the source has been. What remains is whether power and speed behave, and that needs
+material, the red lens, and 800–1100 nm goggles.
+
+Two smaller things worth folding into the same session:
+
+- **Capture a fresh `prefs.ini`** (`\\cortex\D\lumos.cmd` on benchy → `p`) so the generator emits
+  the real stored values for the top-left origin rather than inferred ones
+- **Count `err:20` on a live marking run** with air assist off. If it is still 2, that confirms
+  `M9` is the rejected code and closes item 1 completely
