@@ -63,7 +63,8 @@
                                                                                         "UseHardwareFlow":  false,
                                                                                         "UserFinishX":  0,
                                                                                         "UserFinishY":  0,
-                                                                                        "VariableLaserPower":  true
+                                                                                        "VariableLaserPower":  true,
+                                                                                        "VerboseOutput":  true
                                                                                 },
                                                       "ToolPower":  0,
                                                       "Type":  "Serial",

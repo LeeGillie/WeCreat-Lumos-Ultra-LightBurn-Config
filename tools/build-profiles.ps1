@@ -57,6 +57,11 @@ function New-Settings {
     UserFinishX          = 0
     UserFinishY          = 0
     VariableLaserPower   = $true
+
+    # Echo every streamed line in the Console. This machine has no usable status telemetry
+    # beyond position, so the stream echo is the only window into what LightBurn actually
+    # sent. Diagnosing anything without it means inferring from whether the metal changed.
+    VerboseOutput        = $true
   }
 }
 
