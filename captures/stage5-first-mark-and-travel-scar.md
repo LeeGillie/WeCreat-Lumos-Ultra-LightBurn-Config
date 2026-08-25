@@ -105,3 +105,85 @@ path — it is a source-power/enable command.
 | Beam on during rapids | 🔴 **defect — travel scars on every job** |
 | `M18S0` in Start G-code | 🟡 required, not yet implemented in the generator |
 | `err:20` count on this run | ❓ not yet reported |
+
+---
+
+## ✅ `err:20` — ZERO with air assist off
+
+A full console log across several framing and marking runs contains **no `err:20` at all**.
+
+The marking job now streams as:
+
+```gcode
+G00 G17 G40
+G21;Restore metric mode
+G54
+G90;Restore absolute mode
+M4
+M9                        <- air assist OFF
+G0 X115Y95
+G1 Y115S150F12000
+G1 X95
+G1 Y95
+G1 X115
+M9
+M5
+G90;Restore absolute mode
+M2
+```
+
+**Clean. No errors.** Compare the earlier job, identical except `M8` in place of the first `M9`,
+which produced errors.
+
+### Conclusion, with the discrepancy stated
+
+**`M8` is rejected by the firmware. `M9` is accepted.** Turning air assist off eliminates the
+errors entirely.
+
+**Unresolved:** the original observation was `err:20` **×2**, and a single rejected `M8` should
+produce **one** error. Either the earlier run differed in a way not captured, or something else
+contributed. The reproducible fact is what ships:
+
+> **With air assist off, a marking job streams with zero errors.**
+
+That is now a *fix*, not a documented annoyance. It goes in the profile defaults and the checklist:
+**air assist off** — the Ultra has no air assist for the fiber source to drive anyway.
+
+## Power scaling confirmed
+
+`Power Max 15 %` emitted as **`S150`** against `S_Scale: 1000`. Linear, as configured.
+`M4S1000` in MakeIt's own preamble agrees. **`S_Scale: 1000` is correct — CONFIRMED-hardware.**
+
+## Coordinate mapping holds at every stop
+
+| Job ends at | `MPos` | check |
+|---|---|---|
+| X95 Y95 | `-10.000, -10.000` | 95 − 105 ✅ |
+| X115 Y95 | `10.000, -10.000` | 115 − 105 ✅ |
+
+The −105 field-centre offset is now confirmed at **four** distinct positions across two sessions.
+
+## Framing feed is fixed and slow
+
+LightBurn frames at **`F800`** regardless of the layer's speed — the marking job runs `F12000`, the
+frame runs `F800`. Not configurable from the layer. Worth knowing: framing takes 15× longer per mm
+than marking on this setup, which is why a 200 mm square frame took over a minute.
+
+## `M18S0` echo
+
+The controller acknowledges with an echo:
+
+```
+M18S0
+ok
+M18 S0        <- echoed back, normalised with a space
+```
+
+Confirmed again: **it must be re-sent after every `\x18` soft reset**, and LightBurn issues one on
+every Stop. Start G-code is the only sane home for it.
+
+## Still open
+
+- **`$32=1`** — the laser-mode test for the rapid-travel scar. Not yet run
+- Whether the travel dots persist on the most recent marks
+- Power floor below 15 %
