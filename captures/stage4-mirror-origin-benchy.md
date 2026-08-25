@@ -140,3 +140,71 @@ at the bed safely while doing it.
 **To be recorded in the shipped limitations table:** *"Framing traces once rather than
 continuously; this is a LightBurn GCode-device behaviour, not a machine limitation. MakeIt's
 continuous frame has no equivalent here."*
+
+---
+
+## Confirmation run — second corner ✅
+
+Square moved to the **upper-right** on screen. Emitted G-code:
+
+```gcode
+G0 X180Y29
+G1 X200F800
+G1 Y9
+G1 X180
+G1 Y29
+```
+
+Square spans X 180–200, Y 9–29. Ends at X 180, Y 29.
+
+```
+<Idle|MPos:75.000,-76.000,0.000|...>
+```
+
+- X: 180 − 105 = **75** ✅
+- Y: 29 − 105 = **−76** ✅
+
+**Pointer traced the upper-right of the bed, matching the screen.**
+
+The −105 offset holds in both axes at a second, independent position — and note the signs flipped
+appropriately (X now positive, Y now negative), which a constant fudge factor would not do. The
+origin corner is confirmed across two corners in two different quadrants.
+
+> **Test 2 is closed. Origin = top-left. Screen and machine agree.**
+
+Also note LightBurn emitting `Y29`/`Y9` for a square drawn at the *top* of the screen: with a
+top-left origin LightBurn counts Y downward, so screen-top is low Y. Low Y then lands at the far
+side of the bed. Self-consistent, and worth stating plainly because it trips people up.
+
+## A second, stationary red dot at field centre
+
+Reported: a red dot sits in the **middle of the work area** and stays there throughout, distinct
+from the pointer tracing the frame.
+
+Two readings, not yet separated:
+
+| Reading | Implication |
+|---|---|
+| **A separate fixed focus indicator** | A dedicated diode aimed at the focal point for setting Z height, independent of the galvo. Common on machines in this class |
+| **The galvo pointer at rest** | `MPos 0,0` **is** the field centre — that is what the `M107X-105Y-105` offset means. A parked galvo points dead centre by definition |
+
+If the centre dot is visible *at the same time* as the traced frame, it is the first. If it only
+appears between frames, it is the second — and is itself another confirmation of the centre-origin
+finding.
+
+**To settle:** watch during a frame and note whether both are present simultaneously.
+
+## Leaving preview mode
+
+Clicking **Stop** in LightBurn produced:
+
+```
+\x18                  (0x18 = Ctrl-X, GRBL soft reset)
+ok
+Exit_Preview_Mode
+M41Y1
+```
+
+So **Stop is the way out of preview mode**, and it issues a soft reset first. `MPos` survives the
+reset unchanged (`75.000,-76.000` before and after), which is worth knowing — the reset does not
+zero the reported position.
