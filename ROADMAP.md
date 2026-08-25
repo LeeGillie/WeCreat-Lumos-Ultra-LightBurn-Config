@@ -66,6 +66,13 @@ if its sides bow, the firmware's own field correction is not carrying, and that 
 problem than mirroring. LightBurn's lens-correction UI is gated to its galvo device classes and
 is not available to us here, so we would have nowhere to put a correction of our own.
 
+**Calibrate once, not twice.** The purple and red lenses carry the *same* prescription —
+200 mm field, 290 mm focal length, 10 mm aperture, differing only in design wavelength
+([docs/06](docs/06-modes-and-lenses.md)). So the mirroring, origin and scale resolved with the red
+lens should transfer to the UV profile unchanged, and the captured `G0Z47.8` focus height should
+hold for both. Worth a spot-check with the purple lens before shipping, but not a second full
+calibration.
+
 **Done when:** a framed 100 mm square measures 100 mm and appears where the screen says, and a
 200 mm square has straight sides.
 
@@ -123,7 +130,10 @@ Worth stating, because it is most of the hard part — and none of it existed pu
   **is** a galvo — nothing moves in the work area — but it exposes no galvo control board to the
   host. The controller accepts G-code and does the scanner driving itself
 - `Custom GCode` + `GCodeFlavor: wecreat` — LightBurn now reports **"Found WeCreat Device"**
-- **Field size confirmed at 210 × 210 mm** from the vendor's own G-code
+- **Field size confirmed at 210 × 210 mm** from the vendor's own G-code — while all three lenses,
+  read off the glass, are rated 200 mm (70 mm for crystal). The machine is scanned past its lenses
+- **All three lens part numbers recovered from the hardware**, including **1064 nm confirmed** for
+  the MOPA source, which WeCreat has never published. UV and MOPA optics are the same prescription
 - **`M18` source select**, **`M107` origin offset**, **`M38F` frequency**, **`M39P` pulse width** —
   each confirmed by controlled differential capture
 - **The MOPA wall is down**: pulse width and frequency are reachable via per-layer custom G-code

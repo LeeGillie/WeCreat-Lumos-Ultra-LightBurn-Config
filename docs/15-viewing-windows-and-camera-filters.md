@@ -12,6 +12,10 @@ The Lumos Ultra has two sources at opposite ends of the spectrum:
 | UV (purple + green lenses) | 355 nm | ultraviolet |
 | MOPA fiber (red lens) | 1064 nm | near infrared |
 
+Both wavelengths are **CONFIRMED-hardware** — engraved on the lenses themselves, not inferred
+([docs/06](06-modes-and-lenses.md)). That matters here: a filter selection is only as good as the
+wavelengths you fed into it.
+
 Both are invisible. Ordinary IR laser goggles are transparent to UV, and UV goggles are
 transparent to 1064 nm — which is why `SAFETY.md` insists you match eyewear to the *active source*
 rather than to the machine.

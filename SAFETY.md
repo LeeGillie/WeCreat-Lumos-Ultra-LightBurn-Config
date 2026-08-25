@@ -56,7 +56,7 @@ use?" and "laser busy" reports. See
 | Source | Wavelength | Notes |
 |---|---|---|
 | UV | 355 nm | Invisible. Standard laser goggles rated for IR **do not** protect against UV. WeCreat sells 190–550 nm goggles for this |
-| MOPA fiber | 1064 nm (third-party reports; WeCreat does not publish it) | Invisible. Highly specular off metal — the reflection is as dangerous as the beam. Needs 800–1100 nm goggles |
+| MOPA fiber | **1064 nm — confirmed**, engraved on the red lens itself (`H SL-1064-200-F290-D10-C`). WeCreat still does not publish it | Invisible. Highly specular off metal — the reflection is as dangerous as the beam. Needs 800–1100 nm goggles |
 
 **One pair of goggles does not cover both sources.** Check which lens and which source is active
 before you close the lid, and wear the matching pair. This is the reason every profile in this
