@@ -131,3 +131,51 @@ the vendor tool's own UI agree, so this moves from `CONFIRMED-hardware` to **`CO
 likely that WeCreat-specific behaviour — device detection, `Exit_Preview_Mode`, `M41Y1` — is driven
 by LightBurn recognising the controller banner, not by any `GCodeFlavor` string we set. See
 [the open question](../captures/stage4-which-device-are-we-testing.md).
+
+### The preset's URL is the endpoint we reverse-engineered
+
+Connecting LightBurn's built-in **WeCreat** preset fills in:
+
+```
+Camera Type : Network Camera
+Mount Type  : Overhead Mounted
+Network URL : http://192.168.42.1:8080/camera/take_photo
+Status      : Connected
+```
+
+That URL is **character-for-character** the endpoint this project found by probing
+([capture](../captures/stage2-rest-benchy.md), which recorded `GET /camera/take_photo` returning an
+826,131-byte JPEG from `192.168.42.1:8080`).
+
+Host, port and path, arrived at independently:
+
+| | Our method | LightBurn's preset |
+|---|---|---|
+| Host | inferred from the RNDIS adapter at `192.168.42.100/24` | `192.168.42.1` |
+| Port | port scan | `8080` |
+| Path | endpoint enumeration | `/camera/take_photo` |
+
+It also settles the stream question: it is a **snapshot** endpoint, not MJPEG. LightBurn's *New
+Camera* dialog offers "snapshot images or MJPEG stream" and the WeCreat preset takes the snapshot
+path.
+
+**Grade: `CONFIRMED-vendor`.** Both the architecture and the endpoint map.
+
+### Practical status of the camera in LightBurn
+
+| Item | State |
+|---|---|
+| Connection | ✅ Connected via the built-in preset — no manual URL needed |
+| Live preview | ✅ Working |
+| Image orientation | ⚠️ Arrives **rotated ~90°**, as previously captured |
+| Lens Calibration | ❌ **Uncalibrated** |
+| Workspace Alignment | ❌ **No Alignment** |
+
+So the camera *works* but is not yet *useful for placement*. Two jobs remain, both standard
+LightBurn procedures rather than anything WeCreat-specific:
+
+1. **Calibrate Lens** — LightBurn's dot-pattern routine, which also absorbs the rotation
+2. **Align to Workspace** — maps the image onto the 210 × 210 field
+
+Both are deferred past v1.0 ([ROADMAP](../ROADMAP.md)), but the starting point is much better than
+the repo previously assumed: there is a working vendor preset, not a URL hunt.
