@@ -34,11 +34,49 @@ Two observations worth drawing out:
 
 ## Field lenses
 
-| Lens | Purpose | Working area | Notes |
-|---|---|---|---|
-| **Purple** | General UV — flat *and* cylindrical | 210 × 210 mm | WeCreat's own wording is "flat or cylindrical", not merely "general". Reviewer-reported focal length 200 mm |
-| **Green** | K9 crystal internal engraving | 70 × 70 mm | Volume 70 × 70 × 135 mm. Reviewer-reported 70 mm focal length |
-| **Red** | MOPA fiber (60 W and 100 W share it) | 210 × 210 mm | Reviewer-reported 200 mm focal length |
+| Lens | Purpose | Working area | Marked part number | Notes |
+|---|---|---|---|---|
+| **Purple** | General UV — flat *and* cylindrical | 210 × 210 mm claimed | `H YL-355-200-F290-FS10-C` | **CONFIRMED-hardware.** 355 nm, 200 mm scan field, **290 mm focal length**, 10 mm input aperture |
+| **Green** | K9 crystal internal engraving | 70 × 70 mm | not yet photographed | Volume 70 × 70 × 135 mm. Reviewer-reported 70 mm focal length |
+| **Red** | MOPA fiber (60 W and 100 W share it) | 210 × 210 mm claimed | not yet photographed | Expect a 1064 nm equivalent. Wanted: a photo of the engraved ring |
+
+### Decoding the purple lens marking
+
+```
+H  YL - 355 - 200 - F290 - FS10 - C        SN: 25111011
+        │     │     │      │       └─ coating / variant
+        │     │     │      └───────── FS10  = 10 mm input beam aperture
+        │     │     └──────────────── F290  = 290 mm focal length
+        │     └────────────────────── 200   = 200 mm scan field
+        └──────────────────────────── 355   = 355 nm design wavelength (UV)
+```
+
+Internally consistent: an f-theta at f = 290 mm sweeping the ±20° typical of a
+galvo scanner gives 2 × 290 × tan-ish(20°) ≈ 200 mm of field. The optics agree
+with the label.
+
+> ### ⚠️ The lens is rated for 200 mm. The machine is driven to 210 mm.
+>
+> The vendor's own G-code declares `;canvas border: 0 0 210 210` and centres at
+> `G0X105Y105`, and WeCreat's spec sheet says 210 × 210 mm. But this lens is
+> engraved **200**. The machine is being scanned roughly 5 % past its lens's
+> rated field.
+>
+> Outside the rated field an f-theta's spot grows, its focal plane walks, and —
+> critically — the manufacturer's distortion correction is no longer
+> characterised. Marks near the extreme edge may be geometrically off, out of
+> focus, or both, and no amount of LightBurn configuration fixes that.
+>
+> **This is not a bug we introduced and not one we can fix.** It is a property of
+> the machine that Ultra owners should know about. It also makes the Stage 4
+> 200 mm framing square the single most informative test in this project: it
+> walks the beam right out to the edge of the rated field, where any problem
+> will show.
+>
+> Unverified: whether the "reviewer-reported 200 mm focal length" figures below
+> were always this scan-field number misread as focal length. Given this lens is
+> f = 290 mm with a 200 mm field, that looks likely — and if so the same
+> confusion probably applies to the red lens.
 
 Vendor "Working area" spec row, verbatim:
 
