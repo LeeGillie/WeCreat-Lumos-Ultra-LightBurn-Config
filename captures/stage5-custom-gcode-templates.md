@@ -95,3 +95,85 @@ One run then reveals **which blocks fire, in what order**, and whether the job c
 > ⚠️ **`Tool On` must keep `M4`.** The `M4` shown in that box is a greyed *placeholder*, not
 > content. Typing into the field replaces the default entirely — enter both lines, or the laser
 > never gets enabled and nothing marks.
+
+---
+
+## The documented list — 29 blocks, not 15
+
+LightBurn documents these properly:
+<https://docs.lightburnsoftware.com/2.1/Reference/DeviceSettings/CustomGCode/>
+
+| Template | Trigger (documented) |
+|---|---|
+| Home | once per job |
+| Focus Z | once per job |
+| **User Start Script** | **"Custom script to run at the start of the job"** |
+| **User End Script** | "Custom script to run at the end of the job" |
+| **Tool On** | "Enable the tool" — per tool activation |
+| 2nd Tool On | per 2nd tool activation |
+| Tool Off | per tool deactivation |
+| Fire On / Fire Off | per laser firing / stop |
+| Pierce | initial firing without movement |
+| Dwell | per pause command |
+| **Air On / Air Off** | **per air assist activation / deactivation** |
+| **Layer Start** | "Commands to run before the start of each layer" |
+| Cut Move | per cutting motion |
+| Raster Move | per raster motion |
+| **Rapid Move** | **per non-cutting motion** |
+| Safe Rapid | per safe-height rapid |
+| Abort / Pause / Resume | per corresponding command |
+| Job End | job completion |
+| Get Position / Get Status | per query |
+| Metric Modal / Imperial Modal | per unit setting |
+| Work Coordinate System | per WCS selection |
+| Custom Error Codes / Custom Alarm Codes | per error / alarm |
+
+Substitution variables: `x`, `y`, `z`, `r`/`a`/`u`/`rot`/`rotation`, `x_probe`, `y_probe`,
+`z_probe`, `s`/`speed`, `feed`/`feedrate`, `p`/`power`, `rpms`/`spindlespeed`, `dwell`, `tool`.
+
+**Note:** the UI in 2.1.04 also shows a **Job Header** block that the documentation does not list.
+Undocumented, and its trigger is unverified.
+
+## This solves three of our open problems, not one
+
+Every symptom we have been fighting is a template we can edit.
+
+### 1. Source select → `User Start Script`
+
+Documented as running at the start of the job. `M18S0` (MOPA) or `M18S1` (UV).
+`Tool On` remains the more robust option because it re-asserts on every arm, and `\x18` clears the
+selection — worth testing both.
+
+### 2. `err:20` → blank the `Air On` / `Air Off` templates
+
+There are dedicated **Air On** and **Air Off** blocks. `M8` and `M9` are template output, not
+hardcoded. **Emptying them removes the air-assist codes from the stream entirely**, regardless of
+what the layer's Air toggle says.
+
+That is a real fix rather than "turn air assist off and hope", and it explains the earlier
+confusion: air-off swapped `M8` for `M9` because both come from templates, and *neither* state
+produces *no* command.
+
+### 3. The rapid-travel scar → `Rapid Move`
+
+The dotted line from field centre to the job's start corner is the beam staying lit through a `G0`
+([capture](stage5-first-mark-and-travel-scar.md)). There is a **Rapid Move** template governing
+exactly those moves.
+
+If it can carry an explicit `S0` — the way MakeIt's own framing geometry states
+`G1X90.1Y96.21S0` — the beam is forced off during travel **in the profile**, with no dependency on
+whether the firmware implements `$32` laser mode.
+
+That would be a considerably better fix than a GRBL setting we cannot even read back.
+
+## Revised plan
+
+One variable at a time, in this order:
+
+1. `User Start Script` = `M18S0` → confirm the job cuts unaided
+2. Blank `Air On` and `Air Off` → confirm `M8`/`M9` vanish from the echo
+3. Inspect the `Rapid Move` default, then add `S0` → confirm the travel scar vanishes
+4. Only then try `Enable Q-Pulse Options`
+
+Each is observable in the console echo with `Verbose Output` on, and steps 1–3 need at most one
+small mark each.
