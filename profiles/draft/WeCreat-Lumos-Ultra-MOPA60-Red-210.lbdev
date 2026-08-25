@@ -1,7 +1,7 @@
 {
         "DeviceList":  [
                                               {
-                                                      "Checklist":  "=== WeCreat Lumos Ultra - MOPA 60W Red 210 ===\nSource: 60W JPT MOPA fiber    Lens: Red\n\nDRAFT - NOT FULLY VERIFIED ON HARDWARE.\nConfirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.\nUnverified: origin corner and mirroring - check by framing before running a job.\n\nLENS:     RED field lens installed?             (210 x 210 mm)\nSOURCE:   MOPA fiber selected -- NOT UV?\nPOWER:    This is the 60 W profile. Is this a 60 W machine?\nGOGGLES:  800-1100 nm fiber goggles ON?  (UV goggles do NOT protect you)\nREFLECT:  Workpiece secured? Specular metal reflects the beam\nEXHAUST:  Extraction running?",
+                                                      "Checklist":  "=== WeCreat Lumos Ultra - MOPA 60W Red 210 ===\nSource: 60W JPT MOPA fiber    Lens: Red\n\nConfirmed on hardware: 210x210 field, 1000000 baud, wecreat GCode flavor,\ntop-left origin, no field distortion at 200mm, and source select via start G-code.\nAIR ASSIST OFF - M8 is rejected by the firmware.\n\nLENS:     RED field lens installed?             (210 x 210 mm)\nSOURCE:   MOPA fiber selected -- NOT UV?\nPOWER:    This is the 60 W profile. Is this a 60 W machine?\nGOGGLES:  800-1100 nm fiber goggles ON?  (UV goggles do NOT protect you)\nREFLECT:  Workpiece secured? Specular metal reflects the beam\nEXHAUST:  Extraction running?",
                                                       "CustomAlarmCodes":  {
 
                                                                                                 },
@@ -31,7 +31,7 @@
 
                                                                             ],
                                                       "MirrorX":  false,
-                                                      "MirrorY":  false,
+                                                      "MirrorY":  true,
                                                       "MoveJogDistance":  10,
                                                       "MoveJogFromOrigin":  true,
                                                       "MoveJogSpeed":  13.333333015441895,
@@ -49,11 +49,14 @@
                                                                                         "ControlUnits":  1,
                                                                                         "DwellIsMilliseconds":  false,
                                                                                         "EnableDTR":  false,
+                                                                                        "EndGCode":  "",
                                                                                         "GCodeFlavor":  "wecreat",
+                                                                                        "HasAir":  false,
                                                                                         "IsTextBased":  true,
                                                                                         "NetworkPort":  23,
                                                                                         "S_Scale":  1000,
-                                                                                        "TargetBufferSize":  127,
+                                                                                        "StartGCode":  "M18S0",
+                                                                                        "TargetBufferSize":  128,
                                                                                         "ToolStateIsAutomatic":  true,
                                                                                         "TransferMode":  0,
                                                                                         "Units":  1,

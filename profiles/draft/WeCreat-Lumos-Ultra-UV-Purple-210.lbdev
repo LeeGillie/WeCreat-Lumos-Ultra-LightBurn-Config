@@ -1,7 +1,7 @@
 {
         "DeviceList":  [
                                               {
-                                                      "Checklist":  "=== WeCreat Lumos Ultra - UV Purple 210 ===\nSource: 6W UV 355nm    Lens: Purple\n\nDRAFT - NOT FULLY VERIFIED ON HARDWARE.\nConfirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.\nUnverified: origin corner and mirroring - check by framing before running a job.\n\nLENS:     PURPLE field lens installed?          (210 x 210 mm)\nSOURCE:   UV (355 nm) selected?\nGOGGLES:  190-550 nm UV goggles ON?\nFOCUS:    Focus set for this material height?\nEXHAUST:  Extraction running? (UV on wood/leather/coated goods)\nBED:      Purple lens is for FLAT and CYLINDRICAL work",
+                                                      "Checklist":  "=== WeCreat Lumos Ultra - UV Purple 210 ===\nSource: 6W UV 355nm    Lens: Purple\n\nConfirmed on hardware: 210x210 field, 1000000 baud, wecreat GCode flavor,\ntop-left origin, no field distortion at 200mm, and source select via start G-code.\nAIR ASSIST OFF - M8 is rejected by the firmware.\n\nLENS:     PURPLE field lens installed?          (210 x 210 mm)\nSOURCE:   UV (355 nm) selected?\nGOGGLES:  190-550 nm UV goggles ON?\nFOCUS:    Focus set for this material height?\nEXHAUST:  Extraction running? (UV on wood/leather/coated goods)\nBED:      Purple lens is for FLAT and CYLINDRICAL work",
                                                       "CustomAlarmCodes":  {
 
                                                                                                 },
@@ -31,7 +31,7 @@
 
                                                                             ],
                                                       "MirrorX":  false,
-                                                      "MirrorY":  false,
+                                                      "MirrorY":  true,
                                                       "MoveJogDistance":  10,
                                                       "MoveJogFromOrigin":  true,
                                                       "MoveJogSpeed":  13.333333015441895,
@@ -49,11 +49,14 @@
                                                                                         "ControlUnits":  1,
                                                                                         "DwellIsMilliseconds":  false,
                                                                                         "EnableDTR":  false,
+                                                                                        "EndGCode":  "",
                                                                                         "GCodeFlavor":  "wecreat",
+                                                                                        "HasAir":  false,
                                                                                         "IsTextBased":  true,
                                                                                         "NetworkPort":  23,
                                                                                         "S_Scale":  1000,
-                                                                                        "TargetBufferSize":  127,
+                                                                                        "StartGCode":  "M18S1",
+                                                                                        "TargetBufferSize":  128,
                                                                                         "ToolStateIsAutomatic":  true,
                                                                                         "TransferMode":  0,
                                                                                         "Units":  1,

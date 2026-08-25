@@ -1,7 +1,7 @@
 {
         "DeviceList":  [
                                               {
-                                                      "Checklist":  "=== WeCreat Lumos Ultra - AutoFlow Conveyor 206 ===\nSource: any    Lens: any\n\nDRAFT - NOT FULLY VERIFIED ON HARDWARE.\nConfirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.\nUnverified: origin corner and mirroring - check by framing before running a job.\n\nBELT:     Belt clear, parts seated, load under 10 kg?\nFEED:     Feed increment verified on a dry run WITHOUT the beam?\nATTEND:   Batch jobs run long. Do NOT leave unattended.\nFIRE:     Extinguisher within reach? Extraction running?\nLENS:     Correct field lens?  GOGGLES: matching wavelength ON?\nSTATUS:   This profile is SPECULATIVE and unverified on hardware.",
+                                                      "Checklist":  "=== WeCreat Lumos Ultra - AutoFlow Conveyor 206 ===\nSource: any    Lens: any\n\nConfirmed on hardware: 210x210 field, 1000000 baud, wecreat GCode flavor,\ntop-left origin, no field distortion at 200mm, and source select via start G-code.\nAIR ASSIST OFF - M8 is rejected by the firmware.\n\nBELT:     Belt clear, parts seated, load under 10 kg?\nFEED:     Feed increment verified on a dry run WITHOUT the beam?\nATTEND:   Batch jobs run long. Do NOT leave unattended.\nFIRE:     Extinguisher within reach? Extraction running?\nLENS:     Correct field lens?  GOGGLES: matching wavelength ON?\nSTATUS:   This profile is SPECULATIVE and unverified on hardware.",
                                                       "CustomAlarmCodes":  {
 
                                                                                                 },
@@ -31,7 +31,7 @@
 
                                                                             ],
                                                       "MirrorX":  false,
-                                                      "MirrorY":  false,
+                                                      "MirrorY":  true,
                                                       "MoveJogDistance":  10,
                                                       "MoveJogFromOrigin":  true,
                                                       "MoveJogSpeed":  13.333333015441895,
@@ -49,11 +49,14 @@
                                                                                         "ControlUnits":  1,
                                                                                         "DwellIsMilliseconds":  false,
                                                                                         "EnableDTR":  false,
+                                                                                        "EndGCode":  "",
                                                                                         "GCodeFlavor":  "wecreat",
+                                                                                        "HasAir":  false,
                                                                                         "IsTextBased":  true,
                                                                                         "NetworkPort":  23,
                                                                                         "S_Scale":  1000,
-                                                                                        "TargetBufferSize":  127,
+                                                                                        "StartGCode":  "",
+                                                                                        "TargetBufferSize":  128,
                                                                                         "ToolStateIsAutomatic":  true,
                                                                                         "TransferMode":  0,
                                                                                         "Units":  1,

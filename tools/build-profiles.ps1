@@ -22,20 +22,34 @@ New-Item -ItemType Directory -Force -Path $out | Out-Null
 $sh = $spec.shared
 
 function New-Settings {
-  # Exactly the keys LightBurn 2.1.04 writes for a Custom GCode device - no more, no less.
-  # Adding GRBL-only keys here (CutOrigin, rotary*, StartGCode, Sim_*) does nothing: the
-  # Custom GCode driver does not read them.
+  param([string] $StartGCode = '')
+
+  # A minimal Settings block. LightBurn fills the remaining ~80 keys with its own defaults on
+  # import - verified against a live prefs.ini from a working machine on 2026-08-25.
+  #
+  # CORRECTION (2026-08-25): an earlier version of this comment claimed the Custom GCode driver
+  # ignores StartGCode / EndGCode. It does not. Both keys are present and live on a working
+  # Custom GCode device, and StartGCode is REQUIRED here - see below.
   [ordered]@{
     AllowComms           = $true
     BaudRate             = $sh.baudRate
     ControlUnits         = 1
     DwellIsMilliseconds  = $false
     EnableDTR            = $false
+    EndGCode             = $sh.endGCode
     GCodeFlavor          = $sh.gcodeFlavor      # "wecreat"
+    HasAir               = $false               # no air assist; M8 is rejected by the firmware
     IsTextBased          = $true
     NetworkPort          = 23
     S_Scale              = $sh.sScale
-    TargetBufferSize     = 127
+
+    # SOURCE SELECT - REQUIRED, NOT OPTIONAL.
+    # M18S0 = MOPA fiber, M18S1 = UV. Without it the machine accepts the job, streams it, and
+    # marks nothing at any power. The \x18 soft reset LightBurn sends on every Stop clears it,
+    # so it has to be re-asserted per job. CONFIRMED-hardware 2026-08-25.
+    StartGCode           = $StartGCode
+
+    TargetBufferSize     = 128
     ToolStateIsAutomatic = $true
     TransferMode         = 0
     Units                = 1
@@ -53,9 +67,9 @@ foreach ($p in $spec.profiles) {
     ('=== ' + $p.displayName + ' ==='),
     ('Source: ' + $p.source + '    Lens: ' + $p.lens),
     '',
-    'DRAFT - NOT FULLY VERIFIED ON HARDWARE.',
-    'Confirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.',
-    'Unverified: origin corner and mirroring - check by framing before running a job.',
+    'Confirmed on hardware: 210x210 field, 1000000 baud, wecreat GCode flavor,',
+    'top-left origin, no field distortion at 200mm, and source select via start G-code.',
+    'AIR ASSIST OFF - M8 is rejected by the firmware.',
     ''
   )
   $checklist = (($header + $p.checklist) -join "`n")
@@ -93,7 +107,7 @@ foreach ($p in $spec.profiles) {
     ProcessOffsetY              = 0
     ProfilePath                 = $sh.driver
     ReverseIntervalCompensation = $false
-    Settings                    = (New-Settings)
+    Settings                    = (New-Settings -StartGCode ([string]$p.startGCode))
     ToolPower                   = 0
     Type                        = $sh.connection
     Width                       = $p.width

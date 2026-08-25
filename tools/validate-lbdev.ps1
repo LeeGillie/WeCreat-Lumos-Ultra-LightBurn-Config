@@ -49,7 +49,14 @@ foreach ($f in $files) {
     if ($d.Info)                                   { $issues += 'Info should be empty' }
 
     # --- safety ---
-    if ($s.StartGCode)                             { $issues += 'StartGCode is NOT empty - emitting M-codes from LightBurn is still untested (see SAFETY.md)' }
+    # StartGCode: source select is REQUIRED (M18S0 = MOPA, M18S1 = UV). Without it the machine
+    # streams a job and marks nothing at any power - CONFIRMED-hardware 2026-08-25.
+    # The no-blind-M-codes rule still stands, so this is a whitelist, not an open door: only
+    # codes actually confirmed on hardware are permitted here.
+    $allowedStart = @('', 'M18S0', 'M18S1')
+    if ($allowedStart -notcontains ([string]$s.StartGCode).Trim()) {
+      $issues += ("StartGCode '{0}' is not on the confirmed-on-hardware whitelist ({1}) - see docs/04-mcode-dictionary.md" -f $s.StartGCode, ($allowedStart -join ', '))
+    }
     if ($s.EndGCode)                               { $issues += 'EndGCode is NOT empty - emitting M-codes from LightBurn is still untested' }
     if ($d.Macros -and @($d.Macros).Count -gt 0)   { $issues += 'Macros are populated - emitting M-codes from LightBurn is still untested' }
     if ($d.HomeOnStartup -eq $true)                { $issues += 'HomeOnStartup is true - homing is unverified, and Pn:Z reads asserted at rest' }

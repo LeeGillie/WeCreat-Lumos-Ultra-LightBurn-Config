@@ -1,7 +1,7 @@
 {
         "DeviceList":  [
                                               {
-                                                      "Checklist":  "=== WeCreat Lumos Ultra - UV Green K9 70 ===\nSource: 6W UV 355nm    Lens: Green\n\nDRAFT - NOT FULLY VERIFIED ON HARDWARE.\nConfirmed: 210x210 field, GRBL-over-serial at 1000000 baud, WeCreat GCode flavor.\nUnverified: origin corner and mirroring - check by framing before running a job.\n\nLENS:     GREEN field lens installed?           (70 x 70 mm ONLY)\nSOURCE:   UV (355 nm) selected?\nGOGGLES:  190-550 nm UV goggles ON?\nFIELD:    Artwork fits within 70 x 70 mm?\nNOTE:     K9 internal 3D engraving is NOT available from LightBurn.\n          This profile is for surface / 2D work through the green lens.",
+                                                      "Checklist":  "=== WeCreat Lumos Ultra - UV Green K9 70 ===\nSource: 6W UV 355nm    Lens: Green\n\nConfirmed on hardware: 210x210 field, 1000000 baud, wecreat GCode flavor,\ntop-left origin, no field distortion at 200mm, and source select via start G-code.\nAIR ASSIST OFF - M8 is rejected by the firmware.\n\nLENS:     GREEN field lens installed?           (70 x 70 mm ONLY)\nSOURCE:   UV (355 nm) selected?\nGOGGLES:  190-550 nm UV goggles ON?\nFIELD:    Artwork fits within 70 x 70 mm?\nNOTE:     K9 internal 3D engraving is NOT available from LightBurn.\n          This profile is for surface / 2D work through the green lens.",
                                                       "CustomAlarmCodes":  {
 
                                                                                                 },
@@ -31,7 +31,7 @@
 
                                                                             ],
                                                       "MirrorX":  false,
-                                                      "MirrorY":  false,
+                                                      "MirrorY":  true,
                                                       "MoveJogDistance":  10,
                                                       "MoveJogFromOrigin":  true,
                                                       "MoveJogSpeed":  13.333333015441895,
@@ -49,11 +49,14 @@
                                                                                         "ControlUnits":  1,
                                                                                         "DwellIsMilliseconds":  false,
                                                                                         "EnableDTR":  false,
+                                                                                        "EndGCode":  "",
                                                                                         "GCodeFlavor":  "wecreat",
+                                                                                        "HasAir":  false,
                                                                                         "IsTextBased":  true,
                                                                                         "NetworkPort":  23,
                                                                                         "S_Scale":  1000,
-                                                                                        "TargetBufferSize":  127,
+                                                                                        "StartGCode":  "M18S1",
+                                                                                        "TargetBufferSize":  128,
                                                                                         "ToolStateIsAutomatic":  true,
                                                                                         "TransferMode":  0,
                                                                                         "Units":  1,
