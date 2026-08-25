@@ -179,3 +179,21 @@ Four files, no beam, no machine time. They settle **both** open questions at onc
 - GRBL vs Custom GCode → **shows exactly what the device class changes** in emitted output
 
 Then one live run of the winning combination confirms `err:20` goes to zero.
+
+---
+
+# ❌ THIS ENTIRE CAPTURE'S CONCLUSION IS WRONG — see the correction
+
+**2026-08-25, later the same day.** The saved G-code proves the device is **Custom GCode**, not
+GRBL. Both files carry the header `;Custom GCode device profile, absolute coords`.
+
+The DisplayName *"WeCreat Lumos Ultra - MOPA 100W Red 210"* is used by **both** a GRBL device in the
+stale prefs file **and** by our own generated Custom GCode profile. The name cannot identify the
+class, so the confirming question asked above was unanswerable as posed.
+
+**Full correction, and the air-assist differential that came out of it:**
+[stage4-airassist-differential.md](stage4-airassist-differential.md)
+
+Kept unedited above as a record of the reasoning error. The method lesson is worth more than the
+tidy-up: **identify a LightBurn device by the `;` header of its emitted G-code, never by its
+DisplayName.**
