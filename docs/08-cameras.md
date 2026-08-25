@@ -104,3 +104,30 @@ If you have an Ultra:
 4. Is there any endpoint that yields a *second* camera?
 
 → Template: `captures/templates/rest-probe.md`
+
+---
+
+## LightBurn ships a built-in WeCreat camera preset — CONFIRMED-vendor
+
+**2026-08-25.** LightBurn 2.1.04's *Camera Presets* dialog carries a **WeCreat** entry, listed
+alongside Creality, Thunder Laser and xTool. Its description, verbatim:
+
+> **WeCreat** — Network connection to WeCreat camera over USB
+
+Three consequences for this project.
+
+**You do not need to hand-configure the camera.** There is a vendor preset. Use it. Earlier drafts
+of this repo treated the camera as something to be reached by URL discovery; that was the hard way
+round.
+
+**It confirms the architecture.** "Network connection … over USB" is precisely what
+[docs/01](01-architecture.md) and [docs/05](05-connectivity.md) reconstructed from USB enumeration
+and HTTP probing: the machine presents a **Linux RNDIS network gadget** over the single USB cable,
+and the camera is an HTTP stream on that private network — not a UVC webcam. Creality and xTool
+appear with the same wording because they use the same pattern. Our reverse-engineered finding and
+the vendor tool's own UI agree, so this moves from `CONFIRMED-hardware` to **`CONFIRMED-vendor`**.
+
+**It bears on the device-class question.** A first-class WeCreat presence inside LightBurn makes it
+likely that WeCreat-specific behaviour — device detection, `Exit_Preview_Mode`, `M41Y1` — is driven
+by LightBurn recognising the controller banner, not by any `GCodeFlavor` string we set. See
+[the open question](../captures/stage4-which-device-are-we-testing.md).

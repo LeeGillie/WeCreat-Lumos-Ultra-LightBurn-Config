@@ -66,3 +66,43 @@ people toward the harder path.
 
 **Do not rewrite the recommendation yet.** Get the file, compare the two device classes on the same
 machine, and let the evidence decide — the same way every other question here has been settled.
+
+---
+
+## Corroborating evidence: LightBurn ships a WeCreat camera preset
+
+LightBurn 2.1.04's **Camera Presets** dialog lists vendors, and WeCreat is one of them:
+
+| Vendor | Preset | Description, verbatim |
+|---|---|---|
+| Creality | Falcon A1 Pro | Network connection to Creality Falcon A1 Pro camera over USB |
+| Thunder Laser | Vision Overview | Network connection to Thunder Laser Vision System (Port 8091) |
+| Thunder Laser | Vision Head-Mounted | Network connection to Thunder Laser Vision System (Port 8089) |
+| **WeCreat** | **WeCreat** | **Network connection to WeCreat camera over USB** |
+| xTool | P2 | Network connection to xTool P2 camera over USB |
+
+Two things follow.
+
+### 1. WeCreat support in LightBurn is built in, not something we configured
+
+There is a first-class WeCreat entry sitting beside xTool and Thunder Laser. That makes it far more
+likely that **"Found WeCreat Device", `Exit_Preview_Mode` and `M41Y1` come from LightBurn's own
+WeCreat handling, triggered by the `[WeCreat Lumos :ver 000240]` banner** — not from our
+`GCodeFlavor: "wecreat"` string. It is consistent with those behaviours appearing on a GRBL-class
+device with no flavor set.
+
+**The retraction above stands, and this strengthens it.**
+
+### 2. "Network connection … over USB" independently confirms our architecture
+
+That phrase is exactly the architecture this project reverse-engineered from scratch
+([docs/01](../docs/01-architecture.md), [docs/05](../docs/05-connectivity.md)): one USB cable →
+internal hub → a **Linux RNDIS gadget** presenting a private network, with the camera served over
+HTTP on that network. Not a UVC webcam. Not a serial camera.
+
+We derived that from USB enumeration and HTTP probing. **LightBurn's own UI wording says the same
+thing** — and it is the same pattern Creality and xTool use, which is why all three read
+"Network connection … over USB".
+
+Independent confirmation of a finding this project made the hard way, from the vendor's tooling
+rather than from our probes. Grade for the RNDIS-over-USB camera path: **CONFIRMED-vendor.**
