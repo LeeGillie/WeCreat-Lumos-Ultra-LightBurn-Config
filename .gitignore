@@ -61,3 +61,4 @@ temp/
 scratch/
 *.log
 _commitmsg.txt
+captures/TEST-*.lbdev
