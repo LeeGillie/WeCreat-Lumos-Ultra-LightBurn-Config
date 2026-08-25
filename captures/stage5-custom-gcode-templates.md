@@ -177,3 +177,72 @@ One variable at a time, in this order:
 
 Each is observable in the console echo with `Verbose Output` on, and steps 1–3 need at most one
 small mark each.
+
+---
+
+## ✅ `User Start Script` works — CONFIRMED-hardware
+
+`User Start Script` = `M18S0`. The stream echo now shows:
+
+```
+Starting stream
+M18 S0            <- the controller's own echo, normalised with a space
+Stream completed in 0:00
+```
+
+That is the controller acknowledging the command, exactly as it does for a console-typed `M18S0`.
+**Source select now travels with the profile.** No console command, no user folklore.
+
+`StartGCode` is dead; `User Start Script` is the answer.
+
+## 🔴 Two follow-on defects
+
+### 1. Every operation needs a preceding **Stop**
+
+Observed: neither Frame nor Start does anything until **Stop** is pressed first. Stop, then frame
+works. Stop again, then Start cuts.
+
+Stop sends three things:
+
+```
+\x18                 (0x18 = soft reset)
+Exit_Preview_Mode
+M41Y1
+```
+
+So the machine is being left in **preview mode** after each operation, and nothing but Stop clears
+it. `M41Y1` is evidently the exit — matching MakeIt's own `M41S0` in its framing preamble, where
+`M41` is the preview/pointer control.
+
+**Candidate fix — prepend the exit to the start script:**
+
+```
+M41Y1
+M18S0
+```
+
+Order matters: leave preview first, then select the source.
+
+If `M41Y1` alone is insufficient, the `\x18` soft reset may be the operative part. LightBurn's
+**Escape Character** is `^`, so `^X` in a template *may* emit 0x18 — untested, and it would have to
+come **before** `M18S0`, since a reset clears the source selection.
+
+### 2. The fan is left running after the job
+
+`M18` starts the exhaust fan as part of arming the source. Nothing turns it off.
+
+**Candidate fix — `User End Script` = `M15S0`.** `M15` is the exhaust control in our dictionary
+([docs/04](../docs/04-mcode-dictionary.md)); MakeIt sends `M15S0` in its beam-free framing preamble
+and `M15S1`/`M15S70` when marking. **CONFIRMED-vendor**, so this is not a blind M-code.
+
+Judgement call worth making deliberately: extraction usually *should* run on after a job. `M15S0`
+at job end stops it immediately. Acceptable for fiber marking on anodized aluminium; less so for
+UV work on organics. May belong in the UV profiles with a delay, or not at all.
+
+## Test order from here
+
+1. `User Start Script` = `M41Y1` + `M18S0` → does Frame/Start work without a preceding Stop?
+2. `User End Script` = `M15S0` → does the fan stop?
+3. Blank `Air On` / `Air Off` → do `M8`/`M9` leave the stream?
+4. `Rapid Move` + `S0` → does the travel scar go?
+5. `Enable Q-Pulse Options`
