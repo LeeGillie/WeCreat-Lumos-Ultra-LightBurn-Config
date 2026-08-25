@@ -98,3 +98,45 @@ commands, two errors. Still needs the confirming run with air assist disabled.
 - Test 4 — 200 mm at the field edge, looking for bow
 - Capture `prefs.ini` to read the exact stored key values for the top-left origin, rather than
   guessing what the generator should emit
+
+---
+
+## Framing behaves differently from MakeIt — single pass, not continuous
+
+**Observed:** MakeIt draws a *persistent* rectangle you can see as a complete outline. LightBurn
+traces the perimeter **once**, so on a galvo you see a dot travelling rather than a shape.
+
+Not a bug and not a misconfiguration. LightBurn's Frame is built for gantry machines, where one
+slow pass around the bounding box is exactly what you want and the head's position is visible the
+whole time. On a galvo there is nothing to watch but the pointer dot, and once it has passed, the
+outline is gone.
+
+MakeIt gets its persistent rectangle by **repeating the framing path fast enough that persistence
+of vision fills it in** — the same trick every galvo marking app uses. LightBurn's GCode device
+class has no continuous-framing loop to match it.
+
+The emitted frame is `F800` — 13 mm/s — and the 80 mm perimeter took **6 seconds**. So the problem
+is not that it is too fast to see; it is that it happens once.
+
+### Consequences
+
+| | |
+|---|---|
+| **Correctness** | Unaffected. The path traced is the path that would be marked |
+| **Positioning by eye** | Harder. Expect to press Frame repeatedly rather than nudge a part while watching a steady outline |
+| **Judging straightness (Test 4)** | This is where it actually hurts — bow in a 200 mm side is very hard to assess from a moving dot |
+
+### Workaround for measurement: photograph the pass
+
+Use a **long exposure or a video frame-grab** of the framing run. The traced path integrates into
+a complete, persistent outline in the image, which can then be measured or checked for bow far
+more reliably than by eye.
+
+The red aiming pointer sits in the ~400–850 nm gap where the ACR-A5151G filter
+([docs/15](../docs/15-viewing-windows-and-camera-filters.md)) is a 50 % neutral green rather than a
+blocker — so the filtered camera build described there **will see the pointer**, and can be pointed
+at the bed safely while doing it.
+
+**To be recorded in the shipped limitations table:** *"Framing traces once rather than
+continuously; this is a LightBurn GCode-device behaviour, not a machine limitation. MakeIt's
+continuous frame has no equivalent here."*
