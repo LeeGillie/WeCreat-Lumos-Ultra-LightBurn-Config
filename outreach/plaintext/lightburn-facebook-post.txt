@@ -1,0 +1,45 @@
+Does anyone know whether LightBurn can be made to emit fills in ABSOLUTE coordinates rather than relative?
+
+I've been building a LightBurn device config for a machine whose controller has an unreliable serial link (WeCreat Lumos Ultra - no official config exists, so I'm reverse-engineering one). Along the way I found something about LightBurn's fill output that I hadn't seen documented anywhere, and I think it's worth knowing even if you'll never touch this machine.
+
+LightBurn sends fills as G91 relative moves. I measured it on one job:
+
+  Plain Fill:   9,634 of 9,637 motion lines are relative - 99.97%
+                Only TWO absolute re-anchors in the entire job
+                It enters G91 at line 21 and doesn't leave until line 8,647
+
+  Offset Fill:  1,009 of 11,674 relative - 8.6%
+                459 absolute re-anchors
+
+That's a sensible bandwidth optimisation - deltas are shorter strings than absolute coordinates, and on a healthy connection it costs nothing.
+
+But if a line is ever lost or unacknowledged, relative mode means EVERY subsequent position inherits the error permanently. I measured a job finishing 2.3 mm outside its own declared ;Bounds: header - arithmetically impossible in a pure G90 job.
+
+It also explains two symptoms that looked unrelated:
+
+  - Plain Fill: one glitch and the whole rest of the job shifts
+  - Offset Fill: damage stays local, so you get partially-engraved letters,
+    and the SAME letters every run because the same geometry provokes the
+    same point in the stream
+
+And it means Pause/Resume - the usual trick for restarting a stalled job - is itself harmful. A feed hold stops mid-move, and in relative mode any imprecision on resume is inherited by everything after it.
+
+WHAT I'VE TRIED
+
+  - Defining the "Raster Move" template in Custom GCode device settings.
+    No effect on G91 - it only changes line formatting.
+  - Target Buffer Size: can't be changed. Typing 40 reverts to 128, and
+    importing an .lbdev with 40 in it still shows 128. Appears clamped.
+
+MY WORKAROUND
+
+I wrote a post-processor that converts the saved .gc to absolute coordinates, then sent it with Run GCode. It doesn't fix the stalls, but it makes them survivable - a lost line becomes one missing segment instead of a ruined workpiece. The converted file's coordinate range matches the job's declared bounds exactly, so the arithmetic checks out. It's in the repo if anyone wants it.
+
+MY QUESTION
+
+Is there any setting, hidden or otherwise, to make LightBurn output fills in absolute coordinates? On a marginal connection the G91 optimisation turns a recoverable glitch into scrap.
+
+Everything documented here, with the raw G-code and console captures:
+https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config
+
+Also posting this to the LightBurn forum's WeCreat category. Happy to be told I've misread something.
