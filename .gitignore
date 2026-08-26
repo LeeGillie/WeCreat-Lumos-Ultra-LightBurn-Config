@@ -62,3 +62,6 @@ scratch/
 *.log
 _commitmsg.txt
 captures/TEST-*.lbdev
+
+# Raw video is too large for git. Keep the analysed stills instead.
+docs/images/*.mp4
