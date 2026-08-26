@@ -1,0 +1,87 @@
+Subject: Lumos Ultra - GRBL status report returns Idle during job execution (LightBurn streaming)
+
+
+Hello,
+
+I own a Lumos Ultra (100W MOPA) and I have been setting it up with LightBurn,
+which the Ultra product page lists as supported software. I believe I have
+found a firmware issue, and I wanted to report it properly rather than just
+complain in a forum. I would be glad to be told I have got this wrong.
+
+
+THE OBSERVATION
+
+Over the USB serial connection, the controller's GRBL status report appears to
+return a fixed state. Every "?" query answers:
+
+    <Idle|MPos:2.748,18.237,0.000|FS:0,0|Pn:Z|WCO:0.000,0.000,0.000>
+
+  - MPos is correct and live. It tracks real position and updates during
+    motion.
+
+  - The state field is always "Idle", including while a job is actively
+    running.
+
+  - FS is always "0,0" rather than reporting actual feed and speed.
+
+The clearest case: if I send "!" (feed hold) in the middle of a job, the
+controller still answers "Idle". A machine that has just been commanded to
+hold reports itself as idle.
+
+
+WHY IT MATTERS
+
+LightBurn uses that state to pace how fast it sends commands. Because the
+machine always reports itself idle and never busy, long jobs stall part-way
+through. There is no alarm and no disconnection - the fan keeps running and
+engraving simply stops. Pressing Pause and then Resume restarts it.
+
+MakeIt is unaffected, and I think I understand why. MakeIt uploads the job to
+the machine's SD card over the USB network interface and lets the controller
+run it locally, so it never streams over the serial port and never depends on
+this. That is a perfectly reasonable design - it just means the serial
+acknowledgement path may not have had the same exercise.
+
+
+WHAT I HAVE RULED OUT
+
+Cable and port (direct connection, several ports), LightBurn transfer modes,
+DTR, position-query polling, the laser-fire button, and the Z-axis settings
+that fix the "Busy after framing" problem on other WeCreat machines. None of
+them changed the behaviour.
+
+MakeIt runs flawlessly on the same cable, which is what pointed me at the
+streaming path rather than the hardware.
+
+
+MY QUESTION
+
+Is the GRBL status report on Lumos-family firmware intended to report "Run"
+and "Hold" states, and if so, is this a known issue on the Ultra?
+
+I would also be grateful to know whether an official LightBurn configuration
+for the Lumos Ultra is planned. I have built an unofficial one and would much
+rather point people at yours.
+
+
+ONE SMALLER THING THAT MAY BE USEFUL
+
+The Ultra identifies itself over serial as:
+
+    [WeCreat Lumos :ver 000240]
+
+There is nothing in that string distinguishing it from a Lumos. That means
+your official Lumos LightBurn profile connects to an Ultra without any warning
+and applies a 116 x 116 mm workspace instead of 210 x 210 mm. Owners could
+easily ruin work without understanding why. A version or model string that
+differed would prevent that entirely.
+
+I have documented everything publicly, with the raw captures, in case it is
+useful to your engineers:
+
+    https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config
+
+Thank you. It is a genuinely impressive machine and I would like to get more
+out of it.
+
+Lee Gillie
