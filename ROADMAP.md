@@ -20,9 +20,19 @@ use for real work, plus a truthful map of what is and is not possible.
 |---|---|---|---|
 | 1 | **`err:20`** — traced to `M8`/`M9`, cosmetic | ✅ **resolved** | document only |
 | 2 | **Stage 4 calibration** — origin, mirroring, distortion | ✅ **DONE** | — |
-| 3 | **First marks** — power/speed behave sanely | 🟡 **next** | ~30 min, beam |
+| 3 | **First marks** — power/speed behave sanely | ✅ **DONE** | 15 % @ 12000 mm/min |
+| 3b | **Streaming stalls on long jobs** | 🔴 **NEW BLOCKER** | unknown |
 | 4 | **Verify `M38`/`M39` survive from LightBurn** | 🟡 | ~15 min |
 | 5 | **Package and publish** | ⬜ | ~1 hour |
+
+> **Item 3b was not on this list this morning.** It is now the one thing standing between "marks
+> correctly" and "usable for real work" — the controller's status report is a stub, so LightBurn
+> cannot pace a stream and long jobs stall. See
+> [captures/stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md).
+>
+> If it cannot be fixed in configuration, v1.0's honest claim shrinks to *"works for small
+> vectors"*, and the `weburn`-style upload bridge stops being deferred scope and becomes the
+> architecturally correct answer.
 
 Everything before this point — architecture, M-codes, field size, MOPA parameters, the control
 latch — is **already confirmed on hardware**. What remains is small.
@@ -164,13 +174,16 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 
 ## Right now
 
-**First marks — the beam step.** Items 1 and 2 are closed; everything that can be learned without
-firing the source has been. What remains is whether power and speed behave, and that needs
-material, the red lens, and 800–1100 nm goggles.
+**Diagnose the streaming stalls (item 3b).** Everything else on the v1.0 list is either done or
+small. This is the one that decides what the project can honestly claim.
 
-Two smaller things worth folding into the same session:
+Cheapest first:
 
-- **Capture a fresh `prefs.ini`** (`\\cortex\D\lumos.cmd` on benchy → `p`) so the generator emits
-  the real stored values for the top-left origin rather than inferred ones
-- **Count `err:20` on a live marking run** with air assist off. If it is still 2, that confirms
-  `M9` is the rejected code and closes item 1 completely
+1. **`?` during a stall.** `Idle` while mid-job confirms the stub theory; `Hold` means a
+   machine-side feed hold and a completely different fix; `Run` means the model is wrong
+2. **Drop `TargetBufferSize`** from 128 → 40 → 15
+3. **Blank the `Air On` / `Air Off` templates** so `M8`/`M9` leave the stream entirely
+4. **Add `S0` to the `Rapid Move` template** — should kill the travel scar without depending on
+   `$32` laser mode, which this firmware will not read back
+5. **Try `Enable Q-Pulse Options`** — if it exposes a per-layer pulse-width control, MOPA becomes
+   a first-class LightBurn parameter and [docs/09](docs/09-k9-and-mopa-limits.md) needs rewriting

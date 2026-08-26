@@ -129,3 +129,26 @@ Q-pulse width, frequency, lens correction, split marking, 3D depth maps — beco
 this document is wrong in the best possible way.
 
 That is a two-minute test. Please run it.
+
+---
+
+## ⚠️ Correction pending — `Enable Q-Pulse Options` exists on a Custom GCode device
+
+**2026-08-25.** This document states that Q-Pulse Width is gated to LightBurn's galvo device
+classes and therefore unreachable for us.
+
+**LightBurn 2.1.04's Device Settings → Custom GCode tab carries an "Enable Q-Pulse Options"
+toggle**, on the very Custom GCode device this project uses. It is also present in the prefs as
+`EnableQPulse` (currently `false`), and LightBurn's own documentation lists it as *"Fiber laser
+pulse control"*.
+
+If enabling it exposes a per-layer Q-pulse width control, then **MOPA pulse width is a first-class
+LightBurn parameter here**, not something that has to be smuggled in as per-layer custom G-code —
+which would supersede the approach in [docs/14](14-mopa-parameters-in-lightburn.md) and make a
+chunk of the argument above wrong.
+
+**Not yet tested.** The section above stands as written until it is, but treat its conclusion as
+**suspect rather than settled**. Testing is queued behind the streaming-stall investigation
+([capture](../captures/stage5-streaming-stalls.md)).
+
+Source: <https://docs.lightburnsoftware.com/2.1/Reference/DeviceSettings/CustomGCode/>

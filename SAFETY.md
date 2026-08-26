@@ -51,6 +51,29 @@ This is also the mechanism behind the community's perennial "Port failed to open
 use?" and "laser busy" reports. See
 [the capture](captures/control-mode-latch-benchy.md).
 
+## ⚠️ Frame can fire the beam — this is not a gantry laser
+
+**Confirmed on hardware, 2026-08-25.** A framing pass **cut a visible line** in a workpiece.
+
+LightBurn's framing G-code for this device carries **no power term and no laser-mode command**:
+
+```gcode
+G0 X10Y180
+G1 Y200F800      <- G1 is a CUTTING move. No S value anywhere in the job.
+```
+
+With no `S` in the job, the controller uses the **modal `S` left over from the previous job**, and
+once a source has been selected with `M18`, that is a live beam tracing your frame.
+
+MakeIt never has this problem — its framing geometry states power explicitly:
+`G1X90.1Y96.21`**`S0`**. LightBurn omits it and inherits.
+
+> **Treat Frame as a beam operation.** Goggles on, lid closed, workpiece secured — every time.
+>
+> If a marking job has run, send **`M5`** and **`S0`** in the Console before framing.
+
+Every gantry-laser habit teaches that framing is safe. On this machine that habit is wrong.
+
 ## Wavelength-specific hazards
 
 | Source | Wavelength | Notes |

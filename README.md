@@ -17,10 +17,36 @@ Vision, Vision Pro, Vista and Lumos — but not the Ultra — while simultaneous
 "Lightburn" as supported software on the Ultra product page. This repository exists to close
 that gap in the open, with contributions from anyone who owns the machine.
 
-> **Status: Stages 0 and 1 complete on hardware.** Architecture, USB identity, baud rate and
-> firmware behaviour are **confirmed against a physical Lumos Ultra**. The device profiles in
-> `profiles/draft/` remain untested. Every claim carries an evidence grade. Read
-> [SAFETY.md](SAFETY.md) before you connect anything.
+> ## Status — it marks. It does not yet mark *reliably*.
+>
+> **2026-08-25: the first real mark.** A 20 mm square, from LightBurn, at 15 % power on black
+> anodized aluminium — correct size, correct position, cleanly defined.
+>
+> | | |
+> |---|---|
+> | Architecture, USB identity, baud, M-code dialect | ✅ confirmed on hardware |
+> | Field size 210 × 210, origin corner, coordinate mapping | ✅ confirmed on hardware |
+> | Field distortion at 200 mm | ✅ none detectable |
+> | Marking, power scaling, placement | ✅ confirmed on hardware |
+> | Camera | ✅ connects via LightBurn's built-in WeCreat preset |
+> | **Streaming reliability on jobs bigger than a test square** | 🔴 **stalls — see below** |
+> | Rotary, slide, conveyor, K9 3D, camera alignment | ⬜ not attempted |
+>
+> ### 🔴 The open blocker: jobs stall mid-stream
+>
+> The controller's status report is a **stub** — it answers `Idle` with zero feed even while
+> executing a job. LightBurn therefore cannot tell whether the machine is busy, and long jobs
+> stall repeatedly. Pause-then-Pause restarts them.
+>
+> MakeIt never hits this because **MakeIt does not stream** — it uploads the whole job to the
+> controller's SD card. A vendor app that never streams never needs the acknowledgement protocol
+> to be correct, which is probably why it isn't.
+>
+> **So today this configuration is honest for small vector work and not yet trustworthy for
+> production.** Full analysis: [captures/stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md).
+>
+> Every claim below carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
+> anything — including the part about **Frame firing the beam**.
 
 > ### ⚠️ If you own a Lumos Ultra, do not just import WeCreat's Lumos profile
 >
@@ -44,7 +70,10 @@ that gap in the open, with contributions from anyone who owns the machine.
 | MakeIt! 3.0.6 ships **nine distinct Lumos Ultra work modes** | **CONFIRMED** — enumerated from the shipping application bundle, see [docs/06-modes-and-lenses.md](docs/06-modes-and-lenses.md) |
 | **The Ultra specifically is a GRBL-over-serial device** | **CONFIRMED-hardware, 2026-08-24** — a physical Lumos Ultra enumerates as a CH340 serial bridge (`VID_1A86&PID_7523`) plus a Linux RNDIS gadget (`VID_0525&PID_A4A2`), with **no galvo controller present**. [Capture](captures/) · [analysis](docs/01-architecture.md#4-confirmed-on-a-physical-lumos-ultra--2026-08-24) |
 | The controller sits on a private USB network at `192.168.42.0/24` | **CONFIRMED-hardware** — the RNDIS adapter comes up at `192.168.42.100`, putting the controller at (almost certainly) `192.168.42.1` |
-| LightBurn's galvo features (Q-Pulse Width, lens bulge/skew correction, galvo rotary, Split Marking, 3D depth-map) are **unavailable** on a GRBL-typed device | **CONFIRMED for the Lumos**, and now that the Ultra is confirmed GRBL, it inherits the same limits |
+| LightBurn's galvo features (lens bulge/skew correction, galvo rotary, Split Marking, 3D depth-map) are **unavailable** on a GRBL-typed device | **CONFIRMED for the Lumos**, and the Ultra inherits the same limits. **Q-Pulse is now in doubt** — an `Enable Q-Pulse Options` toggle exists on the Custom GCode device; untested ([docs/09](docs/09-k9-and-mopa-limits.md)) |
+| **All three lens part numbers, read off the glass** | **CONFIRMED-hardware** — UV `YL-355-200-F290-FS10-D`, crystal `JG-SL-355-100-70G-10`, MOPA `SL-1064-200-F290-D10-C`. **1064 nm is confirmed**, which WeCreat has never published. UV and MOPA share an identical prescription; both are rated 200 mm while the machine is driven to 210 ([docs/06](docs/06-modes-and-lenses.md)) |
+| **`M18` source select is required to mark at all** | **CONFIRMED-hardware** — without it the machine streams a job and marks nothing at any power. It belongs in the profile's **User Start Script**; `StartGCode` is ignored by this device class |
+| LightBurn ships **built-in WeCreat support** | **CONFIRMED-vendor** — a WeCreat camera preset whose URL, `http://192.168.42.1:8080/camera/take_photo`, is character-for-character the endpoint this project found by probing, plus a `WeCreat` GCode flavor and WeCreat-specific preview-mode commands |
 
 LightBurn's galvo-class **UI fields** are therefore unavailable. But the underlying capability
 turned out not to be:

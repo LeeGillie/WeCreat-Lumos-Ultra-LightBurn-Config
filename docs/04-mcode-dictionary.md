@@ -67,7 +67,8 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 
 | Code | Observed | Meaning | Grade |
 |---|---|---|---|
-| `M18` | `M18S0` MOPA · `M18S1` UV | **SOURCE SELECT — confirmed by differential.** Two framing jobs differing only in source produced `S0` vs `S1`, matching WeCreat's own Lumos labels ("1064red" / "455Blue"). On the Ultra, `S1` is the 355 nm UV source | **CONFIRMED-vendor** |
+| `M18` | `M18S0` MOPA · `M18S1` UV | **SOURCE SELECT — and it is REQUIRED.** Without it the machine accepts a job, streams it, and marks **nothing at any power**. It also starts the exhaust fan, so it *arms* the source rather than merely choosing an optical path. Cleared by the `\x18` soft reset LightBurn sends on every Stop, so it must be re-asserted per job — it belongs in the profile's **User Start Script**. Labels match WeCreat's own Lumos macros ("1064red" / "455Blue"); on the Ultra `S1` is the 355 nm UV source | **CONFIRMED-hardware** |
+| `M8` | `M8` from LightBurn | **Air assist on — REJECTED by this firmware.** Emitting it produces `err:20`. With air assist off LightBurn emits `M9` twice instead and a marking job streams with **zero** errors. Better still, blank the **Air On / Air Off** templates so neither is emitted | **CONFIRMED-hardware** |
 | `M39` | `M39P200` → `M39P500` | **MOPA PULSE WIDTH.** Two real jobs differing only in MakeIt's pulse-width setting produced G-code differing by exactly this one line. MOPA-only; bare `M39P` in framing jobs | **CONFIRMED-vendor** |
 | `M38` | `M38F48`, `M38F75` | **MOPA frequency.** Varies between jobs, never with pulse width. Bare `M38F` in framing jobs | **CONFIRMED-vendor** |
 | `M5` / `M6` / `M9` | `M5`, `M6`, `M9` | Laser off / job end / coolant off. `M6` matches the Vision family's `EndGCode`. Standard GRBL | CONFIRMED |
@@ -75,7 +76,7 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 | `M1` | `M1S0` | Content mode — matches the Lumos label "BMP" (raster). `M1S1` = "svg" (vector) | **CONFIRMED-vendor** |
 | `M15` | `M15S0`, `M15S1`, `M15S70` | **Exhaust fan — takes a RANGE, not just on/off.** Earlier evidence had it binary; that was wrong | **CONFIRMED-vendor** |
 | `M42` | `M42S0`, MOPA only | Absent from UV jobs | UNKNOWN |
-| `M41` | `S0` MOPA / `S1` UV | Switches with source — lens or beam path? | UNKNOWN |
+| `M41` | `M41S0` / `M41S1` in MakeIt · **`M41Y1` from LightBurn** | **PREVIEW / POINTER MODE.** LightBurn 2.1.04 emits `Exit_Preview_Mode` followed by `M41Y1` whenever it leaves framing — its built-in WeCreat handling. So `M41` governs the red-pointer preview state, and the `S` parameter in MakeIt's jobs tracks the source | **CONFIRMED-vendor** (LightBurn's own output) |
 | `M19` | `S1` MOPA / `S0` UV | Also switches with source | UNKNOWN |
 | `M57` | `A450B30` (Ultra) · `A130B120` (Lumos) | Two samples, still unknown | UNKNOWN |
 | `M46` | `A0.9764B20` | `A` near 1.0 reads like a scale factor | UNKNOWN |
