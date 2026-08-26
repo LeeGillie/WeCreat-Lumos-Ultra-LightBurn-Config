@@ -73,3 +73,30 @@ Remaining levers, in order:
 
 If the fault really is missing `ok` responses, item 3 stops being deferred scope. No LightBurn
 configuration can fix a controller that does not answer.
+
+---
+
+## ✅ RESULT: LightBurn clamps it. Buffer size is not settable.
+
+`captures/TEST-buffer40.lbdev` carried `"TargetBufferSize": 40` in the file. After import, the
+field **still reads 128**.
+
+So the value is overridden on import as well as in the UI. Two independent routes, same answer:
+
+> **`TargetBufferSize` cannot be changed on this device class. LightBurn derives or clamps it.**
+
+Most likely it is fixed by the `wecreat` GCode flavor, which is consistent with LightBurn having
+built-in WeCreat handling.
+
+**This closes the buffer-size line of investigation.** It was the most promising untested lever;
+it turns out not to be a lever at all. Recorded so nobody spends another hour on it.
+
+### What that leaves
+
+| Lever | Status |
+|---|---|
+| Target buffer size | ❌ **closed — not settable** |
+| Transfer mode Synchronous | reported "no help" — worth one explicit confirmation, because if a one-line-at-a-time sender still stalls, the fault is a missing `ok` and no LightBurn setting can fix it |
+| Baud rate | untested; back in play since MakeIt does not use the serial path |
+| `Raster Move` template to eliminate `G91` | **untested, offline, highest value** — removes the *amplifier* even if the fault remains |
+| Upload bridge over `192.168.42.1` | the architecture that avoids streaming altogether |
