@@ -61,9 +61,9 @@ capture needed to read WeCreat's own generator output. Tools:
 
 | Where | Status |
 |---|---|
-| WeCreat support | Replied twice. **Draft follow-up ready and unsent**: `outreach/plaintext/wecreat-followup-2026-08-27-short.txt` (long version also present) |
+| WeCreat support | **Follow-up SENT 2026-08-27 06:37**, five questions, unanswered as of end of day — recorded verbatim in `outreach/plaintext/wecreat-followup-2026-08-27-SENT.txt`. A second message on controller configuration and network exposure is drafted and **on hold** until that exchange closes |
 | LightBurn forum, WeCreat category | Live thread, three staff/dev replies. Posted a correction that landed well. **Reply 3 drafted and unsent**: `outreach/lightburn-forum-reply-3-2026-08-27.md` |
-| WeCreat owners' FB group | Posted. **Owes a follow-up** — the published version still ends at "this does not work", which is now unfair to both vendors |
+| WeCreat owners' FB group | Posted 2026-08-26. **Follow-up drafted**: `outreach/plaintext/facebook-followup-2026-08-27.txt` — corrects the record, credits Allen / Aaron / Jon C / Chris / Mike by name, and asks owners for firmware version strings |
 | LightBurn users' FB group | Draft exists; posting status unconfirmed |
 | Chris Zambesi | First community contributor. Sent him a test file. **Still worth asking him to run a dense fill on his Flex** — completes = Ultra-specific, stalls = family-wide |
 

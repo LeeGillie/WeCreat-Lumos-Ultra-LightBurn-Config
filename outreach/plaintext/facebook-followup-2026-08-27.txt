@@ -1,0 +1,147 @@
+FOR: WeCreat owners' Facebook group
+FORMAT: plain text - Facebook strips formatting anyway
+FOLLOWS: facebook-group-post.txt (2026-08-26), which ended at "this does
+         not work" and is now out of date in the best possible way
+
+Rules observed: WeCreat's replies are reported in substance, not quoted -
+that is what was promised to them in writing. Aaron's and Jon C's
+remarks are from their public posts on LightBurn's own forum, under the
+names they post with. Nothing here is claimed that is not measured or on
+the record.
+
+On naming Allen: he signs his replies with that first name in a support
+capacity, and the credit is deserved. The post deliberately asks people
+NOT to request him by name in their own tickets, so that thanking him
+does not turn into a workload.
+
+----------------------------------------------------------------------
+
+
+UPDATE: both WeCreat and LightBurn answered - within a day - and the
+Lumos Ultra / LightBurn problem now has an owner and a fix in progress.
+
+A few days ago I posted about jobs stalling and drifting when driving a
+Lumos Ultra from LightBurn, and published everything I had measured. I
+want to follow that up, because the story has changed and it would be
+unfair to leave the gloomy version standing.
+
+WHAT HAPPENED - AND WHO ACTUALLY DID IT
+
+I want to name people, because "the vendor responded" undersells what
+happened here.
+
+ALLEN, WeCreat Customer Support.
+
+Replied the next morning to a long, technical, unsolicited bug report
+from a customer he had never heard of. He confirmed almost all of the
+findings, and told me WeCreat is already working with LightBurn on the
+right fix - uploading the job to the machine's memory and letting the
+controller run it, rather than streaming it line by line over USB. That
+is how MakeIt has always worked, and it is why MakeIt has never had this
+problem. Test builds are close.
+
+Then he did something I genuinely did not expect. I had questioned a
+published specification - the UV spot size on the Ultra product page.
+Rather than defend it or route me into a queue, he checked it, agreed it
+was wrong, explained exactly how the error had crept in, and said
+WeCreat will correct their materials. A manufacturer correcting its own
+spec sheet because one customer asked a careful question is rare, and it
+should be said out loud.
+
+He has also taken personal ownership of following the issues through.
+Please do not start asking for him by name in your own tickets - the
+point is that WeCreat support handled this properly, not that there is
+one good guy to hunt down. Let the man work.
+
+AARON (Aaron.F), LightBurn Support Team.
+
+Went straight to the mechanism rather than the symptom, explained
+precisely how LightBurn decides its transmit buffer size and why this
+machine confuses it - and then said a fix for the related bug was
+already written. No deflection, no "reinstall and see".
+
+JON C (goeland86), LightBurn Dev Team.
+
+Came into the thread with hardware in hand and told me something I could
+not have found on my own: that on this controller a large buffer causes
+moves to be dropped outright. He is in direct contact with WeCreat's
+engineers, has been candid about what LightBurn does and does not yet
+know, and offered to go and check his own machine's firmware version for
+me. That is a developer treating an owner's bug report as worth his
+afternoon.
+
+Two companies, one day, no defensiveness from either. Credit where it is
+due.
+
+The whole exchange is public and worth reading, if only as an example of
+how this is supposed to go:
+
+https://forum.lightburnsoftware.com/t/wecreat-lumos-ultra-controller-status-report-never-leaves-idle-streams-desynchronise-on-long-jobs/192109
+
+WHERE THIS ACTUALLY LEAVES OWNERS TODAY
+
+Being honest, because that is the whole point of the project:
+
+- Vector work from LightBurn: works, and the geometry is confirmed
+  correct - 210 x 210 mm, correct placement, no measurable field
+  distortion at 200 mm.
+- Large fills: still not trustworthy yet. That is the part waiting on
+  the upload path.
+- If you own an Ultra, still do NOT import WeCreat's official Lumos
+  profile. The Ultra reports itself over USB as a plain "Lumos", so that
+  profile will connect without any warning and apply a 116 x 116 mm
+  workspace to a 210 x 210 mm machine. Your job comes out silently
+  wrong.
+- The Frame button can fire the beam on these machines. It is not a
+  gantry laser and the old habits do not transfer. Eye protection on.
+
+WHAT WE FOUND THIS WEEK
+
+It turns out MakeIt writes the complete job it generates onto your own
+PC before sending it, so WeCreat's own output can be studied without
+touching the machine at all. One real emboss job came to 222 MB and
+11.3 million lines - which, at the speed of the USB serial link, would
+take about 39 minutes just to transmit. That single number explains why
+uploading is the right answer and streaming was never going to be.
+
+The more useful find: within that one job, the fiber laser's frequency
+and pulse width change 282 times. So the machine happily accepts MOPA
+parameter changes mid-job. That matters, because it means proper MOPA
+control from LightBurn - colour on stainless, controlled heat on brass -
+is a real prospect rather than wishful thinking. Testing that is next.
+
+TWO THINGS YOU CAN HELP WITH
+
+1. Your firmware version. Connect over USB and note what the machine
+   reports on connect. Mine says [WeCreat Lumos :ver 000240]. A LightBurn
+   developer has seen an Ultra behave better than mine and suspects a
+   newer build exists, so version numbers from real owners are genuinely
+   valuable right now.
+
+2. Other models. If you run a Flex, Lumos, Vision or Vista with
+   LightBurn, I would love to know whether long fills complete for you.
+   That one answer would tell us whether this is an Ultra problem or a
+   family one.
+
+AND TWO OWNERS WHO DID NOT HAVE TO HELP
+
+CHRIS ZAMBESI came forward within hours of the first post with the first
+community data point, from a Lumos Flex. That single report confirmed
+three things I had only been able to infer, on a machine I do not own,
+and established that the workspace trap below is specific to the Ultra.
+He is credited in the repository.
+
+MIKE HEMBREY (MikeyH on the LightBurn forum) downloaded a test file to
+try on his own machine before working out that it would not have proved
+anything, said so plainly, and was gracious when I got something wrong
+in public. Both are the reason posting this in the open was worth doing.
+
+Everything is public, free, MIT licensed, and graded by how well each
+claim is actually evidenced - including a list of the things I got wrong
+along the way, because that seemed more useful than pretending I did
+not.
+
+https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config
+
+Not affiliated with WeCreat or LightBurn. Just an owner who wanted the
+machine to work and would rather share the homework than repeat it.

@@ -23,7 +23,7 @@ Format conventions — which file goes to which destination, and why — are in
 | **LightBurn forum** | [`lightburn-forum-reply-3-2026-08-27.md`](lightburn-forum-reply-3-2026-08-27.md) | After the repo is pushed — it links to `tools/analyze-gcode.ps1` |
 | **WeCreat support** | [`plaintext/wecreat-followup-2-controller-findings.txt`](plaintext/wecreat-followup-2-controller-findings.txt) | Once the 06:37 exchange has run its course. It is a separate subject — controller configuration and network exposure — and should not compete with the questions already open |
 | **LightBurn users' FB group** | [`plaintext/lightburn-facebook-post.txt`](plaintext/lightburn-facebook-post.txt) | Posting status unconfirmed — check before re-sending |
-| **WeCreat owners' FB group** | *not yet written* | Owed. The published post still ends at "this does not work", which is now unfair to both vendors |
+| **WeCreat owners' FB group** | [`plaintext/facebook-followup-2026-08-27.txt`](plaintext/facebook-followup-2026-08-27.txt) | Ready. Corrects the record after both vendors responded, and asks owners for firmware version strings |
 
 ## House rules for this folder
 
