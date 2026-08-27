@@ -1,0 +1,107 @@
+Subject: Re: WeCreat Lumos Ultra claimed spot size
+
+
+HOLD - do not send until the 2026-08-27 06:37 message has been answered.
+
+That message asked five questions and is still open. This one is a
+separate subject and should not compete with it. Send it once that
+exchange has run its course.
+
+Supersedes: wecreat-followup-2026-08-27.txt and
+            wecreat-followup-2026-08-27-short.txt
+Both are obsolete - almost everything in them was already sent at 06:37.
+
+----------------------------------------------------------------------
+
+
+Hello Allen,
+
+Not another list of questions - this one is the other direction. Four
+things I found in the controller's own configuration that your engineers
+may want, and one correction to something I said earlier.
+
+
+1. A STALE PATH IN THE SHIPPING CONFIGURATION
+
+/etc/mbtc/print.json points at:
+
+    "print_file":   "/mnt/SDCARD/curve/print_data.gcode"
+    "framing_file": "/mnt/SDCARD/framing/framing_data.gcode"
+
+Neither exists. /mnt/SDCARD/curve/ is not present at all, and the job
+actually lands at:
+
+    /mnt/SDCARD/data/printing/gcode.gc
+    /mnt/SDCARD/data/framing/framing_data.gcode
+
+Harmless today, since whatever consumes it clearly knows better. But it
+is the kind of thing that misleads the next engineer to read it.
+
+
+2. A CAMERA IDENTIFIER THAT LOOKS OVERWRITTEN
+
+    /mnt/SDCARD/config/lumosProMopaCalibration.txt   "id":"lumosUltra-mopa"
+    camera_factory.json                              "id":"lumosUltra"
+    camera.json  (the user-facing one)               "id":"lumosPro"
+
+The factory file is right and the user file is not. It looks as though
+the user calibration has been overwritten at some point with a default
+belonging to another product. Both also carry "type":"5W", which matches
+no source on an Ultra.
+
+The filename lumosProMopaCalibration.txt carries the same inheritance.
+
+
+3. DEBUG MODE SHIPS ENABLED
+
+/etc/mbtc/cfgs.json contains:
+
+    "debug_mode":"1"
+
+I assume that is deliberate, but flagging it in case it is not.
+
+
+4. THE ONE I WOULD ACTUALLY LOOK AT
+
+The controller answers, with no authentication of any kind:
+
+    port 22    SSH        open
+    port 8080  REST API   open
+    port 8082  full filesystem listing and file read   open
+
+Port 8082 will serve the entire root filesystem to anyone who asks. That
+is how I found everything above - I have only ever issued HTTP GETs, and
+I have deliberately never called /test/cmd/mcu, since it executes G-code
+and appears to bypass the lid interlock.
+
+Today this is contained, because it lives on the USB-private
+192.168.42.0/24 subnet and is not reachable from a normal network. My
+concern is what happens the first time someone bridges that interface, or
+a future model exposes it over Wi-Fi.
+
+I have documented this publicly, because owners need to know not to put
+these machines on a routable network, and my documentation says exactly
+that. I have not published anything that makes an attack easier than
+simply opening a browser at the machine's own address would.
+
+If your security people would rather I present any of this differently, I
+will.
+
+
+AND ONE CORRECTION TO SOMETHING I SAID
+
+In my last message I wrote that I intended to report substance rather
+than quote your emails. In practice I have quoted you directly in the
+repository, because paraphrasing a vendor is how misinformation starts,
+and I would rather your words were on the record as your words. That is
+not what I said I would do, so I am telling you rather than leaving it.
+
+If you would prefer paraphrase, or would rather a particular passage were
+not quoted, say so and I will change it the same day.
+
+
+Best regards,
+
+Lee Gillie, CCP
+
+    https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config

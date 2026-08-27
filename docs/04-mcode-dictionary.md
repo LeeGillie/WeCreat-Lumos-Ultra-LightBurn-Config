@@ -69,8 +69,8 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 |---|---|---|---|
 | `M18` | `M18S0` MOPA · `M18S1` UV | **SOURCE SELECT — and it is REQUIRED.** Without it the machine accepts a job, streams it, and marks **nothing at any power**. It also starts the exhaust fan, so it *arms* the source rather than merely choosing an optical path. Cleared by the `\x18` soft reset LightBurn sends on every Stop, so it must be re-asserted per job — it belongs in the profile's **User Start Script**. Labels match WeCreat's own Lumos macros ("1064red" / "455Blue"); on the Ultra `S1` is the 355 nm UV source | **CONFIRMED-hardware** |
 | `M8` | `M8` from LightBurn | **Air assist on — REJECTED by this firmware.** Emitting it produces `err:20`. With air assist off LightBurn emits `M9` twice instead and a marking job streams with **zero** errors. Better still, blank the **Air On / Air Off** templates so neither is emitted | **CONFIRMED-hardware** |
-| `M39` | `M39P200` → `M39P500` | **MOPA PULSE WIDTH.** Two real jobs differing only in MakeIt's pulse-width setting produced G-code differing by exactly this one line. MOPA-only; bare `M39P` in framing jobs | **CONFIRMED-vendor** |
-| `M38` | `M38F48`, `M38F75` | **MOPA frequency.** Varies between jobs, never with pulse width. Bare `M38F` in framing jobs | **CONFIRMED-vendor** |
+| `M39` | `M39P200` → `M39P500` · `M39P250` | **MOPA PULSE WIDTH.** Two real jobs differing only in MakeIt's pulse-width setting produced G-code differing by exactly this one line. MOPA-only; bare `M39P` in framing jobs. **Changes mid-job** — 282 occurrences in one deep-emboss job (see below) | **CONFIRMED-vendor** |
+| `M38` | `M38F48`, `M38F75`, `M38F60`, `M38F151` | **MOPA frequency.** Varies between jobs, never with pulse width. Bare `M38F` in framing jobs. **Changes mid-job** — 282 occurrences in one deep-emboss job (see below) | **CONFIRMED-vendor** |
 | `M5` / `M6` / `M9` | `M5`, `M6`, `M9` | Laser off / job end / coolant off. `M6` matches the Vision family's `EndGCode`. Standard GRBL | CONFIRMED |
 | `G0 Z` | `G0Z47.8` | **Absolute Z focus move.** Stored default in `/mnt/SDCARD/config/heightZ.txt` = 43.35 | **CONFIRMED-vendor** |
 | `M1` | `M1S0` | Content mode — matches the Lumos label "BMP" (raster). `M1S1` = "svg" (vector) | **CONFIRMED-vendor** |
@@ -79,7 +79,7 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 | `M41` | `M41S0` / `M41S1` in MakeIt · **`M41Y1` from LightBurn** | **PREVIEW / POINTER MODE.** LightBurn 2.1.04 emits `Exit_Preview_Mode` followed by `M41Y1` whenever it leaves framing — its built-in WeCreat handling. So `M41` governs the red-pointer preview state, and the `S` parameter in MakeIt's jobs tracks the source | **CONFIRMED-vendor** (LightBurn's own output) |
 | `M19` | `S1` MOPA / `S0` UV | Also switches with source | UNKNOWN |
 | `M57` | `A450B30` (Ultra) · `A130B120` (Lumos) | Two samples, still unknown | UNKNOWN |
-| `M46` | `A0.9764B20` | `A` near 1.0 reads like a scale factor | UNKNOWN |
+| `M46` | `A0.9764B20` (emboss) · `A1B0` (flat) | `A` near 1.0 reads like a scale factor, `B` an offset. **`A1B0` is an identity pair** and appears in a flat single-layer job, while the scaled pair appears in a deep emboss — consistent with a depth or power scale-and-offset applied per job | INFERRED |
 | `M59` | `A-1000B50` | | UNKNOWN |
 | `M24` / `M25` / `M26` | `S15`, `S1`, `S1` | | UNKNOWN |
 | `M11` | `S0.2` framing / `S0.08` print | Fractional — a physical quantity | UNKNOWN |
@@ -89,6 +89,33 @@ G0F480000                        <- 480000 mm/min = 8000 mm/s
 
 **`M16`/`M17` are absent** from MakeIt's framing job — so whatever U-mode is, MakeIt does not need
 it to frame.
+
+### Parameters that change *during* a job — 2026-08-27
+
+MakeIt stages its complete generated job on the PC at
+`%APPDATA%\Wecreat MakeIt!\gcode\gcode.gc`, so WeCreat's own output can be read without a packet
+capture and without sending anything to the machine
+([measurements](../captures/makeit-cache-and-absolute-gcode.md) ·
+`tools/find-makeit-cache.ps1` · `tools/analyze-gcode.ps1`).
+
+A single deep-emboss job — 232,835,780 bytes, 11,276,586 lines — contains:
+
+| Code | Count in one job | Reading |
+|---|---|---|
+| `M38` | **282** | Frequency is re-tuned continuously through the layers |
+| `M39` | **282** | Pulse width likewise |
+| `G90` | 2 | Start and shutdown only |
+| `G91` | **0** | MakeIt never uses relative mode |
+| `G1` / `G0` | 10,968,120 / 307,594 | 100.00 % of motion issued in absolute coordinates |
+
+Two things follow. **MOPA frequency and pulse width are changeable mid-job**, which the earlier
+single-layer captures could not show — see [docs/09](09-k9-and-mopa-limits.md). And **the
+controller's absolute-positioning path is exercised at eleven-million-move scale on every job**,
+so there is no concern that `G90` is a cold path on this hardware.
+
+*Caveat on the second point:* MakeIt uploads rather than streams, so it had no bandwidth pressure
+to compress against. `G91` is a streaming optimisation and the choice is probably incidental
+rather than deliberate.
 
 ## Codes found in Lumos Ultra firmware configuration, 2026-08-24
 

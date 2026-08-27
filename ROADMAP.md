@@ -21,18 +21,31 @@ use for real work, plus a truthful map of what is and is not possible.
 | 1 | **`err:20`** — traced to `M8`/`M9`, cosmetic | ✅ **resolved** | document only |
 | 2 | **Stage 4 calibration** — origin, mirroring, distortion | ✅ **DONE** | — |
 | 3 | **First marks** — power/speed behave sanely | ✅ **DONE** | 15 % @ 12000 mm/min |
-| 3b | **Streaming stalls on long jobs** | 🔴 **NEW BLOCKER** | unknown |
+| 3b | **Streaming stalls on long jobs** | 🟠 **handed off — vendors own it** | test, don't solve |
 | 4 | **Verify `M38`/`M39` survive from LightBurn** | 🟡 | ~15 min |
 | 5 | **Package and publish** | ⬜ | ~1 hour |
 
-> **Item 3b was not on this list this morning.** It is now the one thing standing between "marks
-> correctly" and "usable for real work" — the controller's status report is a stub, so LightBurn
-> cannot pace a stream and long jobs stall. See
-> [captures/stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md).
+> ### Item 3b changed hands on 2026-08-27
 >
-> If it cannot be fixed in configuration, v1.0's honest claim shrinks to *"works for small
-> vectors"*, and the `weburn`-style upload bridge stops being deferred scope and becomes the
-> architecturally correct answer.
+> It arrived on this list as a blocker. It leaves as somebody else's roadmap item.
+>
+> WeCreat and LightBurn are jointly implementing **job upload to internal memory** instead of
+> real-time streaming, and LightBurn has a fix written for the buffer-size override that currently
+> reverts to 128. Both were confirmed directly by the vendors
+> ([responses](captures/vendor-responses-2026-08-27.md)).
+>
+> **This project cannot fix it and should stop trying.** The status report is firmware, past the
+> MCU boundary; the buffer clamp is inside LightBurn. What this project *can* do is test the
+> builds when they appear, measure honestly, and document the result.
+>
+> The arithmetic settles why upload is the right answer rather than a workaround: one real MakeIt
+> job measures **222 MB and 11,276,586 lines**, which at 1,000,000 baud is roughly **39 minutes of
+> pure payload** before any acknowledgement overhead
+> ([measurements](captures/makeit-cache-and-absolute-gcode.md)). No buffer size makes that
+> streamable.
+>
+> **v1.0's honest claim therefore stands as: correct geometry, correct marking, reliable vector
+> work, large fills pending the upload path.** That is a shippable configuration, not a stalled one.
 
 Everything before this point — architecture, M-codes, field size, MOPA parameters, the control
 latch — is **already confirmed on hardware**. What remains is small.
@@ -139,8 +152,8 @@ Not failures — scope control. Each is genuinely useful and none blocks a usabl
 | AutoFlow Conveyor | Same, plus the vendor quotes three different working areas |
 | Green lens / K9 | 2D surface marking may work; 3D internal is MakeIt-only |
 | Camera alignment | Camera *works*; full alignment calibration is a separate exercise |
-| `weburn`-style bridge | The REST API is confirmed live. A bridge would unlock bulk upload — the answer to that 302 MB raster job — but it is a software project, not a config |
-| The remaining unknown M-codes | `M11`, `M19`, `M24`, `M25`, `M26`, `M41`, `M42`, `M46`, `M57`, `M59`, `M16`/`M17` |
+| `weburn`-style bridge | **Dropped, and for a good reason.** The REST API is confirmed live and the job format is confirmed to be plain G-code — but WeCreat and LightBurn are building the official upload path, and LightBurn has no plugin hook to route jobs through a third-party bridge anyway. Characterise the endpoint for their benefit; do not build a parallel one |
+| The remaining unknown M-codes | `M11`, `M19`, `M24`, `M25`, `M26`, `M41`, `M42`, `M46`, `M57`, `M59`, `M16`/`M17`. `M46` now has a second data point — `M46A1B0` in a flat job against `M46A0.9764B20` in a deep emboss, which reads as a scale-and-offset pair |
 
 ---
 
@@ -174,16 +187,36 @@ Worth stating, because it is most of the hard part — and none of it existed pu
 
 ## Right now
 
-**Diagnose the streaming stalls (item 3b).** Everything else on the v1.0 list is either done or
-small. This is the one that decides what the project can honestly claim.
+The streaming investigation consumed a fortnight and became the headline. It was never the
+project. **The project is a configuration covering every source, lens and accessory on this
+machine** — and most of that is untouched while none of it waits on the upload path.
 
-Cheapest first:
+### Housekeeping first — two things this project owes itself
 
-1. **`?` during a stall.** `Idle` while mid-job confirms the stub theory; `Hold` means a
-   machine-side feed hold and a completely different fix; `Run` means the model is wrong
-2. **Drop `TargetBufferSize`** from 128 → 40 → 15
-3. **Blank the `Air On` / `Air Off` templates** so `M8`/`M9` leave the stream entirely
-4. **Add `S0` to the `Rapid Move` template** — should kill the travel scar without depending on
-   `$32` laser mode, which this firmware will not read back
-5. **Try `Enable Q-Pulse Options`** — if it exposes a per-layer pulse-width control, MOPA becomes
-   a first-class LightBurn parameter and [docs/09](docs/09-k9-and-mopa-limits.md) needs rewriting
+1. **A clean drift measurement.** The published 2.30 mm figure came from a run contaminated by
+   Pause/Resume. Run a fill that stands a real chance of *completing* — Offset Fill, or a small
+   dense one — never touch Pause/Resume, and compare the final `MPos` against the declared bounds.
+   Either it confirms the mechanism properly or it retires a claim this project should not be
+   making. Both outcomes are worth having, and the second is worth more.
+2. **Blank the `Air On` / `Air Off` templates** so `M8`/`M9` leave the stream entirely. Known,
+   trivial, still not done.
+
+### Then the actual work, in order of value
+
+| | Why now |
+|---|---|
+| **`Enable Q-Pulse Options`** | The firmware side is settled: WeCreat's own generator emits **282 `M38`/`M39` pairs inside one job** ([evidence](captures/makeit-cache-and-absolute-gcode.md)). If this toggle exposes per-layer pulse control, MOPA becomes a first-class LightBurn parameter and [docs/09](docs/09-k9-and-mopa-limits.md) needs rewriting |
+| **Green lens / K9 2D** | Surface marking on the crystal lens is plausible today and completely untested. 3D internal remains MakeIt-only |
+| **Rotary Pro** | Needs the hardware fitted and a differential capture. The Custom GCode class exposes no `rotary*` keys, so this is investigation before configuration |
+| **Camera alignment** | The camera *connects*. Full alignment calibration is a separate, self-contained exercise that needs no beam |
+| **Slide / conveyor** | Manual tiling, unproven. The vendor quotes three different working areas for the conveyor, which is its own small research problem |
+| **`S0` on `Rapid Move`** | Should kill the travel scar without depending on `$32` laser mode, which this firmware will not read back |
+
+### Waiting on others — track, do not chase
+
+- **Firmware version.** A LightBurn dev reports drift-free relative fills on their Ultra and
+  suspects an unreleased build. This machine is on `ver 000240`. If newer firmware exists, some of
+  what is documented here may already be obsolete
+- **The buffer-size override fix.** Once the value sticks, test below 127 — a specific,
+  evidence-backed experiment rather than a guess
+- **The upload test builds.** Volunteer, test, document

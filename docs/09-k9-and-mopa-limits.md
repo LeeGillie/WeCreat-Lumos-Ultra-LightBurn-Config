@@ -60,11 +60,32 @@ not been verified, and the accepted ranges are unknown. See
 The rest of this section documents *why* the native fields are unavailable, which is still
 accurate and still worth understanding.
 
+### ✅ 2026-08-27 — and they change **mid-job**, routinely
+
+A single deep-emboss job, read out of MakeIt's own staged output, contains:
+
+```
+M38  (frequency)     282
+M39  (pulse width)   282
+```
+
+Against **one of each** in a small single-layer job. The vendor's own software re-tunes frequency
+and pulse width continuously as it works down through the layers.
+([measurements](../captures/makeit-cache-and-absolute-gcode.md))
+
+This settles a question that mattered: **the firmware accepts MOPA parameter changes during a
+running job.** Per-layer pulse control is not a capability we are hoping exists and trying to
+smuggle in — it is what the machine does on every emboss job WeCreat's own software sends it.
+
+Whatever mechanism LightBurn offers for this, the controller side is ready for it.
+
 ### What remains to establish
 
 1. **Unit mapping.** `P200`/`P500` and `F48`/`F75` are MakeIt's own numbers. Nanoseconds and
    kilohertz are the natural reading and fit typical JPT MOPA ranges, but the relationship between
-   MakeIt's UI field and the emitted value is unverified.
+   MakeIt's UI field and the emitted value is unverified. A second data point now exists —
+   `M38F60`/`M39P250` on a deep emboss against `M38F151`/`M39P200` on a flat job — but it does not
+   resolve the mapping.
 2. **Accepted ranges**, so a profile does not offer values the firmware rejects.
 3. **Emitting them from LightBurn**, which is untested. The codes are confirmed as *WeCreat's
    output*; sending them *to* the machine ourselves is a separate step.
@@ -147,8 +168,14 @@ LightBurn parameter here**, not something that has to be smuggled in as per-laye
 which would supersede the approach in [docs/14](14-mopa-parameters-in-lightburn.md) and make a
 chunk of the argument above wrong.
 
-**Not yet tested.** The section above stands as written until it is, but treat its conclusion as
-**suspect rather than settled**. Testing is queued behind the streaming-stall investigation
-([capture](../captures/stage5-streaming-stalls.md)).
+**Still not tested — and it is now the highest-value untested thing in the project.**
+
+It was queued behind the streaming-stall investigation. That investigation has been handed to
+WeCreat and LightBurn, who own the fix ([why](../captures/vendor-responses-2026-08-27.md)), so
+nothing is in front of this any more. The 2026-08-27 finding above removes the remaining doubt on
+the firmware side: mid-job `M38`/`M39` is confirmed vendor behaviour, so if the toggle exposes a
+control, there is something real for it to drive.
+
+Treat the section above as **suspect rather than settled** until the test is run.
 
 Source: <https://docs.lightburnsoftware.com/2.1/Reference/DeviceSettings/CustomGCode/>

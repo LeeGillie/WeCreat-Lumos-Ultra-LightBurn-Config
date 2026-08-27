@@ -1,0 +1,111 @@
+SENT 2026-08-27 06:37 PDT to WeCreat support (Allen), in the existing
+"claimed spot size" thread. Recorded verbatim as sent.
+
+----------------------------------------------------------------------
+
+Hello Allen,
+
+Thank you for both replies, and thank you for taking the reports
+seriously enough to correct a published specification. That is not a
+small thing and I have said so publicly.
+
+I have consolidated everything into this thread, as you suggested, and I
+am glad to have a single point of contact.
+
+I have already updated my documentation with your correction: the UV
+spot size now reads 6-8 um, with the 1.9 um figure recorded as motion
+accuracy rather than spot size, and the 256-layer limit recorded as an
+8-bit software representation rather than a controller capability. Both
+are credited to WeCreat support.
+
+Five things, numbered so they are easy to answer inline.
+
+
+1. WHICH FINDING IS NOT CORRECT?
+
+You wrote that "almost all" of my findings are correct. I would very
+much like to know which one is not.
+
+I ask because the findings are published, other owners are reading them,
+and I would rather correct an error myself than leave it standing. If
+something in that report is wrong, telling me is a favour, not a
+criticism.
+
+
+2. MAY I BE INCLUDED IN THE TEST BUILDS?
+
+You mentioned test builds coming soon for users who want to drive the
+Lumos Ultra from LightBurn ahead of the official release. I would like
+to volunteer.
+
+What I can offer is probably more useful than an average tester:
+
+  - A 100W MOPA Lumos Ultra on a dedicated machine, available daily
+  - A documented, repeatable test method with raw serial captures
+  - Field calibration already completed and verified - 210 x 210 mm,
+    origin top-left, MPos = commanded - 105, and no measurable field
+    distortion at 200 mm
+  - A public repository where the results get written up carefully,
+    including the times I have been wrong
+
+If it helps, I am happy to test under whatever conditions you prefer,
+including keeping specific build details confidential.
+
+
+3. THE MODEL IDENTIFICATION STRING
+
+This was in my first email and I do not think it has been answered yet.
+I think it is the one issue in the whole set that can currently damage
+someone's work.
+
+The Ultra identifies itself over serial as:
+
+    [WeCreat Lumos :ver 000240]
+
+Nothing in that string distinguishes an Ultra from a Lumos. Your
+official Lumos LightBurn profile therefore connects to an Ultra with no
+warning at all and applies a 116 x 116 mm workspace to a 210 x 210 mm
+machine. The job is silently wrong, and the owner has no way to know
+why.
+
+A distinct model or version string would prevent this completely, and it
+would cost nothing at the point of manufacture.
+
+Is that something engineering would consider?
+
+
+4. IS AN OFFICIAL LUMOS ULTRA CONFIGURATION PLANNED?
+
+Also from my first email. I have built an unofficial configuration
+because none exists, and I would genuinely rather retire mine and point
+people at yours.
+
+If one is planned, I will say so clearly in my documentation so that
+nobody treats my work as a substitute for it.
+
+
+5. A COURTESY QUESTION ABOUT PUBLISHING
+
+You asked that we keep the discussion in this thread, which I am happy
+to do. I want to check what that means for the public side of things.
+
+My repository and the owners' group posts are how other Ultra owners
+found this in the first place, and I would like to keep them current -
+specifically, to record that WeCreat responded quickly, that the cause
+is understood, and that a fix is being worked on jointly with LightBurn.
+That is a much better story than the one currently published, which ends
+at "this does not work".
+
+My intention is to report substance rather than to quote your emails.
+If you would prefer I hold anything back, or run wording past you first,
+please say so and I will.
+
+
+Thank you again. The responsiveness here has been notably better than I
+expected, and I would like to say so where it will be read.
+
+Best regards,
+
+Lee Gillie, CCP
+
+    https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config

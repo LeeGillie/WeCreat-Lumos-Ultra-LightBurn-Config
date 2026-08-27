@@ -17,10 +17,15 @@ Vision, Vision Pro, Vista and Lumos — but not the Ultra — while simultaneous
 "Lightburn" as supported software on the Ultra product page. This repository exists to close
 that gap in the open, with contributions from anyone who owns the machine.
 
-> ## Status — it marks. It does not yet mark *reliably*.
+> ## Status — it marks, it places accurately, and long jobs are now somebody else's bug
 >
 > **2026-08-25: the first real mark.** A 20 mm square, from LightBurn, at 15 % power on black
 > anodized aluminium — correct size, correct position, cleanly defined.
+>
+> **2026-08-27: both vendors engaged, and the streaming defect has an owner.** WeCreat and
+> LightBurn are jointly implementing job upload to the machine's internal memory instead of
+> real-time streaming, with test builds said to be close. This project's job on that front has
+> changed from *diagnosing* to *testing and documenting*.
 >
 > | | |
 > |---|---|
@@ -29,13 +34,17 @@ that gap in the open, with contributions from anyone who owns the machine.
 > | Field distortion at 200 mm | ✅ none detectable |
 > | Marking, power scaling, placement | ✅ confirmed on hardware |
 > | Camera | ✅ connects via LightBurn's built-in WeCreat preset |
-> | **Streaming reliability on jobs bigger than a test square** | 🔴 **stalls — see below** |
-> | Rotary, slide, conveyor, K9 3D, camera alignment | ⬜ not attempted |
+> | MOPA frequency and pulse width, including **mid-job** changes | ✅ confirmed on hardware |
+> | Streaming reliability on long jobs | 🟠 **understood; fix in flight at both vendors** |
+> | Rotary, slide, conveyor, K9, camera alignment | ⬜ **next — and none of it waits on the above** |
 >
-> ### 🟠 The blocker: jobs stall mid-stream — diagnosed, and a fix is in progress
+> Every claim below carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
+> anything — including the part about **Frame firing the beam**.
 >
-> Long jobs stall and fills drift. **Both vendors responded within a day of this repo going public,
-> and the cause is now confirmed from both ends**
+> ### 🟠 Long jobs: what happens, and why it is not this project's problem to solve
+>
+> Fills stall part-way and drift. Both vendors responded within a day of this repo going public,
+> and the cause is confirmed from both ends
 > ([full responses](captures/vendor-responses-2026-08-27.md)):
 >
 > ```
@@ -43,24 +52,32 @@ that gap in the open, with contributions from anyone who owns the machine.
 >         ↓  LightBurn falls back to a 128-byte buffer
 >         ↓  at ≥127 bytes the controller DROPS MOVES     ← confirmed by a LightBurn dev
 >         ↓  a dropped move inside a G91 relative block
->         ↓  every later position inherits the error      ← measured 2.30 mm off
+>         ↓  every later position inherits the error
 > ```
 >
-> A **LightBurn developer** reports the machine's serial receive buffer and its motion chip's buffer
-> are different sizes, and that at 127 bytes or more it simply drops moves. The buffer value cannot
-> currently be lowered because of a separate LightBurn bug — **which already has a fix written**.
+> A **LightBurn developer** reports the machine's serial receive buffer and its motion chip's
+> buffer are different sizes, and that at 127 bytes or more it simply drops moves. The buffer
+> value cannot currently be lowered because of a separate LightBurn bug — **which already has a
+> fix written**.
 >
-> **WeCreat and LightBurn are jointly implementing job upload to the machine's internal memory
-> instead of real-time streaming**, and say test builds are close. That is the same architecture
-> MakeIt uses, and the reason MakeIt never hits this.
+> **But the deeper point is arithmetic, and it is measured.** A single real MakeIt job — read from
+> WeCreat's own staged output — is **222 MB and 11,276,586 lines**. At 1,000,000 baud that is about
+> **39 minutes of pure payload** before a single acknowledgement round trip.
+> ([measurements](captures/makeit-cache-and-absolute-gcode.md))
 >
-> **So today this configuration is honest for small vector work and not yet trustworthy for
-> production** — but the problem has an owner, a diagnosis and a fix in flight. Analysis:
-> [stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md) ·
-> [G91 measurements](captures/stage5-G91-relative-mode-CONFIRMED.md)
+> Streaming a job of that size is not slow. It is not possible. No buffer size changes that, which
+> is why upload-to-device is the correct architecture rather than merely a convenient one — and it
+> is exactly what MakeIt has always done.
 >
-> Every claim below carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
-> anything — including the part about **Frame firing the beam**.
+> **Today: honest for vector work, not yet trustworthy for large fills.** Analysis:
+> [streaming stalls](captures/stage5-streaming-stalls.md) ·
+> [G91 measurements](captures/stage5-G91-relative-mode-CONFIRMED.md) ·
+> [MakeIt's own G-code](captures/makeit-cache-and-absolute-gcode.md)
+>
+> One caveat kept in plain sight: the "2.30 mm outside declared bounds" figure this project
+> published came from a run in which Pause/Resume had been used repeatedly to unstick a stall, so
+> it cannot separate dropped moves from the recovery attempt. A clean measurement is owed.
+> ([why](captures/stage5-drift-measured-and-pause-harm.md))
 
 > ### 🙏 Contributors
 >
@@ -107,7 +124,7 @@ that gap in the open, with contributions from anyone who owns the machine.
 LightBurn's galvo-class **UI fields** are therefore unavailable. But the underlying capability
 turned out not to be:
 
-> ### ✅ MOPA pulse width and frequency ARE controllable
+> ### ✅ MOPA pulse width and frequency ARE controllable — including mid-job
 >
 > Two real MOPA jobs differing only in pulse width produced G-code differing by **exactly one
 > line** — `M39P200` → `M39P500`.
@@ -117,6 +134,12 @@ turned out not to be:
 > M39P<ns>     ; MOPA pulse width      CONFIRMED-vendor
 > M18S0        ; MOPA source select    CONFIRMED-vendor
 > ```
+>
+> **And they can change during a job.** WeCreat's own staged output for a single deep-emboss job
+> contains **282 `M38` and 282 `M39` statements** — the vendor's software re-tunes frequency and
+> pulse width continuously as it works down through the layers. Per-layer MOPA control is not
+> merely permitted by this firmware; it is routine.
+> ([measurements](captures/makeit-cache-and-absolute-gcode.md))
 >
 > LightBurn's GRBL class supports **per-layer custom G-code** — the exact granularity a MOPA
 > material library needs. You lose the convenient spin-boxes; you keep the control.
@@ -166,17 +189,30 @@ repo onto it and checking it is ready. Then work through
 [docs/03-bringup-plan.md](docs/03-bringup-plan.md) in order. Stage 0 and Stage 1 involve no beam
 at all and are the most valuable thing any owner can contribute right now.
 
-The three highest-value contributions today, in order:
+The four highest-value contributions today, in order:
 
 1. **USB enumeration.** Plug in the Ultra, run `tools/probe-workstation.ps1`, and open an issue
    with the output. This settles the architecture question outright.
 2. **The serial banner and `$$` dump.** Connect at 1,000,000 baud and capture what the machine
-   says on connect. Expect something shaped like `[WeCreat Lumos Ultra :ver ######]`.
+   says on connect. Expect something shaped like `[WeCreat Lumos Ultra :ver ######]`, and
+   **please report the version number** — see the firmware note below.
 3. **A MakeIt job capture.** Run the same tiny job twice, changing exactly one thing (UV vs
    MOPA; two pulse widths; two focus heights), and capture the G-code. This is how the Ultra's
    M-code table gets written.
+4. **Your own MakeIt output, with no laser time at all.** MakeIt stages the complete generated
+   job at `%APPDATA%\Wecreat MakeIt!\gcode\gcode.gc`. Point `tools/analyze-gcode.ps1` at it and
+   post the summary. It is read-only, needs no machine, and tells us how WeCreat's generator
+   behaves on hardware we do not own.
 
-Templates for all three live in [`captures/templates/`](captures/templates/).
+Templates for all three capture types live in [`captures/templates/`](captures/templates/).
+
+> ### 📟 Firmware versions wanted
+>
+> This project's machine reports **`[WeCreat Lumos :ver 000240]`**. A LightBurn developer has
+> reported relative-mode fills running **without drift** on their Ultra, and suspects firmware not
+> yet released publicly. If that is right, some of what is documented here may already be fixed.
+>
+> **If you own an Ultra, the single most useful thing you can post is your version string.**
 
 ## How to help
 
