@@ -48,6 +48,21 @@ that gap in the open, with contributions from anyone who owns the machine.
 > Every claim below carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
 > anything — including the part about **Frame firing the beam**.
 
+> ### 🙏 Contributors
+>
+> **[Chris Zambesi](captures/community-01-lumos-flex-chris-zambesi.md)** — first community report,
+> offered within hours of this repo going public. Connected a **Lumos Flex** and reported
+> LightBurn's warning that the machine was detected as a WeCreat device but the profile was not
+> using the WeCreat G-code flavor.
+>
+> That single observation confirmed three things this project had only *inferred*, on a machine we
+> do not own: that LightBurn detects WeCreat controllers from the banner rather than the profile,
+> that `Custom GCode` + `wecreat` is the class LightBurn itself wants, and that WeCreat's official
+> configs predate that flavor. It also established that the **Flex is 116 × 116 mm**, which means
+> the workspace trap below is **Ultra-specific**.
+>
+> This is exactly what the repo was published for.
+
 > ### ⚠️ If you own a Lumos Ultra, do not just import WeCreat's Lumos profile
 >
 > The Ultra identifies itself over USB as **`[WeCreat Lumos :ver 000240]`** — it does **not** say

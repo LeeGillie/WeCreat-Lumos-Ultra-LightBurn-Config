@@ -36,6 +36,15 @@ is. Answered: WeCreat publishes LightBurn configs for Vision / Vision Pro / Vist
 Lumos is a galvo, so gantry is not the dividing line); **Lumos Flex and Lumos Ultra have none**.
 Verified on <https://wecreat.com/pages/software> on 2026-08-26.
 
+**He then came back with the first real community data point** — see
+[`captures/community-01-lumos-flex-chris-zambesi.md`](captures/community-01-lumos-flex-chris-zambesi.md).
+He connected a **Lumos Flex** and got LightBurn's warning that the machine was detected as WeCreat
+but the profile was not using the WeCreat flavor. That confirmed three inferences on a machine we
+do not own, and established the **Flex is 116 × 116 mm** — so the workspace trap is Ultra-specific.
+
+**He is the best candidate to answer open question 1.** If his Flex runs a dense fill to completion,
+the stall is Ultra-specific. If it stalls too, it is family-wide. Follow that up.
+
 ## The blocker, in one paragraph
 
 The controller's GRBL status report is **partly fabricated**: `MPos` is live and correct, but the
