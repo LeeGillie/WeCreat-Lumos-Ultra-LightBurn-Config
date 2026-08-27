@@ -22,7 +22,7 @@ Nothing is 🟩 yet. This project is pre-hardware.
 
 | # | Feature | Detail | Status | Notes |
 |---|---|---|---|---|
-| A1 | 6 W UV source | 355 nm, spot 0.0019 mm | 🟨 `DRAFT` | Base source, ships with every Ultra |
+| A1 | 6 W UV source | 355 nm, spot **6–8 μm** | 🟨 `DRAFT` | Base source, ships with every Ultra. ⚠️ **WeCreat's published "0.0019 mm" spot size was wrong** — they confirmed on 2026-08-27 that it is the machine's *motion accuracy*, mis-associated with spot size in their materials, and are revising them. [Correspondence](../captures/vendor-responses-2026-08-27.md) |
 | A2 | 60 W MOPA fiber | JPT module, add-on | 🟨 `DRAFT` | Same red lens as A3 |
 | A3 | 100 W MOPA fiber | JPT module, add-on, spot 0.03 mm | 🟨 `DRAFT` | |
 | A4 | UV ↔ MOPA source switching | WeCreat: "one click, no machine swapping" | 🟦 `NEEDS-HW` | Lumos uses `M18S1`/`M18S0`. Ultra code **unknown** — do not assume. [Open Q3](#open-questions) |

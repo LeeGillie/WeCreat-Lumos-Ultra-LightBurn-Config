@@ -91,6 +91,22 @@ built-in WeCreat handling.
 **This closes the buffer-size line of investigation.** It was the most promising untested lever;
 it turns out not to be a lever at all. Recorded so nobody spends another hour on it.
 
+> ## ❌ The last sentence above is WRONG — corrected 2026-08-27
+>
+> Buffer size is **exactly** the lever. A LightBurn developer, testing this machine directly,
+> reports that **at 127 bytes or more the controller drops moves** — so a *lower* value is precisely
+> what is needed ([vendor responses](vendor-responses-2026-08-27.md)).
+>
+> The cause of the revert is also now known and is **not** the `wecreat` flavor: LightBurn reads the
+> buffer size from the `OPT:` field of the `$I` response, WeCreat's firmware does not return it, so
+> LightBurn falls back to 128 — and the manual override is a **known LightBurn bug with a fix
+> already written**.
+>
+> The correct conclusion was the narrower one: *the value cannot currently be set.* The error was
+> treating "I cannot change this" as "this does not matter."
+>
+> Left in place rather than edited away, per this repo's habit with its own mistakes.
+
 ### What that leaves
 
 | Lever | Status |

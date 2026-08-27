@@ -32,18 +32,32 @@ that gap in the open, with contributions from anyone who owns the machine.
 > | **Streaming reliability on jobs bigger than a test square** | 🔴 **stalls — see below** |
 > | Rotary, slide, conveyor, K9 3D, camera alignment | ⬜ not attempted |
 >
-> ### 🔴 The open blocker: jobs stall mid-stream
+> ### 🟠 The blocker: jobs stall mid-stream — diagnosed, and a fix is in progress
 >
-> The controller's status report is a **stub** — it answers `Idle` with zero feed even while
-> executing a job. LightBurn therefore cannot tell whether the machine is busy, and long jobs
-> stall repeatedly. Pause-then-Pause restarts them.
+> Long jobs stall and fills drift. **Both vendors responded within a day of this repo going public,
+> and the cause is now confirmed from both ends**
+> ([full responses](captures/vendor-responses-2026-08-27.md)):
 >
-> MakeIt never hits this because **MakeIt does not stream** — it uploads the whole job to the
-> controller's SD card. A vendor app that never streams never needs the acknowledgement protocol
-> to be correct, which is probably why it isn't.
+> ```
+> WeCreat firmware returns no OPT: in its $I response
+>         ↓  LightBurn falls back to a 128-byte buffer
+>         ↓  at ≥127 bytes the controller DROPS MOVES     ← confirmed by a LightBurn dev
+>         ↓  a dropped move inside a G91 relative block
+>         ↓  every later position inherits the error      ← measured 2.30 mm off
+> ```
+>
+> A **LightBurn developer** reports the machine's serial receive buffer and its motion chip's buffer
+> are different sizes, and that at 127 bytes or more it simply drops moves. The buffer value cannot
+> currently be lowered because of a separate LightBurn bug — **which already has a fix written**.
+>
+> **WeCreat and LightBurn are jointly implementing job upload to the machine's internal memory
+> instead of real-time streaming**, and say test builds are close. That is the same architecture
+> MakeIt uses, and the reason MakeIt never hits this.
 >
 > **So today this configuration is honest for small vector work and not yet trustworthy for
-> production.** Full analysis: [captures/stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md).
+> production** — but the problem has an owner, a diagnosis and a fix in flight. Analysis:
+> [stage5-streaming-stalls.md](captures/stage5-streaming-stalls.md) ·
+> [G91 measurements](captures/stage5-G91-relative-mode-CONFIRMED.md)
 >
 > Every claim below carries an evidence grade. Read [SAFETY.md](SAFETY.md) before you connect
 > anything — including the part about **Frame firing the beam**.
