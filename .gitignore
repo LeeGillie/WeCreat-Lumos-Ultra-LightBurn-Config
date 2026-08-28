@@ -66,3 +66,8 @@ captures/TEST-*.lbdev
 # Raw video is too large for git. Keep the analysed stills instead.
 docs/images/*.mp4
 docs/images/*.axp
+
+# Private working notes - never published. Includes vendor material shared in confidence.
+PRIVATE-*.md
+private/
+
