@@ -58,45 +58,85 @@ So the reason `TargetBufferSize` reverted from 40 to 128 — in the UI *and* on 
 **known LightBurn bug with a fix already written**. The trigger is WeCreat firmware not returning
 `OPT:` in `$I`.
 
+> ### 📄 A note on how WeCreat's replies are reported here
+>
+> **The two WeCreat sections below are summarised, not quoted.** They previously carried verbatim
+> extracts from support email; those have been replaced with paraphrase.
+>
+> WeCreat asked that specific internal email text stay within the direct thread, while explicitly
+> welcoming the reporting of findings, progress and outcomes to the community. That is a reasonable
+> ask, it matches what this project told them it intended to do, and the substance below is
+> unchanged — only the wording is now this project's rather than theirs.
+>
+> LightBurn's sections are left quoted, because those are **public forum posts** rather than
+> private correspondence.
+
 ## 3. WeCreat Support — Allen, 09:19 UTC — on the streaming report
 
-> *"**Almost all of your findings are correct**, and they are consistent with what we have been
-> communicating with LightBurn. In fact, we have already made some good progress with LightBurn.
-> They are currently working on implementing **our suggestion to upload the job directly to the
-> machine's internal memory instead of transmitting it in real time**."*
->
-> *"We are now in the final stage of wrapping things up, and we should be able to have some **test
-> builds available soon** for users who would like to try controlling the Lumos Ultra with LightBurn
-> ahead of the official release."*
+*Summarised.*
+
+WeCreat confirmed that nearly all of this project's findings are correct, and consistent with what
+they had already been discussing with LightBurn. They reported real progress: LightBurn is
+implementing WeCreat's proposal to **upload the job to the machine's internal memory rather than
+transmitting it in real time**, and said test builds for owners wanting to drive the Ultra from
+LightBurn ahead of general release were close.
 
 **The upload bridge is being built.** [ROADMAP](../ROADMAP.md) listed it as deferred scope and
-`captures/stage5-streaming-stalls.md` argued it was "the architecturally correct answer". It is
-already in flight, between the two companies, and test builds are close.
+`captures/stage5-streaming-stalls.md` argued it was the architecturally correct answer. It is
+already in flight between the two companies.
 
-**Open:** *"almost all"* is unspecified. Worth asking which finding is wrong — this project would
-rather correct it than leave it standing.
+**Open at the time:** which finding was *not* correct. Answered on 2026-08-28 — see below.
 
 ## 4. WeCreat Support — Allen, 09:57 UTC — a published spec was wrong
 
-On a separate thread about the Ultra's claimed UV spot size:
+*Summarised.* On a separate thread about the Ultra's claimed UV spot size.
 
-> *"The previously published **'0.0019 mm' figure was not the actual UV laser spot size**, but rather
-> a parameter describing the machine's motion accuracy. In our previous materials, these two
-> parameters were incorrectly associated…"*
->
-> *"the actual spot size of the 355 nm UV laser on the Lumos Ultra is **approximately 6–8 μm**."*
->
-> *"your original conclusion that a 1.9 μm UV laser spot size is physically unreasonable was
-> correct. Thank you for pointing this out. **We will also revise the relevant materials**."*
+WeCreat confirmed that the previously published **`0.0019 mm` figure was not the UV spot size at
+all** — it described the machine's motion accuracy, and the two parameters had been incorrectly
+associated in their materials. They gave the actual spot size of the 355 nm UV source as
+**approximately 6–8 μm**, agreed that a 1.9 μm spot was physically unreasonable as this project had
+argued, and said they would revise the affected materials.
 
-**A published manufacturer specification is being corrected.** The `0.0019 mm` figure appears in
-[docs/02](../docs/02-feature-inventory.md) row A1, sourced from WeCreat's own product page — that
-row now needs updating to **6–8 μm**, with the 1.9 μm figure recorded as motion accuracy.
+**A published manufacturer specification is being corrected because a customer asked.** The
+`0.0019 mm` figure appears in [docs/02](../docs/02-feature-inventory.md) row A1, sourced from
+WeCreat's own product page; that row now reads **6–8 μm**, with 1.9 μm recorded as motion accuracy.
 
-Also confirmed in the same message: MakeIt's 256 layers is **8-bit processing**, i.e. a software
+Also confirmed in the same message: MakeIt's 256 layers is **8-bit processing** — a software
 representation limit rather than a controller capability.
 
-Allen has also assigned himself as ongoing point of contact.
+Allen also took on the role of ongoing point of contact.
+
+## 5. WeCreat Support — 2026-08-28 — the outstanding question, answered
+
+*Summarised.*
+
+**Which finding was not correct: the eyewear claim, and it was not a LightBurn finding at all.**
+
+WeCreat confirmed that on LightBurn compatibility, the issues identified were **all correct**. The
+one thing this project had wrong was in [SAFETY.md](../SAFETY.md): it stated that one pair of
+goggles cannot cover both sources. WeCreat states that the protective glasses **officially supplied
+with the machine are designed to protect against both the 355 nm UV and the 1064 nm IR
+wavelengths**.
+
+[SAFETY.md](../SAFETY.md) was corrected the same day, with the correction left visible rather than
+edited away, and with two limits stated: it applies to WeCreat's supplied eyewear rather than to
+third-party goggles generally, and *"designed to protect against"* is a vendor statement rather
+than a certified optical-density rating. **OD figures and the certification standard have been
+requested.**
+
+*Their message gives the IR wavelength as "1024 nm"; 1064 nm is certainly meant — it is engraved on
+the lens.*
+
+**Also in that reply:** LightBurn has delivered a dedicated build implementing the file-upload path,
+together with configuration files, and WeCreat has asked this project to test it and report back.
+WeCreat asked that the build itself and its details stay private for now, so **no link, build
+identifier, or configuration file appears in this repository**, and none will until they say
+otherwise. Progress and results can be reported; the software cannot be redistributed.
+
+**On publishing generally**, WeCreat confirmed that sharing high-level progress, solutions and
+outcomes with the community and in this repository is welcome and encouraged, and asked only that
+specific internal email text, proprietary build details and unreleased software stay within the
+direct thread. This document now follows that.
 
 ---
 
@@ -104,7 +144,7 @@ Allen has also assigned himself as ongoing point of contact.
 
 | Finding | Status |
 |---|---|
-| Status report state field is fabricated | "Almost all of your findings are correct" |
+| Status report state field is fabricated | Confirmed by WeCreat, along with nearly all other findings |
 | Moves are being dropped, not merely delayed | **Confirmed independently** by a LightBurn dev |
 | `G91` turns a dropped move into permanent drift | Mechanism intact; the drop is now confirmed |
 | Buffer size is not settable | Confirmed — and the *cause* is now known |
@@ -131,7 +171,7 @@ not hold here given the two mismatched buffers Jon C describes.
 
 ## What to do next
 
-1. **Ask Allen which finding is not correct.** "Almost all" is the only unresolved claim
+1. ~~**Ask which finding is not correct.**~~ **Answered 2026-08-28** — it was the eyewear claim in SAFETY.md, now corrected. All LightBurn compatibility findings confirmed
 2. **Ask about the test builds** — this project has a machine, published captures, and a documented
    method. Good candidate for early testing
 3. **Update `docs/02` A1** — UV spot size 6–8 μm, not 0.0019 mm; note 1.9 μm is motion accuracy

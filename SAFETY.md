@@ -78,12 +78,40 @@ Every gantry-laser habit teaches that framing is safe. On this machine that habi
 
 | Source | Wavelength | Notes |
 |---|---|---|
-| UV | 355 nm | Invisible. Standard laser goggles rated for IR **do not** protect against UV. WeCreat sells 190–550 nm goggles for this |
-| MOPA fiber | **1064 nm — confirmed**, engraved on the red lens itself (`H SL-1064-200-F290-D10-C`). WeCreat still does not publish it | Invisible. Highly specular off metal — the reflection is as dangerous as the beam. Needs 800–1100 nm goggles |
+| UV | 355 nm | Invisible. Goggles rated **only** for IR do not protect against UV |
+| MOPA fiber | **1064 nm — confirmed**, engraved on the red lens itself (`H SL-1064-200-F290-D10-C`). WeCreat still does not publish it | Invisible. Highly specular off metal — the reflection is as dangerous as the beam. Goggles rated **only** for UV do not protect against IR |
 
-**One pair of goggles does not cover both sources.** Check which lens and which source is active
-before you close the lid, and wear the matching pair. This is the reason every profile in this
-repository carries a start-of-job checklist.
+> ### ✅ Correction, 2026-08-28 — the glasses WeCreat supplies cover **both** wavelengths
+>
+> **This document previously said "one pair of goggles does not cover both sources." That was
+> wrong about WeCreat's own eyewear, and WeCreat corrected it.**
+>
+> WeCreat support states that the protective glasses **officially provided with the machine are
+> designed to protect against both the 355 nm UV and the 1064 nm IR wavelengths**. So if you are
+> wearing the pair that came with your Ultra, you are not required to swap eyewear when you change
+> source or lens.
+>
+> This was the single item WeCreat flagged as incorrect when reviewing this project's findings —
+> everything else in the LightBurn compatibility report was confirmed. Reported here promptly
+> because a wrong safety claim is the worst kind to leave standing, and because it is *good* news
+> that other owners should have.
+>
+> **Two things this correction does not cover, so do not read it further than it goes:**
+>
+> - **It applies to WeCreat's supplied glasses, not to eyewear generally.** Most third-party laser
+>   goggles are single-band. If you are wearing anything other than the pair that came with the
+>   machine, verify it is rated for the wavelength you are actually firing — the general optics
+>   above still hold.
+> - **"Designed to protect against" is not an OD rating.** This project has asked WeCreat for the
+>   optical density figures and the standard they are certified to (EN 207 / EN 60825 or
+>   equivalent), and will publish them here when they arrive. Until then this is a **vendor
+>   statement, recorded as given** rather than an independently verified specification.
+>
+> *Grade: CONFIRMED-vendor.* Source: WeCreat support, 2026-08-28. Their message gives the IR figure
+> as "1024 nm"; 1064 nm is certainly what is meant — it is the wavelength engraved on the lens.
+
+Check which lens and which source is active before you close the lid, and wear eyewear rated for
+it. This is the reason every profile in this repository carries a start-of-job checklist.
 
 Note that both UV lenses — purple *and* green — run the 355 nm source, confirmed from the glass
 itself ([docs/06](docs/06-modes-and-lenses.md)). Only the red lens moves you to 1064 nm. So the
