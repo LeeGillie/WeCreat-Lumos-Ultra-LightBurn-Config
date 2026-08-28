@@ -36,9 +36,14 @@ Full text and analysis: [`captures/vendor-responses-2026-08-27.md`](captures/ven
 | **Jon C, LightBurn dev team** | At a buffer of **≥127 the Ultra drops moves**. He is in direct talks with WeCreat. Separately: relative fills ran **without drift** on *their* Ultra, and he suspects **unreleased firmware** — and would not be surprised if LightBurn had been sent an in-flight build |
 | **Mike Hembrey, forum** | Engaged, gracious, no Ultra of his own |
 
-**That last item from Jon is the biggest open lead in the project.** This machine is on
-`[WeCreat Lumos :ver 000240]`. If LightBurn's unit runs something newer, their clean result is not
-comparable to a retail machine — and some of what this repo documents may already be fixed.
+**Answered 2026-08-28, and it went the other way.** LightBurn's Ultra reads **`ver 000236`** —
+*older* than this machine's `000240`. Jon's reading: *"looks like they have a regression."*
+
+That is now **the biggest lead in the project**. Every other explanation on file — fabricated
+status report, buffer mismatch, `G91` amplification — is a property of the design, and a design
+does not differ between two units of one model. A version number does.
+[Capture](captures/firmware-000236-vs-000240-regression.md). Not proven: the comparison is not
+fully matched, and no owner can downgrade to test it. WeCreat can settle it from the changelog.
 
 ## What was learned on 2026-08-27
 

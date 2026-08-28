@@ -112,11 +112,26 @@ is a real prospect rather than wishful thinking. Testing that is next.
 
 TWO THINGS YOU CAN HELP WITH
 
-1. Your firmware version. Connect over USB and note what the machine
-   reports on connect. Mine says [WeCreat Lumos :ver 000240]. A LightBurn
-   developer has seen an Ultra behave better than mine and suspects a
-   newer build exists, so version numbers from real owners are genuinely
-   valuable right now.
+1. YOUR FIRMWARE VERSION. This has just become the most interesting
+   question in the whole investigation.
+
+   Mine reports [WeCreat Lumos :ver 000240] and its fills stall and
+   drift. LightBurn's development team ran the same kind of job cleanly
+   on an Ultra reading ver 000236 - four versions OLDER than mine. Their
+   own words: "looks like they have a regression."
+
+   If that holds up, this is not a design problem at all. It is
+   something that changed for the worse between two firmware builds,
+   which is a much more fixable kind of problem - and it may mean some
+   Ultras in the wild are fine and some are not, purely by which
+   firmware they shipped with.
+
+   It is not proven yet. Nobody can downgrade to test it, and the two
+   machines were not running identical jobs. But every owner has one
+   data point, and together we can find out which versions are affected.
+
+   Connect over USB and note the version string your machine reports.
+   That one line is genuinely useful.
 
 2. Other models, and PLEASE include your settings. If you run a Flex,
    Lumos, Vision or Vista with LightBurn, I would love to know whether a

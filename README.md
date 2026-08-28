@@ -206,13 +206,24 @@ The four highest-value contributions today, in order:
 
 Templates for all three capture types live in [`captures/templates/`](captures/templates/).
 
-> ### 📟 Firmware versions wanted
+> ### 📟 Firmware versions wanted — this may be a regression, not a design flaw
 >
-> This project's machine reports **`[WeCreat Lumos :ver 000240]`**. A LightBurn developer has
-> reported relative-mode fills running **without drift** on their Ultra, and suspects firmware not
-> yet released publicly. If that is right, some of what is documented here may already be fixed.
+> This project's machine reports **`[WeCreat Lumos :ver 000240]`** and its fills stall and drift.
 >
-> **If you own an Ultra, the single most useful thing you can post is your version string.**
+> **LightBurn's dev team ran the same class of job cleanly on a Lumos Ultra reading
+> `ver 000236`** — four versions *older*. Their reading: *"looks like they have a regression."*
+> ([capture](captures/firmware-000236-vs-000240-regression.md))
+>
+> That reframes everything below. A buffer mismatch or a fabricated status report is a property of
+> a design, and a design does not differ between two units of one model. **A version number does.**
+>
+> Not yet proven — the comparison is not fully matched, and no owner can downgrade to test it. But
+> the question has changed from *"is this machine broken"* to **"which firmware versions are
+> affected"**, and that one the community can answer.
+>
+> **If you own an Ultra, post your version string — plus whether a dense fill completes, at what
+> speed, which fill type, and which source.** Without those four, "works fine for me" cannot be
+> interpreted.
 
 ## How to help
 
