@@ -118,10 +118,26 @@ TWO THINGS YOU CAN HELP WITH
    newer build exists, so version numbers from real owners are genuinely
    valuable right now.
 
-2. Other models. If you run a Flex, Lumos, Vision or Vista with
-   LightBurn, I would love to know whether long fills complete for you.
-   That one answer would tell us whether this is an Ultra problem or a
-   family one.
+2. Other models, and PLEASE include your settings. If you run a Flex,
+   Lumos, Vision or Vista with LightBurn, I would love to know whether a
+   dense fill completes for you - but "it works fine for me" on its own
+   unfortunately does not help.
+
+   What makes a report usable is three numbers:
+
+     - the SPEED you ran at (mine fail at 12000 mm/min)
+     - the FILL TYPE - plain Fill, or Offset Fill
+     - which SOURCE - diode, fiber, MOPA, UV
+
+   The reason is that the fault looks like the machine running out of
+   buffered commands faster than USB can refill it. A slow job never gets
+   the chance to starve, so it sails through and tells us nothing. A fast
+   one is the real test.
+
+   Chris Zambesi has already run the first one - a 90 x 90 mm fill on a
+   Flex with the diode, which completed cleanly. That is genuinely
+   encouraging, and I have asked him for the speed so we can tell whether
+   it was a fair fight or simply a gentle one.
 
 AND TWO OWNERS WHO DID NOT HAVE TO HELP
 

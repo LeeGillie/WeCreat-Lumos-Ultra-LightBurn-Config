@@ -76,13 +76,60 @@ That strengthens the case that the Ultra's firmware is the newer and least-exerc
 which is the leading explanation for the streaming defect
 ([analysis](stage5-streaming-stalls.md)).
 
-## Still open — the question this could answer
+## The fill test — run 2026-08-27
 
-Chris has a Flex on LightBurn. **If he runs a dense fill and it completes**, the stall is
-Ultra-specific. **If it stalls too**, the defect is family-wide and the missing Ultra config is
-probably unrelated to it.
+Chris was asked whether a dense fill would stall on his Flex. He ran it and reported:
 
-Either answer moves the project. See [CONTRIBUTING.md](../CONTRIBUTING.md), question 1.
+> *"did a 90x90mm fill box with the diode on the flex - no issues in lightburn"*
+
+**A 90 × 90 mm fill completed on a Lumos Flex, from LightBurn, with no stall.**
+
+### ⚠️ Not yet a controlled comparison — one large confound
+
+**The Flex was marking with its diode source.** The stall mechanism is buffer starvation: the
+machine consumes moves faster than a 1,000,000-baud link can deliver them, which is why a
+LightBurn developer described a galvo as *"running dry very quickly"* at a 127-byte buffer.
+
+Diode marking runs far slower than 100 W MOPA. A slow job may simply never empty the buffer.
+
+So this result is consistent with **either** of two very different explanations, and does not yet
+distinguish them:
+
+| Explanation | Would also produce this result? |
+|---|---|
+| The Flex firmware does not have the defect | Yes |
+| The diode job never ran fast enough to starve the stream | **Also yes** |
+
+**Grade: CONFIRMED-community that the job completed. UNRESOLVED as to why.**
+
+### What would settle it
+
+Two numbers, both easy for Chris to read off his own LightBurn:
+
+1. **Speed.** The Ultra fills that fail here run at **12000 mm/min**. If the diode ran at a few
+   hundred, the comparison is not like-for-like.
+2. **Fill type.** Plain *Fill* emits **99.97 %** of its moves in `G91` relative mode; *Offset Fill*
+   only 8.6 % ([evidence](stage5-G91-relative-mode-CONFIRMED.md)). The exposure differs by more
+   than a factor of ten.
+
+Asked on 2026-08-27; awaiting reply.
+
+### The pattern this now belongs to
+
+Two independent reports of the same class of job running clean on machines that are **not** this
+one:
+
+| Machine | Source | Result |
+|---|---|---|
+| Lee's Lumos Ultra, firmware `ver 000240` | 100 W MOPA @ 12000 mm/min | **stalls and drifts** |
+| LightBurn dev team's Ultra | not stated — *possibly unreleased firmware* | clean |
+| Chris Zambesi's Lumos Flex | diode, speed not yet known | clean |
+
+That shifts weight — carefully, not conclusively — away from *family-wide defect* and toward
+*this machine, this firmware, or this speed*. It also raises the value of the firmware version
+string a LightBurn developer offered to supply.
+
+**Do not over-read it.** Neither clean run is yet a matched comparison against a failing one.
 
 ## Guidance given
 
