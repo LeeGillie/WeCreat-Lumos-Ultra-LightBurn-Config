@@ -68,7 +68,7 @@ capture needed to read WeCreat's own generator output. Tools:
 |---|---|
 | WeCreat support | **Follow-up SENT 2026-08-27 06:37**, five questions, unanswered as of end of day — recorded verbatim in `outreach/plaintext/wecreat-followup-2026-08-27-SENT.txt`. A second message on controller configuration and network exposure is drafted and **on hold** until that exchange closes |
 | LightBurn forum, WeCreat category | Live thread, three staff/dev replies. Posted a correction that landed well. **Reply 3 drafted and unsent**: `outreach/lightburn-forum-reply-3-2026-08-27.md` |
-| WeCreat owners' FB group | Posted 2026-08-26. **Follow-up drafted**: `outreach/plaintext/facebook-followup-2026-08-27.txt` — corrects the record, credits Allen / Aaron / Jon C / Chris / Mike by name, and asks owners for firmware version strings |
+| WeCreat owners' FB group | Original posted 2026-08-26. **Follow-up posted 2026-08-27** (vendor credit, the 222 MB / 39-minute finding, mid-job MOPA control). **Delta comment posted 2026-08-28** — eyewear correction plus the `000236` / `000240` regression, and the community bisect ask. **Watch this thread**: version strings and fill results from other owners are the next real evidence |
 | LightBurn users' FB group | Draft exists; posting status unconfirmed |
 | Chris Zambesi | First community contributor. **Ran the fill test 2026-08-27: a 90 × 90 mm fill completed cleanly on his Flex.** But he used the *diode*, and slow jobs never starve the buffer — so it is not yet a matched comparison. Asked him for speed and fill type; awaiting reply. [Capture](captures/community-01-lumos-flex-chris-zambesi.md) |
 
