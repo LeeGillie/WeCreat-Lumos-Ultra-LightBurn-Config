@@ -1,0 +1,129 @@
+Subject: Re: WeCreat Lumos Ultra claimed spot size
+
+
+Hello Allen,
+
+That is a generous and genuinely useful reply. Three quick things, then
+I will stop talking and start testing.
+
+
+1. THE SAFETY CORRECTION IS ALREADY PUBLISHED
+
+Thank you for catching it, and I am glad it was that one rather than
+something in the protocol work.
+
+My SAFETY.md said that one pair of goggles cannot cover both sources.
+That is now corrected: it records that the glasses supplied with the
+machine are designed to protect against both 355 nm and 1064 nm, and it
+is credited to WeCreat support. I left the original claim visible and
+struck through rather than quietly editing it, which is how this project
+handles all of its mistakes.
+
+I bounded it in two ways, and I want to be transparent that I did:
+
+  - I noted it applies to your supplied eyewear, not to third-party
+    goggles generally, since most aftermarket laser glasses are
+    single-band and I do not want an owner in different glasses reading
+    it as blanket reassurance.
+
+  - I recorded it as a manufacturer statement rather than as a verified
+    specification, because "designed to protect against" is not an
+    optical density figure.
+
+Which leads to the one thing I would still like, whenever it is
+convenient: the OD rating and the standard the glasses are certified to
+(EN 207, EN 60825, or whichever applies). I will publish those, credited
+to you, and that turns a vendor statement into a documented
+specification other owners can rely on.
+
+A small note in passing: your message gives the IR wavelength as
+1024 nm. I am sure 1064 nm is meant - it is engraved on the red lens
+itself - but I mention it only because if it appears that way in any
+customer-facing material, it is exactly the kind of digit that matters
+when somebody is choosing eyewear.
+
+
+2. THE TEST BUILD - UNDERSTOOD, AND THANK YOU
+
+I have it. I will treat the build, the link and the configuration files
+as confidential and will not share, mirror, or reference them anywhere.
+Nothing about them appears in my repository, and nothing will until you
+tell me otherwise.
+
+I will start testing and report back with whatever I find, good or bad,
+in this thread. What I would plan to exercise first:
+
+  - a large dense fill, which is the exact case that fails today
+  - whether the artwork lands inside its own declared bounds
+  - repeatability across several consecutive jobs
+  - MOPA parameters surviving the upload path
+
+If there is a particular scenario you or LightBurn would rather I
+prioritise, say so and I will do that first instead. You know what is
+uncertain in the build; I do not.
+
+
+3. THE MOST USEFUL THING I HAVE FOR YOUR ENGINEERS
+
+This came from LightBurn's public forum since your last message, so
+there is nothing confidential in it - but I do not think it has been put
+in front of your firmware team as a pair of numbers yet.
+
+    LightBurn's Lumos Ultra ... ver 000236 ... fills run clean
+    My Lumos Ultra ........... ver 000240 ... fills stall and drift
+
+The working machine is on the OLDER firmware, by four increments. Their
+engineer's own word for it was "regression".
+
+And the obvious objection does not hold. I expected their clean result
+came from running gently, but the opposite is true - they were marking
+at 1500 to 2000 mm/s, while my failures happen at 200 mm/s. They were
+running seven to ten times faster than me and had no trouble.
+
+That matters because it is backwards. If this were a communication
+buffer running empty, the FAST machine should fail and the slow one
+should be fine. It is the other way round.
+
+I want to be careful: their machine was on the UV source and mine is the
+100W MOPA, so it is not a perfectly matched comparison, and I would not
+call this proven. But if something changed between 000236 and 000240
+that affects this, that is a far more tractable problem than the
+architectural one we have all been assuming - and you are the only
+people who can see the changelog between those two builds.
+
+TWO QUESTIONS:
+
+  - Is 000236 obtainable, and is downgrading supported on the Ultra?
+    If I could run 000236 on this machine and repeat the same job, that
+    would be one machine, one variable - the cleanest evidence anyone
+    could produce. I will not attempt it without your blessing.
+
+  - Is it worth your firmware team diffing those two builds for anything
+    touching serial handling, motion queueing or job execution?
+
+I am also asking other Ultra owners to report their version strings, so
+there may be more data points shortly.
+
+
+4. PUBLISHING - THAT IS EXACTLY THE LINE I WANTED
+
+Your terms are clear and I have already implemented them.
+
+Where my documentation previously quoted your emails directly, it now
+summarises them in my own words instead, with a visible note explaining
+why the change was made. The substance is unchanged. Nothing about the
+build, the link, or unreleased software appears anywhere public.
+
+I will keep reporting progress and outcomes to the community, which I
+think serves your owners as much as it serves me - and I would rather
+over-check with you than assume.
+
+Thank you for taking a stranger's bug report seriously enough to run it
+to ground. It has been a notably better experience than I expected, and
+I have said so publicly.
+
+Best regards,
+
+Lee Gillie, CCP
+
+    https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config

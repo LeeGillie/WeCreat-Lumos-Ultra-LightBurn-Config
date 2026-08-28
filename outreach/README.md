@@ -17,6 +17,8 @@ Format conventions — which file goes to which destination, and why — are in
 | 2026-08-27 | **LightBurn forum** | [`lightburn-forum-reply-2-2026-08-27.md`](lightburn-forum-reply-2-2026-08-27.md) | Correction post. Received well by both the dev and the owner who had pushed back |
 | 2026-08-27 | **WeCreat owners' FB group** | [`plaintext/facebook-followup-2026-08-27.txt`](plaintext/facebook-followup-2026-08-27.txt) | **POSTED.** Note: the on-disk file was edited *after* posting — it now carries an eyewear-correction section and a rewritten firmware paragraph that are **not** in the live post. Treat the live post as the record, not this file. One statement in it is now known wrong: it says a developer "suspects a newer build exists"; his machine is in fact on an **older** build |
 | 2026-08-28 | **WeCreat owners' FB group** | [`plaintext/facebook-delta-2026-08-28.txt`](plaintext/facebook-delta-2026-08-28.txt) | **POSTED** as a comment on the 2026-08-27 post. Carries the eyewear correction and the `000236` / `000240` regression — the latter supersedes the "suspects a newer build" line in the parent post. Asks owners for version string, fill result, speed, fill type and source |
+| 2026-08-28 13:33 | **WeCreat support** | [`plaintext/wecreat-reply-2026-08-28-SENT.txt`](plaintext/wecreat-reply-2026-08-28-SENT.txt) | Reply to Allen: safety correction published, test-build confidentiality accepted, publishing terms implemented. Asks for the OD rating and certification standard |
+| 2026-08-28 14:00 | **WeCreat support** | [`plaintext/wecreat-firmware-note-2026-08-28-SENT.txt`](plaintext/wecreat-firmware-note-2026-08-28-SENT.txt) | The `000236` / `000240` pair, plus: is `000236` obtainable and is downgrade supported? **Does not include the speed inversion** — that arrived 52 minutes later |
 
 ## Drafted, not sent
 
@@ -25,7 +27,7 @@ Format conventions — which file goes to which destination, and why — are in
 | **LightBurn forum** | [`lightburn-forum-reply-3-2026-08-27.md`](lightburn-forum-reply-3-2026-08-27.md) | After the repo is pushed — it links to `tools/analyze-gcode.ps1` |
 | **WeCreat support** | [`plaintext/wecreat-followup-2-controller-findings.txt`](plaintext/wecreat-followup-2-controller-findings.txt) | Once the 06:37 exchange has run its course. It is a separate subject — controller configuration and network exposure — and should not compete with the questions already open |
 | **LightBurn users' FB group** | [`plaintext/lightburn-facebook-post.txt`](plaintext/lightburn-facebook-post.txt) | Posting status unconfirmed — check before re-sending |
-| *(none currently)* | | |
+| **WeCreat support** | [`plaintext/wecreat-followup-3-firmware-2026-08-28.txt`](plaintext/wecreat-followup-3-firmware-2026-08-28.txt) | **After the 87,000 mm/min test has been run.** Carries the speed inversion, which is the one thing Allen has not seen. Worth sending — not worth sending as a third message in one day without a measurement in it. Has a bracketed slot for the result |
 
 ## House rules for this folder
 

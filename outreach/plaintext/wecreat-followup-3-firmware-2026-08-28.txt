@@ -1,0 +1,62 @@
+HOLD — do not send until the 87,000 mm/min test has been run.
+
+Two emails already went to Allen today (13:33 and 14:00 UTC). The firmware
+000236 / 000240 pair and the downgrade question are ALREADY SENT in the 14:00
+message. The only thing below that he has not seen is the speed inversion,
+which arrived from Jon C's public forum post at 14:52 UTC — after that email.
+
+It is worth sending. It is not worth sending on its own, today, as a third
+message. Bundled with an actual measurement from this machine it stops being
+"another thought I had" and becomes "I tested it, here is what happened" —
+which is the version an engineer can act on.
+
+Run the same fill at 87,000 mm/min, fill in the bracketed result, send.
+
+----------------------------------------------------------------------
+
+Subject: Re: WeCreat Lumos Ultra claimed spot size
+
+
+Hello Allen,
+
+A follow-up to the firmware note, with a measurement attached this time.
+
+After I wrote to you, LightBurn's engineer clarified what speed his clean
+runs were at. It turns the picture upside down.
+
+    LightBurn, ver 000236 ... 1500-2000 mm/s ... UV ......... clean
+    Mine, ver 000240 ........... 200 mm/s ...... 100W MOPA ... drifts
+
+He was running seven to ten times FASTER than the jobs that fail here,
+and had no trouble at all.
+
+That is the part I would put in front of an engineer. If this were a
+communications buffer running empty, the fast machine should be the one
+that fails and the slow one should be fine. It is the other way round,
+which suggests the fault is not where any of us have been looking.
+
+So I tested it on my own machine. Same artwork, same everything, only
+the speed changed - 12,000 mm/min against 87,000 mm/min, which is the
+feed rate your own MakeIt uses for a deep emboss job.
+
+    [ RESULT GOES HERE - what happened at 87,000 mm/min ]
+
+[ If drift got WORSE at high speed: ]
+    So speed does make it worse after all, and a buffer explanation is
+    still viable. That narrows things usefully in the other direction.
+
+[ If drift was the SAME or BETTER: ]
+    So going seven times faster did not make it worse. Combined with
+    LightBurn's clean runs at even higher speeds, I do not think this is
+    a throughput problem at all, and the firmware difference between
+    000236 and 000240 is left as the main thing standing.
+
+I am still being careful here: their machine was on UV and mine is the
+100W MOPA, so it is not a perfectly matched comparison. But I thought
+you would rather have the measurement than my speculation.
+
+Best regards,
+
+Lee Gillie, CCP
+
+    https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config

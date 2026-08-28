@@ -1,0 +1,29 @@
+SENT 2026-08-28 07:00 PDT (14:00 UTC) to WeCreat support (Allen), in the
+"claimed spot size" thread. Recorded verbatim as sent.
+
+Second message of the day, following the 13:33 UTC reply. Genuinely new
+information rather than a re-ask — the firmware version pair came out of
+LightBurn's public forum thread after the earlier email was written.
+
+NOT included, because it did not exist yet: the speed inversion. Jon C posted
+his speeds (1500-2000 mm/s) at 14:52 UTC, 52 minutes after this went out. That
+is held in wecreat-followup-3-firmware-2026-08-28.txt pending a measurement.
+
+----------------------------------------------------------------------
+
+One more thing, and it may be the most useful in this email.
+
+LightBurn's dev team have told me their Lumos Ultra reports ver 000236
+and runs dense fills cleanly. Mine reports ver 000240 and drifts.
+Their engineer's word was "regression."
+
+I want to be careful - the two tests were not identical, so this is
+suggestive rather than proven. But if something changed between 000236
+and 000240 that affects streaming behaviour, that is a far more
+tractable problem than the architectural one we have all been assuming,
+and you have both builds and the changelog between them.
+
+Two questions: is 000236 obtainable, and is downgrading supported? If
+I could run 000236 on this machine and re-test, that would be a
+controlled single-variable comparison on one unit - the cleanest
+evidence anyone could produce.
