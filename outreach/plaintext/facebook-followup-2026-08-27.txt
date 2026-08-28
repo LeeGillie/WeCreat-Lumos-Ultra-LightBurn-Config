@@ -25,6 +25,33 @@ Lumos Ultra from LightBurn, and published everything I had measured. I
 want to follow that up, because the story has changed and it would be
 unfair to leave the gloomy version standing.
 
+FIRST, A CORRECTION I OWE YOU - AND IT IS GOOD NEWS
+
+In my last post I said that one pair of goggles cannot cover both the
+UV and the fiber source, and that you need to swap eyewear when you
+change lens. If that sent anyone shopping for a second pair, I am sorry.
+
+WeCreat has corrected me: the protective glasses officially supplied
+with the machine are designed to protect against BOTH the 355 nm UV and
+the 1064 nm IR wavelengths. If you are wearing the pair that came with
+your Ultra, you do not need to swap when you change source.
+
+Two limits on that, because this is eyewear and I would rather be
+boring than wrong twice:
+
+  - It applies to WECREAT'S supplied glasses. Most third-party laser
+    goggles are single-band. If you are wearing anything else, check it
+    is rated for the wavelength you are actually firing.
+
+  - "Designed to protect against" is not the same as a published optical
+    density figure. I have asked WeCreat for the OD rating and the
+    standard the glasses are certified to, and I will post those here
+    when I have them.
+
+Out of everything I got wrong this week, I am glad it was this one, and
+glad they told me.
+
+
 WHAT HAPPENED - AND WHO ACTUALLY DID IT
 
 I want to name people, because "the vendor responded" undersells what
