@@ -1,0 +1,76 @@
+FOR: WeCreat owners' Facebook group
+USE THIS ONLY IF the 2026-08-27 follow-up was already posted.
+
+If it was NOT posted, use facebook-followup-2026-08-27.txt instead - this
+file duplicates parts of it.
+
+This is the delta: the only two things that changed on 2026-08-28.
+Short enough to go up as a comment on the existing post rather than a
+new one.
+
+----------------------------------------------------------------------
+
+
+TWO UPDATES, one of which is a correction I owe you.
+
+
+1. YOUR GOGGLES ARE PROBABLY FINE - I WAS WRONG
+
+I said earlier that one pair of goggles cannot cover both the UV and the
+fiber source, and that you need to swap eyewear when you change lens. If
+that sent anyone shopping for a second pair, I apologise.
+
+WeCreat has corrected me. The protective glasses officially supplied
+with the machine are designed to protect against BOTH the 355 nm UV and
+the 1064 nm IR wavelengths. If you are wearing the pair that came with
+your Ultra, you do not need to swap when you change source.
+
+Two limits, because this is eyewear and I would rather be boring than
+wrong twice:
+
+  - It applies to WECREAT'S supplied glasses. Most third-party laser
+    goggles are single-band. If you are wearing anything else, check it
+    is rated for the wavelength you are actually firing.
+
+  - "Designed to protect against" is not a published optical density
+    figure. I have asked WeCreat for the OD rating and the standard the
+    glasses are certified to, and I will post those when I have them.
+
+This was the one thing WeCreat flagged as incorrect out of everything I
+had published. I am glad it was this one, and glad they told me.
+
+
+2. THIS MAY BE A FIRMWARE REGRESSION - AND I NEED YOUR VERSION NUMBER
+
+This is the most interesting thing anyone has found so far.
+
+My machine reports [WeCreat Lumos :ver 000240] and its fills stall and
+drift. LightBurn's development team ran the same kind of job cleanly on
+an Ultra reading ver 000236 - four versions OLDER than mine. Their own
+words: "looks like they have a regression."
+
+If that holds up, this is not a design problem at all. It is something
+that changed for the worse between two firmware builds - a much more
+fixable kind of problem. It would also mean some Ultras in the wild are
+fine and some are not, purely by which firmware they shipped with.
+
+It is not proven. Nobody can downgrade to test it, and the two machines
+were not running identical jobs. But every owner has one data point.
+
+WHAT WOULD HELP: connect over USB and note the version string your
+machine reports on connect. If you have also run a dense fill, tell me:
+
+  - did it complete, or stall
+  - what SPEED (mine fail at 12000 mm/min)
+  - plain Fill or Offset Fill
+  - which source - UV, fiber, MOPA, diode
+
+Those last four matter more than they look. A slow job never gets the
+chance to fail, so "works fine for me" on its own unfortunately does not
+tell us anything. Chris Zambesi already ran the first one on a Flex and
+it completed cleanly - which is encouraging, but he used the diode, so I
+have asked him for the speed before reading too much into it.
+
+Everything is still public and free:
+
+https://github.com/LeeGillie/WeCreat-Lumos-Ultra-LightBurn-Config
