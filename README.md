@@ -206,24 +206,26 @@ The four highest-value contributions today, in order:
 
 Templates for all three capture types live in [`captures/templates/`](captures/templates/).
 
-> ### 📟 Firmware versions wanted — this may be a regression, not a design flaw
+> ### 📟 Does a dense fill complete on YOUR Ultra? — the question that needs owners
 >
 > This project's machine reports **`[WeCreat Lumos :ver 000240]`** and its fills stall and drift.
+> LightBurn's dev team ran the same class of job cleanly on an Ultra reading **`ver 000236`**.
 >
-> **LightBurn's dev team ran the same class of job cleanly on a Lumos Ultra reading
-> `ver 000236`** — four versions *older*. Their reading: *"looks like they have a regression."*
-> ([capture](captures/firmware-000236-vs-000240-regression.md))
+> **That was briefly called a regression here. It is not one, and the claim is withdrawn.**
+> WeCreat has since confirmed that `000236` is **early prototype firmware** from a machine loaned
+> to LightBurn in the first half of 2026, never released and no longer distributed. **`000240` is
+> the production firmware** — what Kickstarter backers received, and WeCreat's baseline going
+> forward. ([full correction](captures/firmware-000236-vs-000240-regression.md))
 >
-> That reframes everything below. A buffer mismatch or a fabricated status report is a property of
-> a design, and a design does not differ between two units of one model. **A version number does.**
+> Two things follow. There is **no downgrade path**, so the clean single-variable test cannot be
+> run outside WeCreat. And **LightBurn's reference machine is not representative of the installed
+> base** — no criticism of anyone, simply what a prototype loan means six months on.
 >
-> Not yet proven — the comparison is not fully matched, and no owner can downgrade to test it. But
-> the question has changed from *"is this machine broken"* to **"which firmware versions are
-> affected"**, and that one the community can answer.
->
-> **If you own an Ultra, post your version string — plus whether a dense fill completes, at what
-> speed, which fill type, and which source.** Without those four, "works fine for me" cannot be
-> interpreted.
+> **So the useful question is no longer which version you have — it is whether yours does this.**
+> If you own an Ultra, please report: **does a dense fill complete**, at what **speed**, which
+> **fill type**, and which **source** — plus your version string. Other `000240` owners seeing the
+> same failure makes the case; other `000240` owners running clean would point the finger back at
+> this machine, and would be just as valuable.
 
 ## How to help
 

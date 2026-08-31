@@ -1,7 +1,37 @@
-# Firmware `000236` works; `000240` is the one that drifts — a likely regression
+# Firmware `000236` vs `000240` — not a regression: prototype vs production
 
-**Date:** 2026-08-28 · **Grade:** CONFIRMED-community (the version strings) · INFERRED (the
-regression) · **Contributor:** Jon C (`goeland86`), LightBurn Dev Team
+**Date:** 2026-08-28, **substantially corrected 2026-08-31** · **Contributor:** Jon C
+(`goeland86`), LightBurn Dev Team · **Correction source:** WeCreat support
+
+> ## ⚠️ CORRECTED 2026-08-31 — "regression" was the wrong frame
+>
+> This document originally read *"`000236` works; `000240` is the one that drifts — a likely
+> regression."* WeCreat has since explained what those two versions actually are, and it changes
+> the meaning entirely:
+>
+> - **`000236` was never released.** WeCreat supplied LightBurn with an **early prototype
+>   machine** in the first half of 2026. It still runs prototype firmware, which WeCreat no longer
+>   provides externally.
+> - **`000240` is the official production firmware** — the version shipped to Kickstarter backers,
+>   and the baseline for all WeCreat testing and improvement going forward.
+>
+> So this is **not** a good release that regressed. It is a prototype behaving differently from the
+> production build that superseded it, which is an ordinary thing for a prototype to do.
+>
+> **Two consequences:**
+>
+> 1. **The downgrade test is off the table.** `000236` is not obtainable, and this project will not
+>    ask again. The single-variable comparison that would have settled this cannot be run by anyone
+>    outside WeCreat.
+> 2. **LightBurn's reference machine does not represent the installed base.** Every "it works on
+>    ours" result from LightBurn describes hardware no customer has. That is worth knowing on both
+>    sides, and is said here with no criticism implied — nobody chose it, it is simply what a
+>    prototype loan means six months later.
+>
+> The version numbers below are still correct. The word "regression" was mine and Jon's, offered in
+> good faith on incomplete information, and it is withdrawn.
+
+**Grade:** CONFIRMED-community (the version strings) · CONFIRMED-vendor (what the versions are)
 
 ## The exchange
 
@@ -20,21 +50,22 @@ The answer went the other way:
 | LightBurn dev team's Lumos Ultra | **`ver 000236`** | complete, no drift |
 | This project's Lumos Ultra | **`ver 000240`** | stall and drift |
 
-**The working machine is on the older firmware.** Four increments older.
+**The working machine is on the older firmware.** Four increments older — and, as established on
+2026-08-31, a **prototype build that was never shipped to anyone**.
 
-## Why this matters more than anything else found this week
+## Why the version difference still matters
 
-Every explanation on the table until now put the fault somewhere structural — the status report,
-the buffer mismatch, `G91` amplification, the streaming architecture itself. All of those are real
-and all of them are documented here. But they are all properties of a *design*, and a design does
-not change between two units of the same model.
+Every other explanation on the table is a property of the *design* — the status report, the buffer
+mismatch, `G91` amplification, the streaming architecture. A design does not differ between two
+units of one model. **A firmware build does.**
 
-**A version number does.** If `000236` runs the same class of job cleanly on the same model with
-the same software, then something changed between `000236` and `000240` that made it worse — and
-that is a defect with a range to bisect rather than an architecture to redesign.
+That much survives the correction. What does not survive is the idea that this is a defect
+introduced into a shipping product, with a range to bisect. `000236` never shipped. The comparison
+is prototype against production, and prototypes differ from production for all sorts of reasons
+that are nobody's fault.
 
-It also explains, without special pleading, why the two clean results reported to this project both
-came from machines that are not this one.
+It does still explain, without special pleading, why LightBurn's machine behaves differently from
+this one — and it means their reference unit cannot stand in for a customer's.
 
 ## ⚡ The speed question — answered, and it points the wrong way for buffer starvation
 
@@ -84,20 +115,33 @@ explanation and firmware is left holding the field. Either result is decisive, a
 **One difference remains unaccounted for: the source.** Jon ran **UV**; the failing jobs here are
 **100 W MOPA**. Fill type on his side is also still unstated.
 
-So the honest statement is: **two machines of the same model, on different firmware, at speeds that
-should have favoured the failing one, produced opposite outcomes.** "Regression" is Jon's reading
-and now a considerably better-supported one — but it is not proven, and this project cannot prove
-it alone. There is no public firmware archive, so downgrading `000240` to `000236` and re-testing is
-not something an owner can do.
+So the honest statement is: **two machines of the same model — one production, one prototype — at
+speeds that should have favoured the failing one, produced opposite outcomes.**
 
-**WeCreat can settle it in minutes.** They have both builds and the changelog between them.
+It is not proven and cannot be proven here. `000236` is not obtainable, so the single-variable
+downgrade comparison is unavailable to anyone outside WeCreat. WeCreat has the changelog between the
+two builds and has said all their testing goes forward on `000240`.
 
-## The bisect this opens up, and it needs owners
+**What this project can still do, with no vendor cooperation required:** run the same fill at
+87,000 mm/min. That tests the starvation model directly on the production firmware, and it is now
+the most informative experiment left in reach.
 
-The question is no longer "is this machine broken". It is **which firmware versions are affected**.
-That is answerable by the community, and cheaply — every Ultra owner has one data point.
+## The question for other owners — reframed 2026-08-31
 
-What a usable report needs:
+The original ask was *"which firmware versions are affected"*. That was the right question when
+`000236` looked like a released build. It is much less useful now: **if `000240` is what every
+backer received, most owners will simply report `000240`**, and a list of identical version strings
+proves nothing.
+
+**The useful question is now sharper:** *do other `000240` machines do this too?*
+
+- **Other `000240` owners also see stalls and drift** → it is the production firmware behaving as
+  designed-but-flawed, and it affects everyone. Much stronger case.
+- **Other `000240` owners run clean** → firmware is **not** the differentiator, and the cause is
+  something local to this machine, this setup, or this cable. That would be unwelcome and extremely
+  useful.
+
+Either answer is worth more than the version string alone. What a usable report needs:
 
 | | |
 |---|---|
